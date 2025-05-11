@@ -1,0 +1,42 @@
+.form-base__submit > button {
+  background-color: #0070f3;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%;
+  box-sizing: border-box;
+  display: block;
+}
+
+button:disabled {
+  background-color: #bdbdbd;
+  cursor: not-allowed;
+}
+
+.form-base__submit-button:hover {
+  background-color: #0070f3; 
+  opacity: 0.5;
+}
+
+.form-base__submit {
+  margin: 1rem 0;
+  padding: 0 0.5rem;
+}
+
+.header-button {
+  display: flex;
+}
+.header-button > h4 {
+  text-align: center;
+  display: block;
+  width: 100%;
+  font-weight: 500;
+  font-size: 18px;
+
+}
+
+.form-base__header {
+  margin: 1rem;
+} 

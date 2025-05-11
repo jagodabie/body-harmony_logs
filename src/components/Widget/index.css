@@ -1,0 +1,43 @@
+.widget__container{
+  display: flex;
+  flex-direction: column;  
+  border-radius: 5px;
+  border: solid 1px #d2e9bf;
+  background-color: #e0ecd5;
+}
+
+.widget__header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+}
+
+.widget__body {
+    padding: 10px;
+}
+
+.widget__add-button {
+  all: unset;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.widget__add-button:hover {
+  opacity: 0.75;
+  transform: scale(1.05);
+}
+
+.widget__add-button:active {
+  opacity: 0.6;
+  transform: scale(0.95);
+}
+
+.widget__body > * {
+  margin-bottom: 10px;
+}
+.widget__body > *:last-child {
+  margin-bottom: 0;
+}

@@ -1,0 +1,11 @@
+.input-base__container {
+  margin: 1rem;
+}
+
+.input-base__input {
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  width: 100%;
+  box-sizing: border-box;
+}
