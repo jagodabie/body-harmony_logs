@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import { FormBase } from '../components/FormBase/FormBase';
+import { WeightLogsList } from '../components/WeightLogsList/WeightLogsList';
 import { WelcomeSection } from '../components/WelcomeSection/WelcomeSection';
 import { Widget } from '../components/Widget/Widget';
 import { formFields } from './utils';
@@ -34,6 +35,8 @@ export const App = () => {
             />
           )}
         </section>
+        {/* TODO for now only logs list */}
+          <WeightLogsList />
       </main>
       <footer className="app-footer">
         <p>
