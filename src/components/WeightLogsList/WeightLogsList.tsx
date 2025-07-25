@@ -1,4 +1,5 @@
 import { useWeightLogs } from '../../hooks/useWeightLogs';
+import { WeightLogItem } from './WeightLogItem/WeightLogItem';
 
 export const WeightLogsList = () => {
   const { weightLogs, loading, error } = useWeightLogs();
@@ -9,7 +10,12 @@ export const WeightLogsList = () => {
       {loading && <p>Loading...</p>}
       {error && <p>Error: {error}</p>}
       {weightLogs.map((log) => (
-        <div key={log._id}>{log.type} - {log.value} {log.unit}</div>
+      <WeightLogItem
+        key={log._id}
+        weightLog={log}
+        onEdit={() => {}}
+        onDelete={() => {}}
+      />
       ))}
     </div>
   );

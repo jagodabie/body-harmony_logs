@@ -1,0 +1,47 @@
+.action-button {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+  min-width: 26px;
+  min-height: 26px;
+}
+
+.action-button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.action-button:focus {
+  outline: 2px solid rgba(255, 255, 255, 0.5);
+  outline-offset: 2px;
+}
+
+.action-button:active {
+  transform: scale(0.95);
+}
+
+/* Modifiers for different action types */
+.action-button--edit:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.action-button--delete:hover {
+  background-color: rgba(255, 0, 0, 0.1);
+}
+
+/* Disabled state */
+.action-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.action-button:disabled:hover {
+  background-color: transparent;
+  transform: none;
+} 

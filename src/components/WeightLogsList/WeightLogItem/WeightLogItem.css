@@ -1,0 +1,151 @@
+.weight-log-item {
+  border-radius: 16px;
+  box-shadow: 0 3px 15px rgba(0, 0, 0, 0.12);
+  margin-bottom: 16px;
+  padding: 24px;
+  background-color: #f7f5f3;
+  border: 1px solid #e0ddd8;
+  transition: all 0.3s ease;
+}
+
+.weight-log-item:hover {
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.18);
+  transform: translateY(-1px);
+}
+
+.weight-log-item__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.weight-log-item__date {
+  font-size: 14px;
+  font-weight: 400;
+  color: #333;
+  margin: 0;
+}
+
+.weight-log-item__weight {
+  font-size: 32px;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+
+.weight-log-item__bmi-section {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  margin-top: 16px;
+  flex-direction: column;
+}
+
+.weight-log-item__bmi {
+  font-size: 16px;
+  color: #666;
+  margin: 5px;
+}
+
+.weight-log-item__bmi-label {
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: bold;
+  margin-left: 8px;
+}
+
+.weight-log-item__bmi-label--underweight {
+  background-color: #f0ad4e;
+  color: white;
+}
+
+.weight-log-item__bmi-label--normal {
+  background-color: #5cb85c;
+  color: white;
+}
+
+.weight-log-item__bmi-label--overweight {
+  background-color: #f0ad4e;
+  color: white;
+}
+
+.weight-log-item__bmi-label--obesity {
+  background-color: #d9534f;
+  color: white;
+}
+
+.weight-log-item__notes {
+  margin-bottom: 24px;
+}
+
+.weight-log-item__notes-label {
+  color: #888;
+  font-size: 12px;
+  font-weight: 500;
+  margin-bottom: 4px;
+  display: block;
+}
+
+.weight-log-item__notes-text {
+  color: #333;
+  font-size: 14px;
+  line-height: 1.4;
+  margin: 0;
+  max-height: 40px;
+  overflow: auto;
+}
+
+.weight-log-item__footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.weight-log-item__time {
+  color: #666;
+  font-size: 14px;
+  margin: 0;
+}
+
+.weight-log-item__actions {
+  background-color: #7fb069;
+  border-radius: 20px;
+  padding: 4px 16px;
+  display: flex;
+  gap: 8px;
+}
+
+/* Action button styles moved to ActionButton.css */
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .weight-log-item {
+    padding: 16px;
+    margin-bottom: 12px;
+  }
+  
+  .weight-log-item__weight {
+    font-size: 22px;
+  }
+  
+  .weight-log-item__date {
+    font-size: 16px;
+  }
+  
+  .weight-log-item__actions {
+    padding: 2px 12px;
+  }
+} 
+
+.weight-log-item__date-time {
+  font-size: 12px;
+  font-weight: 400;
+  color: #333;
+  margin: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+} 
