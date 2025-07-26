@@ -58,7 +58,7 @@ export const useWeightLogs = () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch(`${API_BASE_URL}/logs/${logData._id}`, {
+      const response = await fetch(`${API_BASE_URL}/logs/${logData.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

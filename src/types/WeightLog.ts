@@ -24,6 +24,7 @@ export interface CreateWeightLogRequest {
 }
 
 export interface UpdateWeightLogRequest {
+  id: string,
   type: WeightLogType,
   value: string,
   unit: WeightLogUnit,
