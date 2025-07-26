@@ -1,8 +1,14 @@
+import { useState } from 'react';
+
 import { useWeightLogs } from '../../hooks/useWeightLogs';
+import type { WeightLog } from '../../types/WeightLog';
+import WeightLogEditDrawer from '../WeightLogEdit/WeightLogEditModal';
 import { WeightLogItem } from './WeightLogItem/WeightLogItem';
 
 export const WeightLogsList = () => {
   const { weightLogs, loading, error } = useWeightLogs();
+  const [isEditDrawerOpen, setIsEditDrawerOpen] = useState(false);
+  const [selectedWeightLog, setSelectedWeightLog] = useState<WeightLog | null>(null);
 
   return (
     <div>
@@ -13,10 +19,14 @@ export const WeightLogsList = () => {
       <WeightLogItem
         key={log._id}
         weightLog={log}
-        onEdit={() => {}}
+        onEdit={() => {
+          setIsEditDrawerOpen(true);
+          setSelectedWeightLog(log);
+        }}
         onDelete={() => {}}
       />
       ))}
+      {isEditDrawerOpen  && selectedWeightLog && <WeightLogEditDrawer weightLog={selectedWeightLog} onClose={() => setIsEditDrawerOpen(false)} />}
     </div>
   );
 };

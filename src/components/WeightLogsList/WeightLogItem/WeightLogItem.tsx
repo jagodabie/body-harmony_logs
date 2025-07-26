@@ -1,5 +1,6 @@
 import { useWeightCalculation } from '../../../hooks/useWeightCalculation';
 import type { WeightLog } from '../../../types/WeightLog';
+import { formatDate, formatTime } from '../../../utils/dateUtils';
 import { ActionButton } from './actionButton/ActionButton';
 import { DeleteIcon } from './components/DeleteIcon';
 import { EditIcon } from './components/EditIcon';
@@ -13,22 +14,6 @@ interface WeightLogItemProps {
 }
 
 export const WeightLogItem = ({ weightLog, onEdit, onDelete }: WeightLogItemProps) => {
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric',
-    });
-  };
-
-  const formatTime = (dateString: string) => {
-    return new Date(dateString).toLocaleTimeString('en-US', {
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-    });
-  };
-
   const { bmi, bmiCategory } = useWeightCalculation({
     weight: parseFloat(weightLog.value),
     height: 170, // TODO: get from user profile

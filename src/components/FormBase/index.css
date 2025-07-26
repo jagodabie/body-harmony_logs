@@ -1,28 +1,13 @@
-.form-base__submit > button {
-  background-color: #0070f3;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 4px;
-  cursor: pointer;
-  width: 100%;
-  box-sizing: border-box;
-  display: block;
-}
-
-button:disabled {
-  background-color: #bdbdbd;
-  cursor: not-allowed;
-}
-
-.form-base__submit-button:hover {
-  background-color: #0070f3; 
-  opacity: 0.5;
-}
 
 .form-base__submit {
   margin: 1rem 0;
   padding: 0 0.5rem;
+}
+
+.form-base__footer {
+  display: flex;
+  gap: 1rem;
+  margin: 1rem;
 }
 
 .header-button {
@@ -37,6 +22,8 @@ button:disabled {
 
 }
 
-.form-base__header {
-  margin: 1rem;
+.form-base__header h3 {
+  width: 100%;
+  text-align: center;
+  display: block;
 } 

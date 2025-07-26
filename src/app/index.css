@@ -32,15 +32,18 @@ section {
   min-height: 100vh;
   font-family: system-ui, sans-serif;
 }
-
-.app-header {
+.header {
   padding: 1rem;
   background-color: #fdfdfd;
   border-bottom: 1px solid #ddd;
+  text-align: center;
+}
+
+.app-header {
   position: sticky;
   top: 0;
   z-index: 10;
-  text-align: center;
+
 }
 
 .app-main {
@@ -54,4 +57,48 @@ section {
   text-align: center;
   border-top: 1px solid #ddd;
   background-color: #fdfdfd;
+}
+
+.primary-button {
+  background-color: #7fb069;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%;
+  box-sizing: border-box;
+  display: block;
+  transition: opacity 0.3s ease;
+
+}
+
+.primary-button:hover:not(:disabled), 
+.primary-button:active:not(:disabled) {
+  background-color: #7fb069; 
+  opacity: 0.8;
+}
+
+.cancel-button {
+  border: 1px solid #7fb069;
+  color: #7fb069;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%;
+  box-sizing: border-box;
+  display: block;
+}
+
+.cancel-button:hover:not(:disabled), 
+.cancel-button:active:not(:disabled) {
+  background-color: #7fb06982; 
+  border: 1px solid #7fb06982;
+  opacity: 0.8;
+  color: white;
+}
+
+button:disabled {
+  background-color: #bdbdbd;
+  cursor: not-allowed;
 }

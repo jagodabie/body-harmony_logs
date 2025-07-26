@@ -1,49 +1,31 @@
-import { useState } from 'react';
+import { BrowserRouter as Router, Route,Routes } from 'react-router-dom';
 
-import { FormBase } from '../components/FormBase/FormBase';
-import { WeightLogsList } from '../components/WeightLogsList/WeightLogsList';
-import { WelcomeSection } from '../components/WelcomeSection/WelcomeSection';
-import { Widget } from '../components/Widget/Widget';
-import { formFields } from './utils';
+import Home from '../views/Home/Home';
+import  WeightLogs  from '../views/WeightLogs';
 
 import './index.css';
 
-export const App = () => {
-  const [showForm, setShowForm] = useState(false);
+function App() {
   return (
     <div className="app">
-      <header className="app-header">
+      <header className="header app-header">
         <h3>Body Harmony Logs</h3>
       </header>
       <main className="app-main">
-        {!showForm && <WelcomeSection />}
-        <section>
-          {showForm ? (
-            <FormBase
-              fields={formFields}
-              onSubmit={(data) =>
-                console.log('Form submitted with data:', data)
-              }
-              formTitle="Enter your weight"
-              handleClose={() => setShowForm(!showForm)}
-            />
-          ) : (
-            <Widget
-              currentWeight={70}
-              bmi={22.5}
-              handleClick={() => setShowForm(!showForm)}
-            />
-          )}
-        </section>
-        {/* TODO for now only logs list */}
-          <WeightLogsList />
+        <Router>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/weight-logs" element={<WeightLogs />} />
+          </Routes>
+        </Router>
       </main>
       <footer className="app-footer">
         <p>
-          &copy; {new Date().getFullYear()} Body Harmony Logs. All rights
-          reserved.
+          &copy; {new Date().getFullYear()} Body Harmony Logs. All rights reserved.
         </p>
       </footer>
     </div>
   );
-};
+}
+
+export default App;
