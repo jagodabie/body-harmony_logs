@@ -1,0 +1,48 @@
+.nav-buttons {
+  display: flex;
+  justify-content: center;
+  color: white;
+  align-items: center;
+}
+
+.primary-item,
+.nav-item {
+  border-radius: 0;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  transition: background-color 0.3s ease;
+  padding: 10px 20px;
+  width: 100%;
+  justify-content: center;
+}
+
+.nav-item {
+  background-color: #7fb069;
+}
+
+.nav-item.dark-green {
+  background-color: #445d3b;
+}
+
+.primary-item > span,
+.nav-item > span {
+  font-size: 14px;
+  font-weight: 600;
+  color: white;
+  text-align: center;
+  margin-left: 4px;
+}
+
+.primary-item:hover,
+.nav-item:hover {
+  opacity: 0.9;
+}
+
+.primary-item:focus,
+.nav-item:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+
