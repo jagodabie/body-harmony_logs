@@ -10,7 +10,7 @@ type FormBaseProps = {
   formTitle?: string;
   fields: FieldConfig[];
   defaultValues?: Record<string, unknown>;
-  onSubmit: (formData: Record<string, unknown>) => void;
+  onSubmit: (formData: unknown) => void;
   handleClose: () => void;
 };
 
@@ -40,6 +40,7 @@ export const FormBase = ({
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     onSubmit(formData);
+    // setFormData(Object.fromEntries(fields.map((field) => [field.name, ''])));
   };
 
   return (

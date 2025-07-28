@@ -1,14 +1,15 @@
-import { useState } from 'react';
-
-import { useWeightLogs } from '../../hooks/useWeightLogs';
-import type { WeightLog } from '../../types/WeightLog';
+import { useWeightLogsContext } from '../../context/WeightLogsContext';
 import WeightLogEditDrawer from '../WeightLogEdit/WeightLogEditModal';
 import { WeightLogItem } from './WeightLogItem/WeightLogItem';
 
 export const WeightLogsList = () => {
-  const { weightLogs, loading, error } = useWeightLogs();
-  const [isEditDrawerOpen, setIsEditDrawerOpen] = useState(false);
-  const [selectedWeightLog, setSelectedWeightLog] = useState<WeightLog | null>(null);
+  const context = useWeightLogsContext();
+  if (!context) {
+    console.error('WeightLogsContext is not available');
+    return null;
+  }
+  const { weightLogs, loading, error, setEditedWeightLog, editedWeightLog } = context;
+   
 
   return (
     <div>
@@ -16,17 +17,20 @@ export const WeightLogsList = () => {
       {loading && <p>Loading...</p>}
       {error && <p>Error: {error}</p>}
       {weightLogs.map((log) => (
-      <WeightLogItem
-        key={log._id}
-        weightLog={log}
-        onEdit={() => {
-          setIsEditDrawerOpen(true);
-          setSelectedWeightLog(log);
-        }}
-        onDelete={() => {}}
-      />
+        <WeightLogItem
+          key={log._id}
+          weightLog={log}
+          onEdit={() => {
+            setEditedWeightLog(log);
+          }}
+          onDelete={() => {}}
+        />
       ))}
-      {isEditDrawerOpen  && selectedWeightLog && <WeightLogEditDrawer weightLog={selectedWeightLog} onClose={() => setIsEditDrawerOpen(false)} />}
+      { editedWeightLog && (
+        <WeightLogEditDrawer
+          onClose={() => setEditedWeightLog(null)}
+        />
+      )}
     </div>
   );
 };

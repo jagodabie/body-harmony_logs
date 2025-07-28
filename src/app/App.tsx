@@ -1,7 +1,8 @@
 import { BrowserRouter as Router, Route,Routes } from 'react-router-dom';
 
+import { WeightLogsProvider } from '../context/WeightLogsContext';
 import Home from '../views/Home/Home';
-import  WeightLogs  from '../views/WeightLogs';
+import WeightLogs from '../views/WeightLogs';
 import YoursMeal from '../views/YoursMeal';
 import AppFooter from './componets/AppFooter/AppFooter';
 
@@ -9,7 +10,8 @@ import './index.css';
 
 function App() {
   return (
-    <div className="app">
+    <WeightLogsProvider>
+     <div className="app">
       <Router>
       <header className="header app-header">
         <h3>Body Harmony Logs</h3>
@@ -25,7 +27,7 @@ function App() {
       </Router>
 
     </div>
-
+    </WeightLogsProvider>
   );
 }
 
