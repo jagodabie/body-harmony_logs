@@ -1,36 +1,63 @@
+import { useState } from 'react';
+import AddIcon from '@mui/icons-material/Add';
+
 import { useWeightLogsContext } from '../../context/WeightLogsContext';
-import WeightLogEditDrawer from '../WeightLogEdit/WeightLogEditModal';
+import type { WeightLog } from '../../types/WeightLog';
+import Button from '../Button/Button';
+import GenericLogDrawer from '../GenericLogDrawer/GenericLogDrawer';
+import { defaultValuesConverter, formFields } from '../GenericLogDrawer/utils';
 import { WeightLogItem } from './WeightLogItem/WeightLogItem';
 
+import './index.css';
+
 export const WeightLogsList = () => {
+  const [openDrawer, setOpenDrawer] = useState(false);
   const context = useWeightLogsContext();
   if (!context) {
     console.error('WeightLogsContext is not available');
     return null;
   }
-  const { weightLogs, loading, error, setEditedWeightLog, editedWeightLog } = context;
-   
+  const { weightLogs, loading, error, setEditedWeightLog, createWeightLog, editedWeightLog, updateWeightLog } = context;
 
   return (
-    <div>
-      <h1>Weight Logs</h1>
-      {loading && <p>Loading...</p>}
-      {error && <p>Error: {error}</p>}
-      {weightLogs.map((log) => (
-        <WeightLogItem
-          key={log._id}
-          weightLog={log}
-          onEdit={() => {
-            setEditedWeightLog(log);
-          }}
-          onDelete={() => {}}
+    <div className="weight-logs__container">
+      <div className="weight-logs__header">
+        <h3>Weight Logs</h3>
+        <Button
+          onClick={() => setOpenDrawer(true)}
+          Icon={AddIcon}
         />
-      ))}
-      { editedWeightLog && (
-        <WeightLogEditDrawer
-          onClose={() => setEditedWeightLog(null)}
-        />
-      )}
+      </div>
+      <div className="weight-logs-list">
+        {loading && <p>Loading...</p>}
+        {error && <p>Error: {error}</p>}
+        {weightLogs.map((log) => (
+          <WeightLogItem
+            key={log._id}
+            weightLog={log}
+            onEdit={() => {
+              setEditedWeightLog(log);
+              setOpenDrawer(true);
+            }}
+            onDelete={() => {}}
+          />
+        ))}
+        {openDrawer && (
+          <GenericLogDrawer<WeightLog>
+            isOpen={openDrawer} 
+            title={editedWeightLog ? 'Edit Weight Log' : 'Create Weight Log'}
+            // @ts-expect-error
+            onSave={editedWeightLog ? updateWeightLog : createWeightLog}
+            // TO : cos z tym
+            defaultValues={ editedWeightLog  ?  defaultValuesConverter(editedWeightLog as WeightLog) : {} }
+            fields={formFields('weight')}
+            onClose={() => {
+              setEditedWeightLog(null);
+              setOpenDrawer(false);
+            }} 
+          /> 
+        )}
+      </div>
     </div>
   );
 };

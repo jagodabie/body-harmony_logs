@@ -1,19 +1,29 @@
 import type { ReactNode } from 'react';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
-import type { UpdateWeightLogRequest, WeightLog } from '../types/WeightLog';
+import type {
+  CreateWeightLogRequest,
+  FormWeightLog,
+  UpdateWeightLogRequest,
+  WeightLog,
+} from '../types/WeightLog';
 
 interface WeightLogsProviderProps {
   children: ReactNode;
 }
+const apiUrl = process.env.REACT_APP_API_BASE_URL;
 
 const WeightLogsContext = createContext<{
   weightLogs: WeightLog[];
   loading: boolean;
   error: string | null;
-  updateWeightLog: (logData: UpdateWeightLogRequest) => Promise<void>;
-  editedWeightLog: WeightLog | null;
-  setEditedWeightLog: React.Dispatch<React.SetStateAction<WeightLog | null>>;
+  success: boolean | null;
+  editedWeightLog: UpdateWeightLogRequest | null;
+  updateWeightLog: (logData: FormWeightLog) => Promise<void>;
+  createWeightLog: (logData: CreateWeightLogRequest) => Promise<void>;
+  setEditedWeightLog: React.Dispatch<
+    React.SetStateAction<UpdateWeightLogRequest | null>
+  >;
   closeModal: () => void;
 } | null>(null);
 
@@ -21,7 +31,9 @@ export const WeightLogsProvider = ({ children }: WeightLogsProviderProps) => {
   const [weightLogs, setWeightLogs] = useState<WeightLog[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [editedWeightLog, setEditedWeightLog] = useState<WeightLog | null>(null);
+  const [success, setSuccess] = useState<boolean | null>(false);
+  const [editedWeightLog, setEditedWeightLog] =
+    useState<UpdateWeightLogRequest | null>(null);
 
   const closeModal = () => {
     setEditedWeightLog(null);
@@ -31,7 +43,9 @@ export const WeightLogsProvider = ({ children }: WeightLogsProviderProps) => {
     const fetchWeightLogs = async() => {
       setLoading(true);
       try {
-        const response = await fetch('https://web-production-e7a84.up.railway.app/logs');
+        const response = await fetch(
+          'https://web-production-e7a84.up.railway.app/logs'
+        );
         const data = await response.json();
         setWeightLogs(data);
       } catch {
@@ -44,21 +58,47 @@ export const WeightLogsProvider = ({ children }: WeightLogsProviderProps) => {
     fetchWeightLogs();
   }, []);
 
-  const updateWeightLog = async(logData: UpdateWeightLogRequest) => {
+  const updatedLog = (
+    logData: FormWeightLog,
+    editedWeightLog: UpdateWeightLogRequest
+  ): UpdateWeightLogRequest => {
+    return {
+      _id: editedWeightLog?._id,
+      value: logData.weight || editedWeightLog?.value,
+      unit: editedWeightLog.unit,
+      notes: logData.notes || editedWeightLog?.notes,
+      date: logData.date || editedWeightLog?.date,
+      type: editedWeightLog?.type,
+    };
+  };
+
+  const updateWeightLog = async(logData: FormWeightLog) => {
     setLoading(true);
     setError(null);
+    if (!editedWeightLog) {
+      throw new Error('No edited weight log found');
+    }
+    const body = updatedLog(logData, editedWeightLog!);
     try {
-      const response = await fetch(`https://web-production-e7a84.up.railway.app/logs/${logData._id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(logData),
-      });
+      const response = await fetch(
+        `https://web-production-e7a84.up.railway.app/logs/${editedWeightLog?._id}`,
+        {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            ...body,
+          }),
+        }
+      );
       if (!response.ok) {
         throw new Error('Failed to update weight log');
       }
       const updatedLog = await response.json();
       closeModal();
-      setWeightLogs(prev => prev.map(log => (log._id === updatedLog._id ? updatedLog : log)));
+      setWeightLogs((prev) =>
+        prev.map((log) => (log._id === updatedLog._id ? updatedLog : log))
+      );
+      setSuccess(true);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
     } finally {
@@ -66,8 +106,46 @@ export const WeightLogsProvider = ({ children }: WeightLogsProviderProps) => {
     }
   };
 
+  const createWeightLog = async(logData: CreateWeightLogRequest) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await fetch(`${apiUrl}/logs`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(logData),
+      });
+      setSuccess(true);
+      if (!response.ok) {
+        throw new Error('Failed to create weight log');
+      }
+      const newLog = await response.json();
+      setWeightLogs((prev) => [newLog, ...prev]); // Zaktualizuj stan
+      return newLog;
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An error occurred');
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <WeightLogsContext.Provider value={{ weightLogs, loading, error, updateWeightLog, editedWeightLog, setEditedWeightLog, closeModal }}>
+    <WeightLogsContext.Provider
+      value={{
+        weightLogs,
+        success,
+        loading,
+        error,
+        updateWeightLog,
+        createWeightLog,
+        editedWeightLog,
+        setEditedWeightLog,
+        closeModal,
+      }}
+    >
       {children}
     </WeightLogsContext.Provider>
   );

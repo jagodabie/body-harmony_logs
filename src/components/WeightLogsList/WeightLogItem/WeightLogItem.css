@@ -6,6 +6,7 @@
   background-color: #f7f5f3;
   border: 1px solid #e0ddd8;
   transition: all 0.3s ease;
+  max-height: 200px;
 }
 
 .weight-log-item:hover {

@@ -1,6 +1,9 @@
 import react from '@vitejs/plugin-react';
+import dotenv from 'dotenv';
 import { defineConfig } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
+
+dotenv.config();
 
 export default defineConfig({
   plugins: [react(),
@@ -27,6 +30,9 @@ export default defineConfig({
       }
     })
   ],
+  define: {
+    'process.env': process.env,
+  },
   server: {
     port: 3002,
   }

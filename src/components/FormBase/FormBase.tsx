@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 
 import type { FieldConfig } from '../../types';
@@ -6,33 +6,28 @@ import { InputBase } from '../InputBase/InputBase';
 
 import './index.css';
 
-type FormBaseProps = {
+type FormBaseProps<TForm> = {
   formTitle?: string;
   fields: FieldConfig[];
-  defaultValues?: Record<string, unknown>;
-  onSubmit: (formData: unknown) => void;
+  defaultValues?: Partial<TForm>;
+  onSubmit: (formData: TForm) => void;
   handleClose: () => void;
 };
 
-export const FormBase = ({
+export const FormBase = <TForm,>({
   formTitle,
   fields,
   onSubmit,
   defaultValues,
   handleClose,
-}: FormBaseProps) => {
-  const [formData, setFormData] = useState<
-    Record<string, string | number | null>
-  >(Object.fromEntries(fields.map((field) => [field.name, ''])));
-
-  useEffect(() => {
-    if (defaultValues) {
-      setFormData(defaultValues as Record<string, string | number | null>);
-    }
-  }, [defaultValues]);
+}: FormBaseProps<TForm>) => {
+  const [formData, setFormData] = useState<TForm>(
+    (defaultValues as TForm) ||
+    (Object.fromEntries(fields.map((field) => [field.name, ''])) as TForm)
+  );
 
   const canSubmit = useMemo(() => {
-    return !Object.values(formData).some(
+    return !Object.values(formData as Record<string, unknown>).some(
       (value) => value !== null && value !== ''
     );
   }, [formData]);
@@ -40,6 +35,7 @@ export const FormBase = ({
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     onSubmit(formData);
+    handleClose();
     // setFormData(Object.fromEntries(fields.map((field) => [field.name, ''])));
   };
 
@@ -51,23 +47,28 @@ export const FormBase = ({
           <h3>{formTitle}</h3>
         </div>
       </div>
-      {fields.map((field) => (
-        <InputBase
-          key={field.name}
-          name={field.name}
-          label={field.label}
-          type={field.type}
-          required={field?.required}
-          placeholder={field.placeholder}
-          value={formData[field.name] || ''}
-          onChange={(e) =>
-            setFormData((prev) => ({
-              ...prev,
-              [field.name]: e.target.value,
-            }))
-          }
-        />
-      ))}
+      <div className="form-base__body">
+      {fields.map((field) => {
+        const name = field.name as keyof TForm;
+        return (
+          <InputBase
+            key={field.name}
+            name={field.name}
+            label={field.label}
+            type={field.type}
+            required={field.required}
+            placeholder={field.placeholder}
+            value={formData[name]?.toString() || ''}
+            onChange={(e) =>
+              setFormData((prev) => ({
+                ...prev,
+                [name]: e.target.value,
+              }))
+            }
+          />
+        );
+      })}
+      </div>
       <div className="form-base__footer">
         <button className="primary-button" type="submit" disabled={canSubmit}>
           Submit

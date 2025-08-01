@@ -1,0 +1,18 @@
+.weight-logs__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.weight-logs__header h2 {
+  margin: 0;
+  font-size: 24px;
+}
+
+.weight-logs__header button {
+  width: 40px;
+  padding: 10px 2px;
+  font-size: 12px;
+  border-radius: 50%;
+}

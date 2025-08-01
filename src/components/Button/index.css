@@ -1,0 +1,61 @@
+.button {
+  display: flex;
+  justify-content: center;
+  color: white;
+  align-items: center;
+  border-radius: 0;
+  font-size: 15px;
+  transition: background-color 0.3s ease;
+  padding: 5px 20px;
+  width: 100%;
+  justify-content: center;
+  background-color: #7fb069;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+}
+
+.button:hover {
+  opacity: 0.9;
+}
+
+.button:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+.button:hover:not(:disabled), 
+.button:active:not(:disabled) {
+  background-color: #7fb069; 
+  opacity: 0.8;
+}
+
+.button-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: white;
+  text-align: center;
+  margin-left: 4px;
+
+}
+
+  /* .cancel-button {
+    border: 1px solid #7fb069;
+    color: #7fb069;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+    box-sizing: border-box;
+    display: block;
+  }
+  
+  .cancel-button:hover:not(:disabled), 
+  .cancel-button:active:not(:disabled) {
+    background-color: #7fb06982; 
+    border: 1px solid #7fb06982;
+    opacity: 0.8;
+    color: white;
+  }
+    */

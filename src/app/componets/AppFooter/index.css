@@ -46,4 +46,7 @@
   outline-offset: 2px;
 }
 
-
+.nav-item.active {
+  background-color: #5a8f5a; 
+  color: white;
+}

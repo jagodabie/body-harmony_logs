@@ -5,7 +5,7 @@ export const WeightLogUnits = ['kg', 'cm', 'lbs', 'inches', 'hours', 'minutes', 
 export type WeightLogUnit = typeof WeightLogUnits[number];
 
 export interface WeightLog {
-  _id: string;
+  _id?: string;
   type: WeightLogType;
   value: string;
   unit: WeightLogUnit;
@@ -14,6 +14,12 @@ export interface WeightLog {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface FormWeightLog {
+  weight: string;
+  notes: string;
+  date: string;
+} 
 
 export interface CreateWeightLogRequest {
   type: WeightLogType;

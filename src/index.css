@@ -34,3 +34,8 @@ a {
   text-decoration: none;
   color: inherit;
 }
+
+button:disabled {
+  background-color: #bdbdbd;
+  cursor: not-allowed;
+}
