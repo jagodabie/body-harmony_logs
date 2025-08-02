@@ -2,7 +2,7 @@ import { useState } from 'react';
 import AddIcon from '@mui/icons-material/Add';
 
 import { useWeightLogsContext } from '../../context/WeightLogsContext';
-import type { WeightLog } from '../../types/WeightLog';
+import { type FormWeightLog,WeightLogTypes } from '../../types/WeightLog';
 import Button from '../Button/Button';
 import GenericLogDrawer from '../GenericLogDrawer/GenericLogDrawer';
 import { defaultValuesConverter, formFields } from '../GenericLogDrawer/utils';
@@ -43,14 +43,12 @@ export const WeightLogsList = () => {
           />
         ))}
         {openDrawer && (
-          <GenericLogDrawer<WeightLog>
+          <GenericLogDrawer<FormWeightLog>
             isOpen={openDrawer} 
             title={editedWeightLog ? 'Edit Weight Log' : 'Create Weight Log'}
-            // @ts-expect-error
             onSave={editedWeightLog ? updateWeightLog : createWeightLog}
-            // TO : cos z tym
-            defaultValues={ editedWeightLog  ?  defaultValuesConverter(editedWeightLog as WeightLog) : {} }
-            fields={formFields('weight')}
+            defaultValues={editedWeightLog ? defaultValuesConverter(editedWeightLog) : null}
+            fields={formFields(WeightLogTypes[0])}
             onClose={() => {
               setEditedWeightLog(null);
               setOpenDrawer(false);

@@ -1,4 +1,4 @@
-import type { WeightLog, WeightLogType } from '../../../types/WeightLog';
+import type { FormWeightLog, UpdateWeightLogRequest, WeightLogType } from '../../../types/WeightLog';
 import { WeightLogUnits } from '../../../types/WeightLog';
 
 
@@ -36,7 +36,7 @@ const formatLabel = (type: WeightLogType) => {
   return `Body ${formattedType} (${WeightLogUnits[0]})`;
 };
 
-export const defaultValuesConverter  = (weightLog: WeightLog) => {
+export const defaultValuesConverter = (weightLog: UpdateWeightLogRequest): FormWeightLog => {
     return {
       date: weightLog.date.split('T')[0], // 2024-01-16T08:00:00.000Z
       weight: weightLog.value,

@@ -2,11 +2,12 @@ import type { ReactNode } from 'react';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
 import type {
-  CreateWeightLogRequest,
   FormWeightLog,
+  Nullable,
   UpdateWeightLogRequest,
   WeightLog,
 } from '../types/WeightLog';
+import { WeightLogTypes, WeightLogUnits } from '../types/WeightLog';
 
 interface WeightLogsProviderProps {
   children: ReactNode;
@@ -16,14 +17,11 @@ const apiUrl = process.env.REACT_APP_API_BASE_URL;
 const WeightLogsContext = createContext<{
   weightLogs: WeightLog[];
   loading: boolean;
-  error: string | null;
-  success: boolean | null;
-  editedWeightLog: UpdateWeightLogRequest | null;
+  error: Nullable<string>;
+  editedWeightLog: Nullable<UpdateWeightLogRequest>;
   updateWeightLog: (logData: FormWeightLog) => Promise<void>;
-  createWeightLog: (logData: CreateWeightLogRequest) => Promise<void>;
-  setEditedWeightLog: React.Dispatch<
-    React.SetStateAction<UpdateWeightLogRequest | null>
-  >;
+  createWeightLog: (logData: FormWeightLog) => Promise<void>;
+  setEditedWeightLog: React.Dispatch<Nullable<UpdateWeightLogRequest>>;
   closeModal: () => void;
 } | null>(null);
 
@@ -31,9 +29,8 @@ export const WeightLogsProvider = ({ children }: WeightLogsProviderProps) => {
   const [weightLogs, setWeightLogs] = useState<WeightLog[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<boolean | null>(false);
   const [editedWeightLog, setEditedWeightLog] =
-    useState<UpdateWeightLogRequest | null>(null);
+    useState<Nullable<UpdateWeightLogRequest>>(null);
 
   const closeModal = () => {
     setEditedWeightLog(null);
@@ -94,11 +91,9 @@ export const WeightLogsProvider = ({ children }: WeightLogsProviderProps) => {
         throw new Error('Failed to update weight log');
       }
       const updatedLog = await response.json();
-      closeModal();
       setWeightLogs((prev) =>
         prev.map((log) => (log._id === updatedLog._id ? updatedLog : log))
       );
-      setSuccess(true);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
     } finally {
@@ -106,24 +101,29 @@ export const WeightLogsProvider = ({ children }: WeightLogsProviderProps) => {
     }
   };
 
-  const createWeightLog = async(logData: CreateWeightLogRequest) => {
+  const createWeightLog = async(logData: FormWeightLog) => {
     setLoading(true);
     setError(null);
     try {
+      const { weight, notes, date } = logData;
       const response = await fetch(`${apiUrl}/logs`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(logData),
+        body: JSON.stringify({
+          value: weight,
+          notes,
+          date,
+          type: WeightLogTypes[0],
+          unit: WeightLogUnits[0],
+        }),
       });
-      setSuccess(true);
       if (!response.ok) {
         throw new Error('Failed to create weight log');
       }
       const newLog = await response.json();
       setWeightLogs((prev) => [newLog, ...prev]); // Zaktualizuj stan
-      return newLog;
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
       throw err;
@@ -136,7 +136,6 @@ export const WeightLogsProvider = ({ children }: WeightLogsProviderProps) => {
     <WeightLogsContext.Provider
       value={{
         weightLogs,
-        success,
         loading,
         error,
         updateWeightLog,

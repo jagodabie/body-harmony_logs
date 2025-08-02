@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 
 import type { FieldConfig } from '../../types';
+import type { Nullable } from '../../types/WeightLog';
 import { InputBase } from '../InputBase/InputBase';
 
 import './index.css';
@@ -9,7 +10,7 @@ import './index.css';
 type FormBaseProps<TForm> = {
   formTitle?: string;
   fields: FieldConfig[];
-  defaultValues?: Partial<TForm>;
+  defaultValues?: Partial<TForm> | Nullable<TForm>;
   onSubmit: (formData: TForm) => void;
   handleClose: () => void;
 };
@@ -32,9 +33,9 @@ export const FormBase = <TForm,>({
     );
   }, [formData]);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async(e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    onSubmit(formData);
+    await onSubmit(formData);
     handleClose();
     // setFormData(Object.fromEntries(fields.map((field) => [field.name, ''])));
   };

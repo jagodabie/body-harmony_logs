@@ -1,5 +1,6 @@
 import { useWeightLogsContext } from '../../context/WeightLogsContext';
 import type { FieldConfig } from '../../types';
+import type { Nullable } from '../../types/WeightLog';
 import { FormBase } from '../FormBase/FormBase';
 
 import './index.css';
@@ -9,7 +10,7 @@ type GenericLogDrawerProps<T> = {
   title: string;
   onClose: () => void;
   onSave: (log: T) => void;
-  defaultValues: T;
+  defaultValues: Nullable<T>;
   fields: FieldConfig[];
 };
 
@@ -28,22 +29,18 @@ const GenericLogDrawer = <T,>({
     return null;
   }
 
-  const { success, loading } = context;
   if (!isOpen) return null;
 
   return (
-      <div className="weight-log-drawer">
- 
-    { loading ? <div>Loading...</div> : success ? <div>Success</div> : <FormBase<T>
+    <div className="weight-log-drawer">
+      <FormBase<T>
         formTitle={title}
         fields={fields}
         defaultValues={defaultValues}
         onSubmit={onSave}
         handleClose={onClose}
-      /> }
-
-      </div>
-    
+      />
+    </div>
   );
 };
 
