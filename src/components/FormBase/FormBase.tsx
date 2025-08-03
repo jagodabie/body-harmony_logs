@@ -42,17 +42,12 @@ export const FormBase = <TForm,>({
     handleClose();
   };
 
-  const handleConfirm = async() => {
-    await onSubmit(formData);
-    handleClose();
-  };
-
   return (
     <form className="form-base__container" onSubmit={handleSubmit}>
       <FormHeader
         title={formTitle}
         onClose={handleClose}
-        onConfirm={handleConfirm}
+        onConfirm={handleSubmit}
       />
       <div className="form-base__body">
         {fields.map((field) => {

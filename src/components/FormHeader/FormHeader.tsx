@@ -6,18 +6,18 @@ import './index.css';
 type FormHeaderProps = {
   title?: string;
   onClose: () => void;
-  onConfirm?: () => void;
+  onConfirm?: (e: React.FormEvent<HTMLFormElement>) => void;
 };
 
-export const FormHeader = ({ title, onClose, onConfirm }: FormHeaderProps) => {
+export const FormHeader = ({ title, onClose }: FormHeaderProps) => {
   return (
-    <div className="form-base__header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-      <button className="header-button" onClick={onClose} style={{ background: 'none', border: 'none', padding: 0, display: 'flex', alignItems: 'center' }}>
+    <div className="form-base__header form-base__header-layout">
+      <button className="header-button header-button--left" onClick={onClose}>
         <ArrowBackIcon />
       </button>
-      <h3 style={{ margin: 0 }}>{title}</h3>
-      <button className="header-button" onClick={onConfirm} style={{ background: 'none', border: 'none', padding: 0 }}>
-        <CheckIcon  />
+      <h3>{title}</h3>
+      <button type="submit" className="header-button header-button--right">
+        <CheckIcon />
       </button>
     </div>
   );

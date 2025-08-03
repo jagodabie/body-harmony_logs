@@ -24,7 +24,14 @@ const GenericLogModal = <T,>({
   if (!isOpen) return null;
 
   return (
-    <div className="weight-log-modal__container">
+    <div
+      className="weight-log-modal__container"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) {
+          onClose();
+        }
+      }}
+    >
       <div className="weight-log-modal">
         <FormBase<T>
           showFooter={false}

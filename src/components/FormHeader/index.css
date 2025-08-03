@@ -18,3 +18,18 @@
     font-size: 16px;
     font-weight: 500;   
   }
+
+.form-base__header-layout {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header-button--left,
+.header-button--right {
+  background: none;
+  border: none;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
