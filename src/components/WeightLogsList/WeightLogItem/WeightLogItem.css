@@ -32,7 +32,6 @@
 .weight-log-item__weight {
   font-size: 32px;
   font-weight: 600;
-  color: #333;
   margin: 0;
 }
 
@@ -91,7 +90,6 @@
 }
 
 .weight-log-item__notes-text {
-  color: #333;
   font-size: 14px;
   line-height: 1.4;
   margin: 0;

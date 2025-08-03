@@ -5,6 +5,7 @@ import Home from '../views/Home/Home';
 import WeightLogs from '../views/WeightLogs';
 import YoursMeal from '../views/YoursMeal';
 import AppFooter from './componets/AppFooter/AppFooter';
+import { UserBadge } from './componets/UserBagde/UserBadge';
 
 import './index.css';
 
@@ -15,6 +16,7 @@ function App() {
       <Router>
       <header className="header app-header">
         <h3>Body Harmony Logs</h3>
+        <UserBadge />
       </header>
       <main className="app-main">
           <Routes>

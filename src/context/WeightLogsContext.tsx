@@ -22,6 +22,7 @@ const WeightLogsContext = createContext<{
   updateWeightLog: (logData: FormWeightLog) => Promise<void>;
   createWeightLog: (logData: FormWeightLog) => Promise<void>;
   setEditedWeightLog: React.Dispatch<Nullable<UpdateWeightLogRequest>>;
+  deleteWeightLog: (logId: string) => Promise<void>;
   closeModal: () => void;
 } | null>(null);
 
@@ -132,6 +133,24 @@ export const WeightLogsProvider = ({ children }: WeightLogsProviderProps) => {
     }
   };
 
+  const deleteWeightLog = async(logId: string) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await fetch(`${apiUrl}/logs/${logId}`, {
+        method: 'DELETE',
+      });
+      if (!response.ok) {
+        throw new Error('Failed to delete weight log');
+      }
+      setWeightLogs((prev) => prev.filter((log) => log._id !== logId));
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An error occurred');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <WeightLogsContext.Provider
       value={{
@@ -142,6 +161,7 @@ export const WeightLogsProvider = ({ children }: WeightLogsProviderProps) => {
         createWeightLog,
         editedWeightLog,
         setEditedWeightLog,
+        deleteWeightLog,
         closeModal,
       }}
     >

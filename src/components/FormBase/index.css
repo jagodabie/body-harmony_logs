@@ -10,20 +10,3 @@
   margin: 1rem;
 }
 
-.header-button {
-  display: flex;
-}
-.header-button > h4 {
-  text-align: center;
-  display: block;
-  width: 100%;
-  font-weight: 500;
-  font-size: 18px;
-
-}
-
-.form-base__header h3 {
-  width: 100%;
-  text-align: center;
-  display: block;
-} 
