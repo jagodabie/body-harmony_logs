@@ -7,12 +7,18 @@ import { type FormWeightLog } from '../../types/WeightLog';
 import Button from '../Button/Button';
 import GenericLogModal from '../GenericLogModal/GenericLogModal';
 import { defaultValuesConverter, formFields } from '../GenericLogModal/utils';
+import { withSkeleton } from '../Loading/Loading/withSkeleton/withSkeleton';
 import { WeightLogItem } from './WeightLogItem/WeightLogItem';
 
 import './index.css';
 
+const WeightLogItemWithSkeleton = withSkeleton(WeightLogItem, {
+  height: '200px',
+  marginBottom: '1rem',
+});
+
 export const WeightLogsList = () => {
-  const [openDrawer, setOpenDrawer] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
   const context = useWeightLogsContext();
   if (!context) {
     console.error('WeightLogsContext is not available');
@@ -33,25 +39,25 @@ export const WeightLogsList = () => {
     <div className="weight-logs__container">
       <div className="weight-logs__header">
         <h3>Weight Logs</h3>
-        <Button onClick={() => setOpenDrawer(true)} Icon={AddIcon} />
+        <Button onClick={() => setOpenModal(true)} Icon={AddIcon} />
       </div>
       <div className="weight-logs-list">
-        {loading && <p>Loading...</p>}
         {error && <p>Error: {error}</p>}
         {weightLogs.map((log) => (
-          <WeightLogItem
+          <WeightLogItemWithSkeleton
+            loading={loading}
             key={log._id}
             weightLog={log}
             onEdit={() => {
               setEditedWeightLog(log);
-              setOpenDrawer(true);
+              setOpenModal(true);
             }}
             onDelete={() => deleteWeightLog(log._id)}
           />
         ))}
-        {openDrawer && (
+        {openModal && (
           <GenericLogModal<FormWeightLog>
-            isOpen={openDrawer}
+            isOpen={openModal}
             title={editedWeightLog ? 'Edit Weight Log' : 'Create Weight Log'}
             onSave={editedWeightLog ? updateWeightLog : createWeightLog}
             defaultValues={
@@ -60,7 +66,7 @@ export const WeightLogsList = () => {
             fields={formFields('weight') as FieldConfig[]}
             onClose={() => {
               setEditedWeightLog(null);
-              setOpenDrawer(false);
+              setOpenModal(false);
             }}
           />
         )}
