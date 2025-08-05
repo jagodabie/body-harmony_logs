@@ -23,6 +23,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  border-bottom: var(--border);
+  padding: 1rem;
 }
 
 .header-button--left,

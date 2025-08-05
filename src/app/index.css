@@ -98,7 +98,7 @@ section {
 .header {
   padding: 1rem;
   background-color: #fdfdfd;
-  border-bottom: 1px solid #ddd;
+  border-bottom: var(--border);
   text-align: center;
 }
 

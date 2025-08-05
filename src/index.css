@@ -6,12 +6,15 @@
   padding: 0;
 }
 
-
-p, h1, h2, h3, h4, h5, h6 {
-  color: #56565a;
+:root {
+  --color-primary: #7fb069;
+  --color-secondary: #56565a;
+  --border:  1px solid #ddd;
 }
 
-
+p, h1, h2, h3, h4, h5, h6, label, input, textarea, select, button {
+  color: var(--color-secondary);
+}
 
 html,
 body{

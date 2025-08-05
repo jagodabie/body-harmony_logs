@@ -1,11 +1,88 @@
 .input-base__container {
-  margin: 1rem;
+  margin: 0.5rem;
+}
+
+.input-base__wrapper {
+  position: relative;
+  width: 100%;
 }
 
 .input-base__input {
-  padding: 0.5rem;
-  border: 1px solid #ddd;
+  padding: 0.5rem 1rem; 
+  border: var(--border);
   border-radius: 4px;
   width: 100%;
   box-sizing: border-box;
 }
+
+.input-base__input:focus,
+.input-base__input:active {
+  outline: 2px solid var( --color-secondary);
+  outline-offset: 0px;
+}
+
+.input-base__wrapper--error .input-base__input:focus,
+.input-base__wrapper--error .input-base__input:active {
+  outline: 1px solid var(--color-error);
+  outline-offset: 0px;
+}
+
+.input-base__wrapper--error .input-base__input {
+  border: none;
+  outline: 1px solid var(--color-error);
+}
+
+.input-base__label {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #777;
+  pointer-events: none;
+  background: white;
+  transition: all 0.2s ease;
+  padding: 0 0.25rem;
+  font-size: 12px;
+  line-height: 1;
+  width: 80%;
+}
+
+.input-base__wrapper--error .input-base__input:focus + .input-base__label,
+.input-base__wrapper--error .input-base__input.filled + .input-base__label {
+  color: var(--color-error);
+  font-weight: 500;
+}
+
+.input-base__input:focus + .input-base__label,
+.input-base__input.filled + .input-base__label {
+  top: -0.5rem;
+  transform: none;
+  font-size: 0.75rem;
+  color: black;
+  width: fit-content;
+}
+
+textarea.input-base__input + .input-base__label {
+  top: 20%;
+  transform: translateY(-25%);
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  filter: invert(0.5);
+  opacity: 0.6;
+  transition: opacity 0.2s ease;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+}
+
+.input-base__error {
+  color: var(--color-error);
+  font-size: 12px;
+  font-weight: 500;
+  margin-top: 4px;
+  margin-left: 4px;
+}
+

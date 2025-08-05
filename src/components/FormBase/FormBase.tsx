@@ -1,20 +1,22 @@
-import { useMemo, useState } from 'react';
+import { useCallback,useMemo, useState } from 'react';
 
 import type { FieldConfig } from '../../types';
 import type { Nullable } from '../../types/WeightLog';
 import { FormFooter } from '../FormFooter/FormFooter';
 import { FormHeader } from '../FormHeader/FormHeader';
 import { InputBase } from '../InputBase/InputBase';
+import { createEmptyFormData, handleSubmitValidation } from './utils';
 
 import './index.css';
 
 type FormBaseProps<TForm> = {
   formTitle?: string;
   fields: FieldConfig[];
-  showFooter?: boolean;
-  defaultValues?: Partial<TForm> | Nullable<TForm>;
+
   onSubmit: (formData: TForm) => void;
   handleClose: () => void;
+  showFooter?: boolean;
+  defaultValues?: Partial<TForm> | Nullable<TForm>;
 };
 
 export const FormBase = <TForm,>({
@@ -27,8 +29,12 @@ export const FormBase = <TForm,>({
 }: FormBaseProps<TForm>) => {
   const [formData, setFormData] = useState<TForm>(
     (defaultValues as TForm) ||
-      (Object.fromEntries(fields.map((field) => [field.name, ''])) as TForm)
+      createEmptyFormData(fields)
   );
+
+
+
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   const canSubmit = useMemo(() => {
     return !Object.values(formData as Record<string, unknown>).some(
@@ -36,17 +42,33 @@ export const FormBase = <TForm,>({
     );
   }, [formData]);
 
-  const handleSubmit = async(e: React.FormEvent<HTMLFormElement>) => {
+
+  const handleSubmit = useCallback(async(e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const fieldErrors = handleSubmitValidation(formData, fields);
+    setErrors(fieldErrors);
+
+    if (Object.values(fieldErrors).some((error) => error !== '')) {
+        return;
+    }
+
     await onSubmit(formData);
     handleClose();
-  };
+
+    setFormData(createEmptyFormData(fields));
+    setErrors({});
+}, [formData, fields, onSubmit, handleClose]);
 
   return (
     <form className="form-base__container" onSubmit={handleSubmit}>
       <FormHeader
         title={formTitle}
-        onClose={handleClose}
+        onClose={() => {
+          handleClose();
+          setErrors({});
+          setFormData(createEmptyFormData(fields));
+        }}
         onConfirm={handleSubmit}
       />
       <div className="form-base__body">
@@ -58,15 +80,25 @@ export const FormBase = <TForm,>({
               name={field.name}
               label={field.label}
               type={field.type}
-              required={field.required}
+              error={errors[field.name]}
               placeholder={field.placeholder}
               value={formData[name]?.toString() || ''}
-              onChange={(e) =>
+              onBlur={() => {
+                const validator = field.validator;
+                const error = validator?.(formData[name]?.toString() || '');
+                setErrors((prev) => {
+                  const newErrors = { ...prev };
+                  newErrors[field.name] = error || '';
+                  return newErrors;
+                });
+              }}
+              onChange={(e) => {
+                const newValue = e.target.value;
                 setFormData((prev) => ({
                   ...prev,
-                  [name]: e.target.value,
-                }))
-              }
+                  [name]: newValue,
+                }));
+              }}
             />
           );
         })}

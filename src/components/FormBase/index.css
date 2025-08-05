@@ -1,3 +1,8 @@
+.form-base__body {
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+}
 
 .form-base__submit {
   margin: 1rem 0;
