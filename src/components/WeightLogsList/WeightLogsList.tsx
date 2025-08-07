@@ -27,7 +27,6 @@ export const WeightLogsList = () => {
   const {
     weightLogs,
     loading,
-    error,
     setEditedWeightLog,
     createWeightLog,
     editedWeightLog,
@@ -42,7 +41,6 @@ export const WeightLogsList = () => {
         <Button onClick={() => setOpenModal(true)} Icon={AddIcon} />
       </div>
       <div className="weight-logs-list">
-        {error && <p>Error: {error}</p>}
         {weightLogs.map((log) => (
           <WeightLogItemWithSkeleton
             loading={loading}

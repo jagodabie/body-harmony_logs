@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
+import { Snackbar } from '../components/Snackbar/Snackbar';
 import type {
   FormWeightLog,
   Nullable,
@@ -17,19 +18,20 @@ const apiUrl = process.env.REACT_APP_API_BASE_URL;
 const WeightLogsContext = createContext<{
   weightLogs: WeightLog[];
   loading: boolean;
-  error: Nullable<string>;
   editedWeightLog: Nullable<UpdateWeightLogRequest>;
   updateWeightLog: (logData: FormWeightLog) => Promise<void>;
   createWeightLog: (logData: FormWeightLog) => Promise<void>;
   setEditedWeightLog: React.Dispatch<Nullable<UpdateWeightLogRequest>>;
   deleteWeightLog: (logId: string) => Promise<void>;
   closeModal: () => void;
+  snackbar: Nullable<{ message: string; type: 'success' | 'error' }>;
+  setSnackbar: React.Dispatch<Nullable<{ message: string; type: 'success' | 'error' }>>;
 } | null>(null);
 
 export const WeightLogsProvider = ({ children }: WeightLogsProviderProps) => {
   const [weightLogs, setWeightLogs] = useState<WeightLog[]>([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [snackbar, setSnackbar] = useState<Nullable<{ message: string; type: 'success' | 'error' }>>(null);
   const [editedWeightLog, setEditedWeightLog] =
     useState<Nullable<UpdateWeightLogRequest>>(null);
 
@@ -46,8 +48,8 @@ export const WeightLogsProvider = ({ children }: WeightLogsProviderProps) => {
         );
         const data = await response.json();
         setWeightLogs(data);
-      } catch {
-        setError('Failed to fetch weight logs');
+      } catch  {
+        setSnackbar({ message: 'Failed to fetch weight logs', type: 'error' });
       } finally {
         setLoading(false);
       }
@@ -72,14 +74,14 @@ export const WeightLogsProvider = ({ children }: WeightLogsProviderProps) => {
 
   const updateWeightLog = async(logData: FormWeightLog) => {
     setLoading(true);
-    setError(null);
+    setSnackbar(null);
     if (!editedWeightLog) {
       throw new Error('No edited weight log found');
     }
     const body = updatedLog(logData, editedWeightLog!);
     try {
       const response = await fetch(
-        `https://web-production-e7a84.up.railway.app/logs/${editedWeightLog?._id}`,
+        `${apiUrl}/logs/${editedWeightLog?._id}`,
         {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
@@ -95,8 +97,9 @@ export const WeightLogsProvider = ({ children }: WeightLogsProviderProps) => {
       setWeightLogs((prev) =>
         prev.map((log) => (log._id === updatedLog._id ? updatedLog : log))
       );
+      setSnackbar({ message: 'Weight log updated successfully', type: 'success' });
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred');
+      setSnackbar({ message: err instanceof Error ? err.message : 'An error occurred', type: 'error' });
     } finally {
       setLoading(false);
     }
@@ -104,7 +107,7 @@ export const WeightLogsProvider = ({ children }: WeightLogsProviderProps) => {
 
   const createWeightLog = async(logData: FormWeightLog) => {
     setLoading(true);
-    setError(null);
+    setSnackbar(null);
     try {
       const { weight, notes, date } = logData;
       const response = await fetch(`${apiUrl}/logs`, {
@@ -120,13 +123,24 @@ export const WeightLogsProvider = ({ children }: WeightLogsProviderProps) => {
           unit: WeightLogUnits[0],
         }),
       });
+      if (response.status === 400) {
+        const error = await response.json();
+        setSnackbar({ message: error.details || 'An error occurred', type: 'error' });
+        throw new Error(error.details || 'An error occurred');
+      }
       if (!response.ok) {
         throw new Error('Failed to create weight log');
       }
       const newLog = await response.json();
       setWeightLogs((prev) => [newLog, ...prev]); // Zaktualizuj stan
+      setSnackbar({ message: 'Weight log created successfully', type: 'success' });
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred');
+      const error = err as {
+        error: string;
+        message?: string;
+        details?: string;
+      };
+      setSnackbar({ message: error.message || (error?.error as string) || 'An error occurred', type: 'error' });
       throw err;
     } finally {
       setLoading(false);
@@ -135,17 +149,28 @@ export const WeightLogsProvider = ({ children }: WeightLogsProviderProps) => {
 
   const deleteWeightLog = async(logId: string) => {
     setLoading(true);
-    setError(null);
+    setSnackbar(null);
     try {
       const response = await fetch(`${apiUrl}/logs/${logId}`, {
         method: 'DELETE',
       });
+      if (response.status === 404) {
+        const error = await response.json();
+        setSnackbar({ message: (error?.error as string), type: 'error' });
+        throw new Error('Weight log not found');
+      }
       if (!response.ok) {
         throw new Error('Failed to delete weight log');
       }
       setWeightLogs((prev) => prev.filter((log) => log._id !== logId));
+      setSnackbar({ message: 'Weight log deleted successfully', type: 'success' });
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred');
+      const error = err as {
+        error: string;
+        message?: string;
+        details?: string;
+      };
+      setSnackbar({ message: error.message  || 'An error occurred', type: 'error' });
     } finally {
       setLoading(false);
     }
@@ -156,16 +181,25 @@ export const WeightLogsProvider = ({ children }: WeightLogsProviderProps) => {
       value={{
         weightLogs,
         loading,
-        error,
         updateWeightLog,
         createWeightLog,
         editedWeightLog,
         setEditedWeightLog,
         deleteWeightLog,
         closeModal,
+        snackbar,
+        setSnackbar,
       }}
     >
-      {children}
+      <>
+        {snackbar && (
+          <Snackbar
+            snackbar={snackbar}
+            onClose={() => setSnackbar(null)}
+          />
+        )}
+        {children}
+      </>
     </WeightLogsContext.Provider>
   );
 };
