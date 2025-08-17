@@ -1,4 +1,4 @@
-import { WeightLogsList } from '../components/WeightLogsList/WeightLogsList';
+import { WeightLogsList } from '../../components/WeightLogsList/WeightLogsList';
 
  const WeightLogs = () => {
   return <div className="weight-logs">

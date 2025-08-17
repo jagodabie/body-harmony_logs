@@ -1,0 +1,31 @@
+  .meal-product {
+    display: flex;
+    gap: 30px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px 0;
+  }
+
+  .meal-product__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .meal-product__wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    flex: 1;
+  }
+
+  .meal-product__content {
+    display: flex;
+    gap: 30px;
+    justify-content: space-between;
+  }
+  

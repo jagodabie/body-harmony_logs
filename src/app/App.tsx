@@ -2,10 +2,10 @@ import { BrowserRouter as Router, Route,Routes } from 'react-router-dom';
 
 import { WeightLogsProvider } from '../context/WeightLogsContext';
 import Home from '../views/Home/Home';
-import WeightLogs from '../views/WeightLogs';
-import YoursMeal from '../views/YoursMeal';
-import AppFooter from './componets/AppFooter/AppFooter';
-import { UserBadge } from './componets/UserBagde/UserBadge';
+import MealLogs from '../views/MealLogs/MealLogs';
+import WeightLogs from '../views/WeightLogs/WeightLogs';
+import AppFooter from './components/AppFooter/AppFooter';
+import UserBadge from './components/UserBadge/UserBadge';
 
 import './index.css';
 
@@ -22,7 +22,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/weight-logs" element={<WeightLogs />} />
-            <Route path="/yours-meal" element={<YoursMeal />} />
+            <Route path="/meal-logs" element={<MealLogs />} />
           </Routes>
       </main>
       <AppFooter />

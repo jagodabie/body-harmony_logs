@@ -59,6 +59,7 @@ table {
 
   --color-error: #e57373;
   --color-success: #81c784;
+  --border: 1px solid #ddd;
 }
 
 *,
@@ -143,4 +144,12 @@ section {
   bottom: 0;
   width: 100%;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.item {
+  border-radius: 16px;
+  box-shadow: 0 3px 15px rgba(0, 0, 0, 0.12);
+  background-color: #f7f5f3;
+  border: 1px solid #e0ddd8;
+  transition: all 0.3s ease;
 }

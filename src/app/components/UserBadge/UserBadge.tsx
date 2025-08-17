@@ -2,7 +2,7 @@ import logo from '../../../assets/koala.png';
 
 import './index.css';
 
-export const UserBadge = ({ img }: { img?: string }) => {
+const UserBadge = ({ img }: { img?: string }) => {
   return (
     <div className="user-badge">
       <div className="user-badge__icon">
@@ -11,3 +11,5 @@ export const UserBadge = ({ img }: { img?: string }) => {
     </div>
   );
 };
+
+export default UserBadge;

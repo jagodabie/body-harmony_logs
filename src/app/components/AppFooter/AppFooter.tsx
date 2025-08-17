@@ -25,14 +25,14 @@ const AppFooter = () => {
           <span>Weight Log</span>
         </div>
         <div
-          className={`nav-item ${activeItem === 'yours-meal' ? 'active' : ''}`}
-          onClick={() => handleNavigation('yours-meal')}
+          className={`nav-item ${activeItem === 'meal-logs' ? 'active' : ''}`}
+          onClick={() => handleNavigation('meal-logs')}
         >
           <RestaurantIcon fontSize="small" />
-          <span>Your Meal</span>
+          <span>Meal Logs</span>
         </div>
-      </div>
-    </footer>
+        </div>
+      </footer>
   );
 };
 
