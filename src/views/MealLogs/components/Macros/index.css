@@ -1,0 +1,11 @@
+.macros {
+    display: flex;
+    gap: 30px;
+    justify-content: space-between;
+}
+
+.macros > * {
+    font-size: 12px;
+    font-weight: 500;
+    font-style: italic;
+}

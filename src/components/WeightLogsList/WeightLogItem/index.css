@@ -1,11 +1,6 @@
 .weight-log-item {
-  border-radius: 16px;
-  box-shadow: 0 3px 15px rgba(0, 0, 0, 0.12);
   margin-bottom: 16px;
   padding: 24px;
-  background-color: #f7f5f3;
-  border: 1px solid #e0ddd8;
-  transition: all 0.3s ease;
   max-height: 200px;
 }
 

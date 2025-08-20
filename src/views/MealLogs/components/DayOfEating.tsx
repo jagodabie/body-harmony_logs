@@ -29,24 +29,54 @@ const mealProducts = [
   },
 ];
 
+const meals = [
+  {
+    mealName: MealLogs[0],
+    mealTime: '10:00',
+    mealProducts: mealProducts,
+  },
+  {
+    mealName: MealLogs[1],
+    mealTime: '12:00',
+    mealProducts: mealProducts,
+  },
+  {
+    mealName: MealLogs[2],
+    mealTime: '14:00',
+    mealProducts: mealProducts,
+  },
+];
 
 const DayOfEating = () => {
-  return <div className="day-of-eating">
-    <h1>Day of Eating</h1>
-    <div className="day-of-eating__header">
+  return (
+    <div className="day-of-eating">
+      <h1>Day of Eating</h1>
+      <div className="day-of-eating__header">
         <div className="day-of-eating__header">
-            <DateMenu date="2025-08-12" onPrevDateChange={() => console.log('prev') } onNextDateChange={() => console.log('next')} />
+          <DateMenu
+            date="2025-08-12"
+            onPrevDateChange={() => console.log('prev')}
+            onNextDateChange={() => console.log('next')}
+          />
         </div>
-    </div>
-    <div className="day-of-eating__body">    
-        <Meal 
-            mealProducts={mealProducts}
-            mealName={MealLogs[0]}
-            mealTime="10:00"
-            mealCalories={100}
+      </div>
+      <div className="day-of-eating__body">
+      {
+        meals.map(({ mealName, mealTime, mealProducts }) => (
+          <Meal
+          mealProducts={mealProducts || []}
+          mealName={mealName}
+          mealTime={mealTime}
+          totalMealCalories={100}
+          totalMealProtein={10}
+          totalMealCarbohydrates={10}
+          totalMealFat={10}
         />
+        ))
+      }
+      </div>
     </div>
-    </div>;
+  );
 };
 
 export default DayOfEating;

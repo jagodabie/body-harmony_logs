@@ -1,3 +1,7 @@
+.weight-logs__container {
+  padding: 1rem;
+}
+
 .weight-logs__header {
   display: flex;
   justify-content: space-between;

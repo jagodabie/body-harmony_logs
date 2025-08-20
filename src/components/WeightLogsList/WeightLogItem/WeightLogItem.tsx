@@ -5,7 +5,7 @@ import { ActionButton } from './actionButton/ActionButton';
 import { DeleteIcon } from './components/DeleteIcon';
 import { EditIcon } from './components/EditIcon';
 
-import './WeightLogItem.css';
+import './index.css';
 
 interface WeightLogItemProps {
   weightLog: WeightLog;
@@ -22,7 +22,7 @@ export const WeightLogItem = ({ weightLog, onEdit, onDelete }: WeightLogItemProp
   const bmiCategoryClass = `weight-log-item__bmi-label--${bmiCategory.toLowerCase()}`;
 
   return (
-    <div className="weight-log-item">
+    <div className="item weight-log-item">
       <div className="weight-log-item__header">
           <div className="weight-log-item__date-time">
               {formatDate(weightLog.date)} {formatTime(weightLog.date)}
