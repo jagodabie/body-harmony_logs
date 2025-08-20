@@ -1,3 +1,6 @@
+import { useState } from 'react';
+
+import { useDateUtils } from '../../../hooks/useDateUtils';
 import { MealLogs } from '../../../types/MealLogs';
 import DateMenu from './DateMenu/DateMenu';
 import Meal from './Meal/Meal';
@@ -47,18 +50,18 @@ const meals = [
   },
 ];
 
+
 const DayOfEating = () => {
+  const { formatDate } = useDateUtils();
+  const [currentDate, setCurrentDate] = useState(new Date());
   return (
     <div className="day-of-eating">
-      <h1>Day of Eating</h1>
       <div className="day-of-eating__header">
-        <div className="day-of-eating__header">
-          <DateMenu
-            date="2025-08-12"
-            onPrevDateChange={() => console.log('prev')}
-            onNextDateChange={() => console.log('next')}
-          />
-        </div>
+        <DateMenu
+          date={formatDate(currentDate)}
+          onPrevDateChange={() => setCurrentDate(new Date(currentDate.setDate(currentDate.getDate() - 1)))}
+          onNextDateChange={() => setCurrentDate(new Date(currentDate.setDate(currentDate.getDate() + 1)))}
+        />
       </div>
       <div className="day-of-eating__body">
       {

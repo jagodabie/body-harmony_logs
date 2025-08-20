@@ -8,10 +8,10 @@ type DateMenuProps = {
     onNextDateChange: () => void;
 }
 const customStyle = {
-    fontSize: 30,
-    '&:hover': {
+    fontSize: 40,
+    '&:active': {
         opacity: 0.1,
-        transition: 'color 0.3s ease-in-out'
+        transition: 'color 0.3s ease-in-out',
     }
 };
 
