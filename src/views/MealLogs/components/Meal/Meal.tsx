@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import AddIcon from '@mui/icons-material/Add';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -34,6 +35,7 @@ const Meal = ({
   const handleExpand = () => {
     setIsExpanded(!isExpanded);
   };
+  const navigate = useNavigate();
 
   return (
     <div className="meal">
@@ -49,7 +51,7 @@ const Meal = ({
           />
             </span>
             <span className="meal__header-time">{mealTime}</span></div>
-        <Macros
+          <Macros
             calories={totalMealCalories}
             protein={totalMealProtein}
             carbohydrates={totalMealCarbohydrates}
@@ -58,7 +60,7 @@ const Meal = ({
           />
         </div>
         <div className="meal__header-actions">
-          <Button Icon={AddIcon} onClick={() => console.log('add product')} />
+          <Button Icon={AddIcon} onClick={() => navigate('/add-product')} />
         </div>
       </div>
       <div className={`meal__body ${isExpanded ? 'meal__body--expanded' : ''}`}>

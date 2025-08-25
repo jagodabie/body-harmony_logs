@@ -13,14 +13,14 @@ export const Macros = ({
     protein,
     carbohydrates,
     fat,
-    className,
+    className='',
 }: MacrosProps) => {
     return (
         <div className={`macros ${className}`}>
             <div className="macros__calories">{calories} kcal</div>
-            <div className="macros__protein">{protein} g</div>
-            <div className="macros__carbohydrates">{carbohydrates} g</div>
-            <div className="macros__fat">{fat} g</div>
+            <div className="macros__protein">Protein: {protein} g</div>
+            <div className="macros__carbohydrates">Carbs: {carbohydrates} g</div>
+            <div className="macros__fat">Fat: {fat} g</div>
         </div>
     );
 };

@@ -1,5 +1,7 @@
 .meal {
     padding-bottom: 10px;
+    background-color: #f7f5f3;
+    margin: 5px 0;
 }
 
 .meal__header {
@@ -77,7 +79,14 @@
     margin-left: 5px;
 }
 
-.meal__header-expand-button {
+.button.meal__header-expand-button {
     font-weight: 600;
     margin-top: 5px;
+    background: transparent;
+    color: var(--color-secondary);
+}
+
+.button.meal__header-expand-button:hover {
+    color: var(--color-primary);
+    background-color: transparent;
 }

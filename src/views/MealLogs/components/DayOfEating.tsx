@@ -1,11 +1,11 @@
 import { useState } from 'react';
 
 import { useDateUtils } from '../../../hooks/useDateUtils';
-import { MealLogs } from '../../../types/MealLogs';
+import { MealLogs, type MealProductType } from '../../../types/MealLogs';
 import DateMenu from './DateMenu/DateMenu';
 import Meal from './Meal/Meal';
 
-const mealProducts = [
+const mealProducts: MealProductType[] = [
   {
     name: 'Bread',
     quantity: 100,
@@ -67,13 +67,13 @@ const DayOfEating = () => {
       {
         meals.map(({ mealName, mealTime, mealProducts }) => (
           <Meal
-          mealProducts={mealProducts || []}
-          mealName={mealName}
-          mealTime={mealTime}
-          totalMealCalories={100}
-          totalMealProtein={10}
-          totalMealCarbohydrates={10}
-          totalMealFat={10}
+            mealProducts={mealProducts || []}
+            mealName={mealName}
+            mealTime={mealTime}
+            totalMealCalories={100}
+            totalMealProtein={10}
+            totalMealCarbohydrates={10}
+            totalMealFat={10}
         />
         ))
       }

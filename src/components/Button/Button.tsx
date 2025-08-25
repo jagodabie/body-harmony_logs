@@ -9,9 +9,9 @@ type ButtonProps = {
   Icon?: React.ElementType;
 };
 
-const Button = ({ label, onClick, disabled, Icon, size = 'small', className = 'button' }: ButtonProps) => {
+const Button = ({ label, onClick, disabled, Icon, size = 'small', className='' }: ButtonProps) => {
   return (
-    <button onClick={onClick} className={className} disabled={disabled}>
+    <button onClick={onClick} className={`button ${className}`} disabled={disabled}>
       {Icon && <Icon className="button-icon" fontSize={size}/>}
       {label && <span className="button-label">{label}</span>}
     </button>
