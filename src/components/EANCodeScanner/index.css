@@ -1,0 +1,107 @@
+/* Scanner component variables */
+.scanner {
+  --scanner-z-index: 100;
+  --scanner-controls-gap: 8px;
+  --scanner-button-size: 40px;
+  --scanner-button-padding: 10px;
+  --scanner-cancel-padding: 34px 10px;
+  --scanner-border-radius: 8px;
+  --scanner-border-radius-full: 50%;
+  --scanner-overlay-margin: 10% 8%;
+  --scanner-overlay-border: 2px dashed rgba(255, 255, 255, 0.85);
+  --scanner-overlay-border-radius: 12px;
+  --scanner-video-height: 91vh;
+  --scanner-error-color: crimson;
+}
+
+.scanner--active {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: var(--scanner-z-index);
+}
+
+.scanner__video-wrapper {
+  display: none;
+}
+
+.scanner__video-wrapper--active {
+  display: block;
+}
+
+.scanner__controls {
+  display: flex;
+  gap: var(--scanner-controls-gap);
+  align-items: center;
+}
+
+.scanner__select {
+  flex: 1;
+}
+
+.scanner__button {
+  padding: var(--scanner-button-padding);
+  border-radius: var(--scanner-border-radius-full);
+  cursor: pointer;
+  height: var(--scanner-button-size);
+  border: none;
+}
+
+.scanner__button-cancel {
+  padding: var(--scanner-cancel-padding);
+  cursor: pointer;
+  height: var(--scanner-button-size);
+  border-radius: 0 0 var(--scanner-border-radius) var(--scanner-border-radius);
+}
+
+.scanner__button-cancel > span {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.scanner__button svg {
+  width: 20px;
+  height: 20px;
+}
+
+.scanner__button:hover {
+  opacity: 0.8;
+}
+
+.scanner__error {
+  color: var(--scanner-error-color);
+}
+
+.scanner__video-container {
+  position: relative;
+  background: #000;
+  border-radius: var(--scanner-border-radius) var(--scanner-border-radius) 0 0;
+  overflow: hidden;
+  height: var(--scanner-video-height);
+}
+
+.scanner__video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.scanner__overlay {
+  position: absolute;
+  inset: 0;
+  margin: var(--scanner-overlay-margin);
+  border: var(--scanner-overlay-border);
+  border-radius: var(--scanner-overlay-border-radius);
+  pointer-events: none;
+}
+
+.scanner__result {
+  font-family: monospace;
+  padding-top: 4px;
+}
+
+.scanner__tip {
+  opacity: 0.7;
+}

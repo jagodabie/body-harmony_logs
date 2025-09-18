@@ -11,8 +11,12 @@
 
 .add-product__search {
   width: 100%;
+  display: flex;
   padding: 8px;
-  margin: 16px 0;
+  margin: 16px 0; 
+  z-index: 1;
+  position: relative;
+  justify-content: space-between;
 }
 
 .add-product__item {
@@ -20,8 +24,12 @@
   background-color: #f7f5f3;
   margin: 5px 0;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+
+  justify-content: flex-start;
+}
+
+.add-product__item > .macros.add-product__item-macros {
+  flex: 1;
 }
 
 .add-product__item-name {

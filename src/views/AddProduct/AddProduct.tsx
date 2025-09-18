@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import AddIcon from '@mui/icons-material/Add';
-import InputBase from '@mui/material/InputBase';
 
-import Button from '../../components/Button/Button';
+import { EANCodeScanner } from '../../components/EANCodeScanner/EANCodeScanner';
+import { InputBase } from '../../components/InputBase/InputBase';
 import type { MealProductType } from '../../types/MealLogs';
 import { Macros } from '../MealLogs/components/Macros/Macros';
+import Search from './components/Search';
 
 import './index.css';
 
@@ -35,28 +35,34 @@ const products: (MealProductType & { caloriesPer100g: number })[] = [
     protein: 10,
     carbohydrates: 10,
     fat: 10,
-  }
+  },
 ];
 
 const AddProduct = () => {
   const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
 
-  const handleAddProduct = (e: React.ChangeEvent<HTMLInputElement>, product: MealProductType) => {
-      if (e.target.checked) {
-        setSelectedProducts([...selectedProducts, product.name]);
-      } else {
-        setSelectedProducts(selectedProducts.filter((name) => name !== product.name));
-      }
-    };
-  
+  const handleAddProduct = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    product: MealProductType
+  ) => {
+    if (e.target.checked) {
+      setSelectedProducts([...selectedProducts, product.name]);
+    } else {
+      setSelectedProducts(
+        selectedProducts.filter((name) => name !== product.name)
+      );
+    }
+  };
+
   return (
     <div className="add-product-page">
       <div className="add-product__search">
-        <InputBase placeholder="Search" onChange={(e) => console.log(e.target.value)}/>
+        <Search />
+        <EANCodeScanner />
       </div>
       <div className="add-product__list">
         {products.map((product) => (
-          <div  key={product.name} className="add-product__item">
+          <div key={product.name} className="add-product__item">
             <div className="add-product__item-name">{product.name}</div>
             <Macros
               calories={product.caloriesPer100g}
@@ -66,7 +72,8 @@ const AddProduct = () => {
               className="add-product__item-macros"
             />
             <div className="add-product__item-actions">
-             <InputBase
+
+              <InputBase
               type="checkbox"
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleAddProduct(e, product)}
              />
@@ -74,12 +81,6 @@ const AddProduct = () => {
           </div>
         ))}
       </div>
-        <Button 
-          Icon={AddIcon}
-          className="add-product__add-button"
-          onClick={() => console.log('add product')}
-          label="Dodaj"
-        />
     </div>
   );
 };

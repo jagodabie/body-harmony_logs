@@ -1,0 +1,13 @@
+.search-wrapper {
+  width: 100%;
+  flex: 1;
+}
+
+.search-wrapper > div {
+  height: 100%;
+  width: 100%;
+}
+
+.search-input {
+  padding: 4px; 
+}
