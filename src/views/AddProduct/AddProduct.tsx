@@ -74,9 +74,10 @@ const AddProduct = () => {
             <div className="add-product__item-actions">
 
               <InputBase
-              type="checkbox"
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleAddProduct(e, product)}
-             />
+                name="add-product"
+                type="checkbox"
+                onChange={(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => handleAddProduct(e as React.ChangeEvent<HTMLInputElement>, product)}
+              />
             </div>
           </div>
         ))}
