@@ -45,11 +45,7 @@ export const EANCodeScanner = ({ showSelectDevice }: EANCodeScannerProps) => {
         </div>
       )}
 
-      <ScannerVideo
-        videoRef={videoRef}
-        active={active}
-        onStop={stop}
-      />
+      <ScannerVideo videoRef={videoRef} active={active} onStop={stop} />
     </div>
   );
 };
