@@ -1,7 +1,6 @@
 import { useState } from 'react';
 
 import { EANCodeScanner } from '../../components/EANCodeScanner/EANCodeScanner';
-import { InputBase } from '../../components/InputBase/InputBase';
 import type { MealProductType } from '../../types/MealLogs';
 import { Macros } from '../MealLogs/components/Macros/Macros';
 import Search from './components/Search';
@@ -10,6 +9,7 @@ import './index.css';
 
 const products: (MealProductType & { caloriesPer100g: number })[] = [
   {
+    id: '1',
     name: 'Chleb żytni',
     caloriesPer100g: 215,
     quantity: 100,
@@ -19,6 +19,7 @@ const products: (MealProductType & { caloriesPer100g: number })[] = [
     fat: 10,
   },
   {
+    id: '2',
     name: 'Jajka',
     caloriesPer100g: 215,
     quantity: 100,
@@ -28,6 +29,7 @@ const products: (MealProductType & { caloriesPer100g: number })[] = [
     fat: 10,
   },
   {
+    id: '3',
     name: 'Pomidory',
     caloriesPer100g: 215,
     quantity: 100,
@@ -39,21 +41,13 @@ const products: (MealProductType & { caloriesPer100g: number })[] = [
 ];
 
 const AddProduct = () => {
-  const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
+  const [selectedProducts, setSelectedProducts] = useState<string>('');
 
-  const handleAddProduct = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    product: MealProductType
-  ) => {
-    if (e.target.checked) {
-      setSelectedProducts([...selectedProducts, product.name]);
-    } else {
-      setSelectedProducts(
-        selectedProducts.filter((name) => name !== product.name)
-      );
-    }
+  const handleProductClick = (productId: string) => {
+    setSelectedProducts(prev => 
+      prev === productId ? '' : productId
+    );
   };
-
   return (
     <div className="add-product-page">
       <div className="add-product__search">
@@ -62,7 +56,13 @@ const AddProduct = () => {
       </div>
       <div className="add-product__list">
         {products.map((product) => (
-          <div key={product.name} className="add-product__item">
+          <div 
+            key={product.id} 
+            className={`add-product__item ${
+              selectedProducts === product.id ? 'add-product__item--selected' : ''
+            }`}
+            onClick={() => handleProductClick(product.id)}
+          >
             <div className="add-product__item-name">{product.name}</div>
             <Macros
               calories={product.caloriesPer100g}
@@ -71,14 +71,6 @@ const AddProduct = () => {
               fat={product.fat}
               className="add-product__item-macros"
             />
-            <div className="add-product__item-actions">
-
-              <InputBase
-                name="add-product"
-                type="checkbox"
-                onChange={(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => handleAddProduct(e as React.ChangeEvent<HTMLInputElement>, product)}
-              />
-            </div>
           </div>
         ))}
       </div>
