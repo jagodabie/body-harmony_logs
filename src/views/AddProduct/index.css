@@ -53,3 +53,7 @@
 .macros.add-product__item-macros {
   width: 30%;
 }
+.add-product__item--selected {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+}

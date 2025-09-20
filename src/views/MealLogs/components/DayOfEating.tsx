@@ -7,6 +7,7 @@ import Meal from './Meal/Meal';
 
 const mealProducts: MealProductType[] = [
   {
+    id: '1',
     name: 'Bread',
     quantity: 100,
     calories: 100,
@@ -15,14 +16,16 @@ const mealProducts: MealProductType[] = [
     fat: 10,
   },
   {
+    id: '2',
     name: 'Milk',
     quantity: 200,
     calories: 200,
     protein: 20,
     carbohydrates: 20,
     fat: 20,
-  },
+  },  
   {
+    id: '3',
     name: 'Eggs',
     quantity: 300,
     calories: 300,
@@ -65,8 +68,9 @@ const DayOfEating = () => {
       </div>
       <div className="day-of-eating__body">
       {
-        meals.map(({ mealName, mealTime, mealProducts }) => (
+        meals.map(({ mealName, mealTime, mealProducts }, index) => (
           <Meal
+            key={`${mealName}-${index}`}
             mealProducts={mealProducts || []}
             mealName={mealName}
             mealTime={mealTime}
