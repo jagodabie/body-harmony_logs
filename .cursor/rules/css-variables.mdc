@@ -1,0 +1,89 @@
+---
+globs: ["**/*.css"]
+description: CSS variables and styling guidelines
+alwaysApply: true
+---
+
+# CSS Variables and Styling Guidelines
+
+## CSS Variables Usage
+
+### Global Variables Location
+- All CSS custom properties (variables) are defined in [src/index.css](mdc:src/index.css)
+- Variables are globally available and do NOT require imports in individual CSS files
+
+### Variable Categories in [src/index.css](mdc:src/index.css):
+- **Primary colors**: `--color-primary`, `--color-primary-dark`, `--color-secondary`
+- **Background colors**: `--color-bg`, `--color-surface`, `--color-surface-alt`, `--color-surface-card`
+- **Text colors**: `--color-text`, `--color-muted`
+- **Status colors**: `--color-error`, `--color-success`, `--color-warning`, `--color-danger`, `--color-info`
+- **Neutral colors**: `--color-white`, `--color-black`, `--color-transparent`, `--color-disabled`, `--color-light-gray`, `--color-very-light-gray`, `--color-off-white`, `--color-dark-gray`, `--color-crimson`
+- **Semi-transparent colors**: `--color-white-10`, `--color-white-15`, `--color-white-50`, `--color-red-10`, `--color-black-50`, `--color-primary-82`
+- **Borders**: `--color-border-card`, `--border`, `--border-light`
+- **Spacing scale**: `--space-1`, `--space-2`, `--space-3`, `--space-4`, `--space-5`
+- **Typography**: `--font-sans`, `--font-mono`, `--font-size-sm`, `--font-size-md`, `--font-size-lg`, `--line-height-sm`, `--line-height-md`, `--line-height-lg`
+- **Radii**: `--radius-xs`, `--radius-sm`, `--radius-md`, `--radius-lg`, `--radius-pill`
+- **Shadows**: `--shadow-sm`, `--shadow-md`, `--shadow-lg`
+- **Breakpoints**: `--bp-sm`, `--bp-md`, `--bp-lg`, `--bp-xl`
+- **Z-index**: `--z-dropdown`, `--z-sticky`, `--z-modal`, `--z-popover`, `--z-toast`
+
+## CSS File Naming Convention
+- All CSS files should be named `index.css` (as per user preference)
+
+## Color Usage Rules
+1. **NEVER use direct color values** like `white`, `black`, `transparent`, `#ffffff`, `rgba()` etc.
+2. **ALWAYS use CSS variables** from [src/index.css](mdc:src/index.css)
+3. **NO @import statements needed** - CSS variables are globally available
+4. Use BEM methodology for class naming
+
+## Naming Conventions for Tokens
+- **Semantic first**: prefer semantic names for primary tokens (e.g., `--color-primary`, `--color-surface`, `--color-text`).
+- **Shades as numeric scale**: when you need tints/shades, use a numeric ramp suffix (`-50`, `-100`, `-200`, ..., `-900`). Example: `--color-primary-50` (lightest) → `--color-primary-900` (darkest).
+- **Status colors** follow the same rule: `--color-danger-50`, `--color-danger-600`, etc.
+- **Avoid mixing styles** like `-dark` and numeric ramps in the same family. If you have existing mixed names, prefer migrating to the numeric scale over time.
+- **Non-color tokens** use descriptive names: `--space-2`, `--radius-sm`, `--shadow-md`, `--bp-lg`.
+
+## Examples
+
+### ✅ Correct Usage:
+```css
+.button {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  border: var(--border);
+}
+
+.modal-overlay {
+  background-color: var(--color-black-50);
+}
+```
+
+### ❌ Incorrect Usage:
+```css
+@import '../../index.css'; /* NOT NEEDED */
+
+.button {
+  background-color: #7fb069; /* Use var(--color-primary) */
+  color: white; /* Use var(--color-white) */
+  border: 1px solid #ddd; /* Use var(--border) */
+}
+
+.modal-overlay {
+  background-color: rgba(0, 0, 0, 0.5); /* Use var(--color-black-50) */
+}
+```
+
+## Linting & Enforcement
+To help enforce these rules, consider Stylelint settings such as:
+- `color-no-hex: true`
+- `color-named: "never"`
+- `declaration-no-important: true`
+- `custom-property-pattern: "^--(color|space|font|line-height|radius|shadow|bp|z)-[a-z0-9-]+$"`
+- `selector-class-pattern: "^[a-z0-9]+(__[a-z0-9]+)?(--[a-z0-9]+)?$"` (BEM)
+
+## Adding New Colors
+- If you need a new color, add it to [src/index.css](mdc:src/index.css) in the appropriate category
+- Follow the existing naming convention: `--color-[name]` or `--color-[name]-[variant]`
+
+## Design Tokens Note
+CSS variables act as our design tokens. Before adding a new token, check `src/index.css` to avoid duplicates. If a needed value doesn’t exist, add a new variable in the proper category and follow the naming rules above.

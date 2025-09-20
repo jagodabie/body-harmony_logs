@@ -1,0 +1,39 @@
+---
+description: TypeScript and React rules for Body Harmony
+globs: ["**/*.ts", "**/*.tsx"]
+alwaysApply: true
+---
+
+## React & Components
+- Components must be defined as const arrow functions with explicit Props types.
+  ```ts
+  type Props = { title: string };
+  export const DeckTitle = ({ title }: Props) => {
+    return <h1>{title}</h1>;
+  };
+  ```
+
+## TypeScript General
+- Enable strict mode: `strict: true`, `noImplicitAny: true`, `exactOptionalPropertyTypes: true`.
+- Do not use `any`. If needed, use `unknown` and narrow.
+- Always type React events explicitly, e.g. `React.ChangeEvent<HTMLInputElement>`.
+- Prefer `type` over `interface` for component props; use `interface` for extensible object shapes.
+- Use `jsx: "react-jsx"` in tsconfig (no need to import React).
+- Define handlers inline with types: `(e: React.FormEvent<HTMLFormElement>) => void`.
+
+## Do & Don't Examples
+
+✅ Do
+```ts
+type Props = { count: number };
+export const Counter = ({ count }: Props) => {
+  return <span>{count}</span>;
+};
+```
+
+❌ Don't
+```ts
+export function Counter(props) {
+  return <span>{props.count}</span>; // implicit any
+}
+```

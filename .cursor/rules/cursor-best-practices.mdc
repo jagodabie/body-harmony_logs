@@ -1,0 +1,122 @@
+---
+description: Cursor best practices — small, focused chats; minimal context; diff-only; safe & repeatable edits.
+globs: ["**/*"]
+alwaysApply: true
+---
+
+# Rule: Cursor Best Practices (Body Harmony)
+
+## Goals
+- Maximize reliability and repeatability of AI edits.
+- Keep chats small and focused to avoid context overflow.
+- Prefer minimal, reviewable diffs with clear reasoning.
+- Make edits deterministic, reversible, and auditable (no surprise changes).
+
+## Chat Hygiene
+- **One task = one chat.** Start a new chat for each feature/fix/refactor.
+- **Keep prompts short.** State the goal, constraints, files to touch, and acceptance criteria.
+- **Attach only what’s needed.** Add specific files/rules as context (avoid whole repo unless necessary).
+- Always include an **Edits allowed** list (explicit file paths). Anything not listed is off-limits.
+
+## Context & Attachments
+- Prefer attaching: the target file(s), a relevant rule (`/cursor/rules/*.mdc`), and example input/expected output.
+- If a rule is **Always**, do **not** re-attach it manually. Also include an explicit **Edits allowed** list.
+- When editing multiple files, list them explicitly and forbid edits elsewhere.
+
+## Diff-Only & Scope Control
+- **Return minimal, focused diffs only.**
+- **Do not** create or modify files outside the named list.
+- Do not rename public APIs/exports/props unless explicitly requested. If rename is required, list all impacted call sites and update them in a bounded edit set.
+- If scaffolding is required, first produce a plan (file tree + responsibilities), then apply in small steps.
+- Never change formatting or reorder imports unless it is required by the project's linter/formatter.
+
+## Safety & Verification
+**Before editing**
+- Run a repo-wide search for the symbol/selector/API you will touch; note the number of hits.
+- Identify risks: global class names, shared types, exported functions, public routes.
+- If changes are cross-cutting, propose a batched plan first (files list + rationale).
+
+**After editing**
+- Explain *why* (2–4 lines) and list side-effects/follow-ups.
+- Provide quick manual test steps.
+- Confirm: lints clean, tests pass, type-check passes, no console errors.
+- For UI: verify a11y roles/names, focus order, and keyboard navigation.
+
+## Prompts (templates)
+**Single-file fix**
+```
+Task: Fix X in <path>.
+Files allowed: <path>.
+Constraints: Minimal diff. Keep public API stable. Do not change formatting beyond linter requirements.
+Acceptance: tests pass, type-check clean, lints clean, behavior unchanged except X.
+```
+
+**Multi-file change (bounded)**
+```
+Task: Implement Y.
+Files allowed: <file1>, <file2>.
+Forbidden: any other files.
+Constraints: Minimal diffs. No public API renames unless specified. Provide manual test steps.
+Acceptance: tests/lints/type-check pass.
+```
+
+**Refactor → hook/service**
+```
+Task: Extract logic from <Component> into <useX.ts>/<service>.
+Keep public props the same. Add unit test for extracted logic. Minimal diffs only.
+```
+
+**Repo cleanup**
+```
+Task: Ensure only <Poppins> font is used across repo.
+Steps: 1) list occurrences; 2) show proposed changes per file; 3) apply minimal diffs; 4) confirm no residuals.
+```
+
+**Scope guard**
+```
+Edit only these files: <file1>, <file2>.
+Do not create, delete, or modify any other files.
+Return minimal diffs. Explain the change in 2–4 lines.
+```
+
+## Acceptance Criteria (default)
+- Build/lint/test pass.
+- Only allowed files changed.
+- New code has a brief comment or self-evident naming.
+- For interactive components: add/keep an RTL test (role/name queries preferred).
+- No new console errors/warnings in dev tools.
+- For UI changes: accessible by role/name; i18n-ready (no hardcoded language strings unless the rule says so).
+- Bundle size not increased unnecessarily (avoid large dependencies).
+
+## Models & Modes
+- **Agent Mode** for file changes, command execution.
+- **Ask Mode** for questions/explanations/search.
+- Default model: the project’s preferred “thinking” model. Keep consistency within a chat.
+- Avoid background agents unless explicitly requested (cost/noise).
+
+## Git Hygiene
+- One logical change per commit; prefer small, reviewable commits.
+- Use imperative, descriptive messages: `feat: add X`, `fix: handle Y`, `refactor: extract Z`.
+- Avoid committing generated files and lockfiles unless required.
+
+## Rollback & Review
+- After large edits, request a summary of changes and a “revert plan”.
+- Encourage committing in small batches with meaningful messages.
+
+## Anti-patterns
+- Oversized chats mixing many objectives.
+- Vague prompts (“make it better”).
+- Unbounded edits across the repo.
+- Returning full files when a small diff suffices.
+
+## Secrets & Privacy
+- Never print or log secrets, tokens, or user PII.
+- Redact values in examples (e.g., `XXXX-XXXX`).
+
+## i18n & A11y Defaults
+- Prefer accessible queries in tests (role/name) over test IDs.
+- UI strings should follow the project's i18n policy; avoid hardcoding unless specified.
+- Ensure keyboard access and visible focus.
+
+## Cross-file Consistency
+- If you introduce a new pattern (naming, BEM block, utility), update the relevant rule file and reference it in the PR description.
