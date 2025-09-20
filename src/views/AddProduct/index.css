@@ -1,6 +1,6 @@
 .add-product {
   padding: 16px;
-  background-color: #f0f0f0;
+  background-color: var(--color-bg);
 }
 
 .add-product__header {
@@ -21,7 +21,7 @@
 
 .add-product__item {
   padding: 10px;
-  background-color: #f7f5f3;
+  background-color: var(--color-surface-card);
   margin: 5px 0;
   display: flex;
 

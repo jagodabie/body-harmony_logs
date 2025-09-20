@@ -1,6 +1,6 @@
 .meal {
     padding-bottom: 10px;
-    background-color: #f7f5f3;
+    background-color: var(--color-surface-card);
     margin: 5px 0;
 }
 
@@ -34,7 +34,7 @@
 .meal__header-actions > button,
 .meal-product__delete > button {
     font-weight: 600;
-    background-color: transparent;
+    background-color: var(--color-transparent);
     color: var(--color-secondary);
     border: none;
     padding: 0;
@@ -46,7 +46,7 @@
 
 .meal__header-actions > button {
     background-color: var(--color-primary);
-    color: white;
+    color: var(--color-white);
     border-radius: 50%;
     padding: 5px;
 }
@@ -55,7 +55,7 @@
     color: var(--color-primary);
     transform: scale(1.1);
     transition: transform 0.3s ease;
-    background-color: transparent;
+    background-color: var(--color-transparent);
 }
 
 .meal__body {
@@ -82,11 +82,11 @@
 .button.meal__header-expand-button {
     font-weight: 600;
     margin-top: 5px;
-    background: transparent;
+    background: var(--color-transparent);
     color: var(--color-secondary);
 }
 
 .button.meal__header-expand-button:hover {
     color: var(--color-primary);
-    background-color: transparent;
+    background-color: var(--color-transparent);
 }

@@ -1,7 +1,8 @@
+
 .nav-buttons {
   display: flex;
   justify-content: center;
-  color: white;
+  color: var(--color-white);
   align-items: center;
 }
 
@@ -19,18 +20,18 @@
 }
 
 .nav-item {
-  background-color: #7fb069;
+  background-color: var(--color-primary);
 }
 
 .nav-item.dark-green {
-  background-color: #445d3b;
+  background-color: var(--color-primary-dark);
 }
 
 .primary-item > span,
 .nav-item > span {
   font-size: 14px;
   font-weight: 600;
-  color: white;
+  color: var(--color-white);
   text-align: center;
   margin-left: 4px;
 }
@@ -47,6 +48,6 @@
 }
 
 .nav-item.active {
-  background-color: #5a8f5a; 
-  color: white;
+  background-color: var(--color-primary-dark); 
+  color: var(--color-white);
 }

@@ -1,3 +1,5 @@
+@import '../../index.css';
+
 /* Scanner component variables */
 .scanner {
   --scanner-z-index: 100;
@@ -11,7 +13,7 @@
   --scanner-overlay-border: 2px dashed rgba(255, 255, 255, 0.85);
   --scanner-overlay-border-radius: 12px;
   --scanner-video-height: 91vh;
-  --scanner-error-color: crimson;
+  --scanner-error-color: var(--color-crimson);
 }
 
 .scanner--active {
@@ -76,7 +78,7 @@
 
 .scanner__video-container {
   position: relative;
-  background: #000;
+  background: var(--color-black); 
   border-radius: var(--scanner-border-radius) var(--scanner-border-radius) 0 0;
   overflow: hidden;
   height: var(--scanner-video-height);

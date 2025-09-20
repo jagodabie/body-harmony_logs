@@ -1,10 +1,12 @@
+@import '../../index.css';
+
 .weight-log-modal__container {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5); /* semi-transparent black */
+  background-color: var(--color-black-50); /* semi-transparent black */
   backdrop-filter: blur(2px);
   display: flex;
   justify-content: center;
@@ -13,7 +15,7 @@
 }
 
 .weight-log-modal {
-  background-color: var(--color-surface, #ffffff);
+  background-color: var(--color-surface-card);
   border-radius: 12px;
   width: 90%;
   max-width: 500px;
