@@ -16,7 +16,7 @@
   padding: 10px 20px;
   width: 100%;
   justify-content: center;
-  height: 60px;
+  height: var(--space-header-height);
 }
 
 .nav-item {

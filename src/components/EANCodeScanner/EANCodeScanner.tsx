@@ -3,49 +3,69 @@ import clsx from 'clsx';
 import ScannerControls from './components/ScannerControls';
 import ScannerVideo from './components/ScannerVideo';
 import { useHandleScanner } from './hooks/useHandleScanner';
+import type { ScannerConfig, ScanResult } from './types';
 
 import './index.css';
 
 type EANCodeScannerProps = {
+  onScanSuccess: (result: ScanResult) => void;
   showSelectDevice?: boolean;
+  config?: ScannerConfig;
+  className?: string;
 };
 
-export const EANCodeScanner = ({ showSelectDevice }: EANCodeScannerProps) => {
+export const EANCodeScanner = ({
+  onScanSuccess,
+  showSelectDevice = false,
+  config,
+  className,
+}: EANCodeScannerProps) => {
   const {
     videoRef,
     devices,
     deviceId,
     setDeviceId,
-    active,
+    state,
     error,
     torchAvailable,
     torchOn,
     start,
-    toggleTorch,
     stop,
-  } = useHandleScanner();
+    toggleTorch,
+    closeVideoArea,
+    showVideoArea,
+    isActive,
+    isInitializing,
+  } = useHandleScanner(onScanSuccess, config);
 
   return (
-    <div className={clsx('scanner', { 'scanner--active': active })}>
+    <div
+      className={clsx('scanner', className, {
+        'scanner--active': isActive,
+        'scanner--initializing': isInitializing,
+        'scanner--error': state === 'error',
+      })}
+    >
       <ScannerControls
         showSelectDevice={showSelectDevice}
         devices={devices}
         deviceId={deviceId}
         onDeviceChange={setDeviceId}
-        active={active}
+        active={isActive}
+        initializing={isInitializing}
         torchAvailable={torchAvailable}
         torchOn={torchOn}
         onStart={start}
         onToggleTorch={toggleTorch}
+        onClose={closeVideoArea}
       />
 
-      {error && (
+      {error && showVideoArea && (
         <div className="scanner__error" role="alert">
-          {error}
+          <strong>Scanner Error:</strong> {error.message}
         </div>
       )}
-
-      <ScannerVideo videoRef={videoRef} active={active} onStop={stop} />
+      <ScannerVideo videoRef={videoRef} active={isActive} onStop={stop} />
     </div>
   );
 };

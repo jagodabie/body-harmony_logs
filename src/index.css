@@ -1,95 +1,105 @@
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
 
-/* CSS Custom Properties */
-:root {
-  /* Primary colors */
-  --color-primary: #7fb069;
-  --color-primary-dark: #5f7a52;
-  --color-secondary: #56565a;
+  /* CSS Custom Properties */
+  :root {
+    /* Primary colors */
+    --color-primary: #7fb069;
+    --color-primary-dark: #5f7a52;
+    --color-secondary: #56565a;
 
-  /* Background colors */
-  --color-bg: #f5f5f5;
-  --color-surface: #ffffff;
-  --color-surface-alt: #e0e0e0;
-  --color-surface-card: #f7f5f3;
+    /* Background colors */
+    --color-bg: #f5f5f5;
+    --color-surface: #ffffff;
+    --color-surface-alt: #e0e0e0;
+    --color-surface-card: #f7f5f3;
 
-  /* Text colors */
-  --color-text: #444444;
-  --color-muted: #777777;
+    /* Text colors */
+    --color-text: #444444;
+    --color-muted: #777777;
 
-  /* Status colors */
-  --color-error: #e57373;
-  --color-success: #81c784;
-  --color-warning: #f0ad4e;
-  --color-danger: #d9534f;
-  --color-info: #3498db;
+    /* Status colors */
+    --color-error: #e57373;
+    --color-success: #81c784;
+    --color-warning: #f0ad4e;
+    --color-danger: #d9534f;
+    --color-info: #3498db;
 
-  /* Neutral colors */
-  --color-white: #ffffff;
-  --color-black: #000000;
-  --color-transparent: transparent;
-  --color-disabled: #bdbdbd;
-  --color-light-gray: #f0f0f0;
-  --color-very-light-gray: #f3f3f3;
-  --color-off-white: #fdfdfd;
-  --color-dark-gray: #323232;
-  --color-crimson: #dc143c;
+    /* Neutral colors */
+    --color-white: #ffffff;
+    --color-black: #000000;
+    --color-transparent: transparent;
+    --color-disabled: #bdbdbd;
+    --color-light-gray: #f0f0f0;
+    --color-very-light-gray: #f3f3f3;
+    --color-off-white: #fdfdfd;
+    --color-dark-gray: #323232;
+    --color-crimson: #dc143c;
 
-  /* Borders */
-  --color-border-card: #e0ddd8;
-  --border: 1px solid #ddd;
-  --border-light: 1px solid #f0f0f0;
+    /* Borders */
+    --color-border-card: #e0ddd8;
+    --border: 1px solid #ddd;
+    --border-light: 1px solid #f0f0f0;
 
-  /* Semi-transparent colors */
-  --color-white-10: rgba(255, 255, 255, 0.1);
-  --color-white-15: rgba(255, 255, 255, 0.15);
-  --color-white-50: rgba(255, 255, 255, 0.5);
-  --color-red-10: rgba(255, 0, 0, 0.1);
-  --color-black-50: rgba(0, 0, 0, 0.5);
-  --color-primary-82: rgba(127, 176, 105, 0.82);
-}
+    /* Semi-transparent colors */
+    --color-white-10: rgba(255, 255, 255, 0.1);
+    --color-white-15: rgba(255, 255, 255, 0.15);
+    --color-white-50: rgba(255, 255, 255, 0.5);
+    --color-red-10: rgba(255, 0, 0, 0.1);
+    --color-black-50: rgba(0, 0, 0, 0.5);
+    --color-primary-82: rgba(127, 176, 105, 0.82);
 
-p, h1, h2, h3, h4, h5, h6, label, input, textarea, select, button {
-  color: var(--color-secondary);
-}
+    /* Spacing scale */
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 16px;
+    --space-4: 24px;
+    --space-5: 32px;
+    
+    /* Layout dimensions */
+    --space-header-height: 60px;
+  }
 
-html,
-body {
-  height: 100%;
-  font-family: system-ui, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  color: var(--color-secondary);
-}
+  p, h1, h2, h3, h4, h5, h6, label, input, textarea, select, button {
+    color: var(--color-secondary);
+  }
 
-img,
-picture,
-video,
-canvas,
-svg {
-  display: block;
-  max-width: 100%;
-}
+  html,
+  body {
+    height: 100%;
+    font-family: system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    color: var(--color-secondary);
+  }
 
-input,
-button,
-textarea,
-select {
-  font: inherit;
-}
+  img,
+  picture,
+  video,
+  canvas,
+  svg {
+    display: block;
+    max-width: 100%;
+  }
 
-a {
-  text-decoration: none;
-  color: inherit;
-}
+  input,
+  button,
+  textarea,
+  select {
+    font: inherit;
+  }
 
-button:disabled {
-  background-color: var(--color-disabled);
-  cursor: not-allowed;
-}
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  button:disabled {
+    background-color: var(--color-disabled);
+    cursor: not-allowed;
+  }

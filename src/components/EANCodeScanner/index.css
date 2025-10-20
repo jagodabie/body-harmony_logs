@@ -12,7 +12,6 @@
   --scanner-overlay-margin: 10% 8%;
   --scanner-overlay-border: 2px dashed rgba(255, 255, 255, 0.85);
   --scanner-overlay-border-radius: 12px;
-  --scanner-video-height: 91vh;
   --scanner-error-color: var(--color-crimson);
 }
 
@@ -25,12 +24,30 @@
   z-index: var(--scanner-z-index);
 }
 
+.scanner--initializing {
+  opacity: 0.8;
+}
+
+.scanner--error {
+  border: 2px solid var(--color-error);
+  border-radius: var(--scanner-border-radius);
+}
+
+.scanner__video-area {
+  display: block;
+}
+
+.scanner__video-area--hidden {
+  display: none;
+}
+
 .scanner__video-wrapper {
   display: none;
 }
 
 .scanner__video-wrapper--active {
   display: block;
+  height: calc(100vh - var(--space-header-height));
 }
 
 .scanner__controls {
@@ -72,16 +89,36 @@
   opacity: 0.8;
 }
 
-.scanner__error {
-  color: var(--scanner-error-color);
+.scanner__button--close {
+  color: var(--color-white);
+  height: var(--space-header-height);
 }
+
+.scanner__error {
+  color: var(--color-error);
+  background-color: var(--color-white);
+  padding: var(--space-2);
+  border-radius: var(--scanner-border-radius);
+  margin: var(--space-2) 0;
+  border: 1px solid var(--color-error);
+}
+
+.scanner__loading {
+  color: var(--color-primary);
+  background-color: var(--color-white);
+  padding: var(--space-2);
+  border-radius: var(--scanner-border-radius);
+  margin: var(--space-2) 0;
+  text-align: center;
+  font-weight: 500;
+}
+
 
 .scanner__video-container {
   position: relative;
   background: var(--color-black); 
-  border-radius: var(--scanner-border-radius) var(--scanner-border-radius) 0 0;
   overflow: hidden;
-  height: var(--scanner-video-height);
+  height: calc(100vh - var(--space-header-height));
 }
 
 .scanner__video {
@@ -106,4 +143,35 @@
 
 .scanner__tip {
   opacity: 0.7;
+}
+
+.scanner__button-cancel {
+  color: var(--color-white);
+  padding: var(--scanner-button-padding);
+  height: var(--space-header-height);
+  background-color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  width: 100%;
+}
+
+.scanner__button h3 {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--color-white);
+  z-index: 1;
+}
+
+.scanner__close-icon {
+  stroke: var(--color-white);
+  stroke-width: 1;
+  paint-order: stroke;
+}
+
+.scanner__button-cancel-text {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--color-white);
 }

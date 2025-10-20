@@ -11,23 +11,27 @@ type ScannerVideoProps = {
 
 const ScannerVideo = ({ videoRef, active, onStop }: ScannerVideoProps) => {
   return (
-    <div className={clsx('scanner__video-wrapper', { 
-      'scanner__video-wrapper--active': active 
-    })}>
-      <div className="scanner__video-container">
-        <video
-          ref={videoRef}
-          className="scanner__video"
-          autoPlay
-          playsInline
+    <div className="scanner__video-area">
+      <div
+        className={clsx('scanner__video-wrapper', {
+          'scanner__video-wrapper--active': active,
+        })}
+      >
+        <div className="scanner__video-container">
+          <video
+            ref={videoRef}
+            className="scanner__video"
+            autoPlay
+            playsInline
+          />
+          <div className="scanner__overlay" aria-hidden />
+        </div>
+        <Button
+          label="Cancel"
+          className="scanner__button-cancel"
+          onClick={onStop}
         />
-        <div className="scanner__overlay" aria-hidden />
       </div>
-      <Button 
-        label="Cancel" 
-        className="scanner__button-cancel" 
-        onClick={onStop} 
-      />
     </div>
   );
 };

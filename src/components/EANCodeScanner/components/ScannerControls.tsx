@@ -10,10 +10,12 @@ type ScannerControlsProps = {
   deviceId: string | undefined;
   onDeviceChange: (deviceId: string) => void;
   active: boolean;
+  initializing: boolean;
   torchAvailable: boolean;
   torchOn: boolean;
   onStart: () => void;
   onToggleTorch: () => void;
+  onClose?: () => void;
 };
 
 const ScannerControls = ({
@@ -22,10 +24,12 @@ const ScannerControls = ({
   deviceId,
   onDeviceChange,
   active,
+  initializing,
   torchAvailable,
   torchOn,
   onStart,
   onToggleTorch,
+  onClose,
 }: ScannerControlsProps) => {
   return (
     <div className="scanner__controls">
@@ -38,12 +42,14 @@ const ScannerControls = ({
           disabled={active}
         />
       )}
-      
+
       {!active && (
         <Button
           className="scanner__button"
           onClick={onStart}
+          loading={initializing}
           Icon={DocumentScannerIcon}
+          size="small"
         />
       )}
 
@@ -53,6 +59,12 @@ const ScannerControls = ({
           torchOn={torchOn}
           onToggle={onToggleTorch}
         />
+      )}
+
+      {active && onClose && (
+        <div className="scanner__button-cancel" onClick={onClose}>
+          <div className="scanner__button-cancel-text">Cancel</div>
+        </div>
       )}
     </div>
   );

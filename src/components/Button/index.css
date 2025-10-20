@@ -33,6 +33,15 @@
   opacity: 0.8;
 }
 
+.button--loading {
+  opacity: 0.8;
+  cursor: not-allowed;
+}
+
+.button-loading-icon {
+  color: var(--color-white) !important;
+}
+
 .button-label {
   font-size: 14px;
   font-weight: 600;
