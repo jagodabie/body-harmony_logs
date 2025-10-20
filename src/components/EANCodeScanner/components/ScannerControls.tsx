@@ -2,7 +2,6 @@ import DocumentScannerIcon from '@mui/icons-material/DocumentScanner';
 
 import Button from '../../Button/Button';
 import DeviceSelector from './DeviceSelector';
-import TorchButton from './TorchButton';
 
 type ScannerControlsProps = {
   showSelectDevice?: boolean;
@@ -11,10 +10,7 @@ type ScannerControlsProps = {
   onDeviceChange: (deviceId: string) => void;
   active: boolean;
   initializing: boolean;
-  torchAvailable: boolean;
-  torchOn: boolean;
   onStart: () => void;
-  onToggleTorch: () => void;
   onClose?: () => void;
 };
 
@@ -25,10 +21,7 @@ const ScannerControls = ({
   onDeviceChange,
   active,
   initializing,
-  torchAvailable,
-  torchOn,
   onStart,
-  onToggleTorch,
   onClose,
 }: ScannerControlsProps) => {
   return (
@@ -52,15 +45,6 @@ const ScannerControls = ({
           size="small"
         />
       )}
-
-      {active && torchAvailable && (
-        <TorchButton
-          className="scanner__button"
-          torchOn={torchOn}
-          onToggle={onToggleTorch}
-        />
-      )}
-
       {active && onClose && (
         <div className="scanner__button-cancel" onClick={onClose}>
           <div className="scanner__button-cancel-text">Cancel</div>

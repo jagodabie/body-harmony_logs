@@ -27,11 +27,8 @@ export const EANCodeScanner = ({
     setDeviceId,
     state,
     error,
-    torchAvailable,
-    torchOn,
     start,
     stop,
-    toggleTorch,
     closeVideoArea,
     showVideoArea,
     isActive,
@@ -53,10 +50,7 @@ export const EANCodeScanner = ({
         onDeviceChange={setDeviceId}
         active={isActive}
         initializing={isInitializing}
-        torchAvailable={torchAvailable}
-        torchOn={torchOn}
         onStart={start}
-        onToggleTorch={toggleTorch}
         onClose={closeVideoArea}
       />
 
