@@ -3,12 +3,12 @@ import { useEffect, useState } from 'react';
 import { EANCodeScanner } from '../../components/EANCodeScanner/EANCodeScanner';
 import type { ProductDetails } from '../../types/MealLogs';
 import { Macros } from '../MealLogs/components/Macros/Macros';
-import Search from './components/Search';
+import { Search } from './components/Search';
 import { useEanProductSearch } from './hooks/useEanProductSearch';
 
 import './index.css';
 
-const AddProduct = () => {
+export const AddProduct = () => {
   const [products, setProducts] = useState<ProductDetails[]>([]);
   const [selectedProducts, setSelectedProducts] = useState<string>('');
   const { productDetails, handleScanSuccess } = useEanProductSearch();
@@ -53,22 +53,22 @@ const AddProduct = () => {
           }}
         />
       </div>
-      <div className="add-product__list">
+      <div className="search-product__list">
         {products.length > 0 &&
           products.map(product => (
             <div
               key={product.productId}
-              className={`add-product__item ${
+              className={`search-product__item ${
                 selectedProducts === product.productId
-                  ? 'add-product__item--selected'
+                  ? 'search-product__item--selected'
                   : ''
               }`}
               onClick={() => handleProductClick(product.productId)}
             >
-              <div className="add-product__item-name">
+              <div className="search-product__item-name">
                 {product.productName}
               </div>
-              <div className="add-product__item-quantity">
+              <div className="search-product__item-quantity">
                 Quantity:
                 {product.productQuantity} g
               </div>
@@ -77,7 +77,7 @@ const AddProduct = () => {
                 protein={product.productProtein}
                 carbohydrates={product.productCarbohydrates}
                 fat={product.productFat}
-                className="add-product__item-macros"
+                className="search-product__item-macros"
               />
             </div>
           ))}
@@ -85,5 +85,3 @@ const AddProduct = () => {
     </div>
   );
 };
-
-export default AddProduct;

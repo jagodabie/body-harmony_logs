@@ -1,7 +1,5 @@
 import './index.css';
 
-const Loading = () => {
+export const Loading = () => {
   return <div className="spinner"></div>;
 };
-
-export default Loading;

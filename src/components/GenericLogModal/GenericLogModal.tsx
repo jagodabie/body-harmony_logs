@@ -13,7 +13,7 @@ type GenericLogModalProps<T> = {
   fields: FieldConfig[];
 };
 
-const GenericLogModal = <T,>({
+export const GenericLogModal = <T,>({
   isOpen,
   onClose,
   title,
@@ -26,7 +26,7 @@ const GenericLogModal = <T,>({
   return (
     <div
       className="weight-log-modal__container"
-      onClick={(e) => {
+      onClick={e => {
         if (e.target === e.currentTarget) {
           onClose();
         }
@@ -45,5 +45,3 @@ const GenericLogModal = <T,>({
     </div>
   );
 };
-
-export default GenericLogModal;

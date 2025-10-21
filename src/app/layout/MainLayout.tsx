@@ -1,9 +1,9 @@
 import { Outlet } from 'react-router-dom';
 
-import AppFooter from '../components/AppFooter/AppFooter';
-import UserBadge from '../components/UserBadge/UserBadge';
+import { AppFooter } from '../components/AppFooter/AppFooter';
+import { UserBadge } from '../components/UserBadge/UserBadge';
 
-function MainLayout() {
+export const MainLayout = () => {
   return (
     <div className="app">
       <header className="header app-header">
@@ -16,6 +16,4 @@ function MainLayout() {
       <AppFooter />
     </div>
   );
-}
-
-export default MainLayout;
+};

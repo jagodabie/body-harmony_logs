@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 
-import ScannerControls from './components/ScannerControls';
-import ScannerVideo from './components/ScannerVideo';
+import { ScannerControls } from './components/ScannerControls';
+import { ScannerVideo } from './components/ScannerVideo';
 import { useHandleScanner } from './hooks/useHandleScanner';
 import type { ScannerConfig, ScanResult } from './types';
 

@@ -5,7 +5,7 @@ import RestaurantIcon from '@mui/icons-material/Restaurant';
 
 import './index.css';
 
-const AppFooter = () => {
+export const AppFooter = () => {
   const navigate = useNavigate();
   const [activeItem, setActiveItem] = useState('weight-logs');
 
@@ -21,19 +21,17 @@ const AppFooter = () => {
           className={`nav-item ${activeItem === 'weight-logs' ? 'active' : ''}`}
           onClick={() => handleNavigation('weight-logs')}
         >
-          <MonitorWeightIcon fontSize="small"/>
+          <MonitorWeightIcon fontSize="small" />
           <span>Weight Log</span>
         </div>
         <div
           className={`nav-item ${activeItem === 'meal-logs' ? 'active' : ''}`}
           onClick={() => handleNavigation('meal-logs')}
         >
-          <RestaurantIcon fontSize="small"/>
+          <RestaurantIcon fontSize="small" />
           <span>Meal Logs</span>
         </div>
-        </div>
-      </footer>
+      </div>
+    </footer>
   );
 };
-
-export default AppFooter;

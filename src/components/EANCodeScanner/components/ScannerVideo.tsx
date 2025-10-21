@@ -1,7 +1,7 @@
 import type { RefObject } from 'react';
 import clsx from 'clsx';
 
-import Button from '../../Button/Button';
+import { Button } from '../../Button/Button';
 
 type ScannerVideoProps = {
   videoRef: RefObject<HTMLVideoElement | null>;
@@ -9,7 +9,11 @@ type ScannerVideoProps = {
   onStop: () => void;
 };
 
-const ScannerVideo = ({ videoRef, active, onStop }: ScannerVideoProps) => {
+export const ScannerVideo = ({
+  videoRef,
+  active,
+  onStop,
+}: ScannerVideoProps) => {
   return (
     <div className="scanner__video-area">
       <div
@@ -35,5 +39,3 @@ const ScannerVideo = ({ videoRef, active, onStop }: ScannerVideoProps) => {
     </div>
   );
 };
-
-export default ScannerVideo;

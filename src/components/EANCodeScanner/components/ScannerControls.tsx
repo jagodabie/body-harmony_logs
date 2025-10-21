@@ -1,7 +1,7 @@
 import DocumentScannerIcon from '@mui/icons-material/DocumentScanner';
 
-import Button from '../../Button/Button';
-import DeviceSelector from './DeviceSelector';
+import { Button } from '../../Button/Button';
+import { DeviceSelector } from './DeviceSelector';
 
 type ScannerControlsProps = {
   showSelectDevice?: boolean;
@@ -14,7 +14,7 @@ type ScannerControlsProps = {
   onClose?: () => void;
 };
 
-const ScannerControls = ({
+export const ScannerControls = ({
   showSelectDevice,
   devices,
   deviceId,
@@ -53,5 +53,3 @@ const ScannerControls = ({
     </div>
   );
 };
-
-export default ScannerControls;

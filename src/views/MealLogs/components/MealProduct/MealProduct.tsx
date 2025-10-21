@@ -1,6 +1,6 @@
 import CloseIcon from '@mui/icons-material/Close';
 
-import Button from '../../../../components/Button/Button';
+import { Button } from '../../../../components/Button/Button';
 import { Macros } from '../Macros/Macros';
 
 import './index.css';
@@ -14,7 +14,7 @@ type ProductProps = {
   fat: number;
 };
 
-const Product = ({
+export const Product = ({
   name,
   quantity,
   calories,
@@ -29,12 +29,12 @@ const Product = ({
           <div className="meal-product__name">{name}</div>
         </div>
         <div className="meal-product__quantity">{quantity} g</div>
-          <Macros
-            calories={calories}
-            protein={protein}
-            carbohydrates={carbohydrates}
-            fat={fat}
-          />
+        <Macros
+          calories={calories}
+          protein={protein}
+          carbohydrates={carbohydrates}
+          fat={fat}
+        />
       </div>
       <div className="meal-product__delete">
         <Button
@@ -45,5 +45,3 @@ const Product = ({
     </div>
   );
 };
-
-export default Product;

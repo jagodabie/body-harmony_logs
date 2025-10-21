@@ -12,27 +12,23 @@ type ButtonProps = {
   Icon?: React.ElementType;
 };
 
-const Button = ({ 
-  label, 
-  onClick, 
-  disabled, 
+export const Button = ({
+  label,
+  onClick,
+  disabled,
   loading = false,
-  Icon, 
-  size = 'small', 
-  className = '' 
+  Icon,
+  size = 'small',
+  className = '',
 }: ButtonProps) => {
   const isDisabled = disabled || loading;
   const buttonClass = `button ${className} ${loading ? 'button--loading' : ''}`;
 
   return (
-    <button 
-      onClick={onClick} 
-      className={buttonClass} 
-      disabled={isDisabled}
-    >
+    <button onClick={onClick} className={buttonClass} disabled={isDisabled}>
       {loading ? (
-        <CircularProgress 
-          className="button-icon button-loading-icon" 
+        <CircularProgress
+          className="button-icon button-loading-icon"
           size={size === 'small' ? 16 : size === 'medium' ? 20 : 24}
         />
       ) : (
@@ -42,5 +38,3 @@ const Button = ({
     </button>
   );
 };
-
-export default Button;

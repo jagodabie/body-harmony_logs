@@ -6,12 +6,12 @@ type DeviceSelectorProps = {
   className?: string;
 };
 
-const DeviceSelector = ({ 
-  devices, 
-  deviceId, 
-  onDeviceChange, 
+export const DeviceSelector = ({
+  devices,
+  deviceId,
+  onDeviceChange,
   disabled,
-  className 
+  className,
 }: DeviceSelectorProps) => {
   if (!devices.length) return null;
 
@@ -19,11 +19,11 @@ const DeviceSelector = ({
     <select
       className={className}
       value={deviceId}
-      onChange={(e) => onDeviceChange(e.target.value)}
+      onChange={e => onDeviceChange(e.target.value)}
       disabled={disabled || devices.length <= 1}
       aria-label="Select camera"
     >
-      {devices.map((device) => (
+      {devices.map(device => (
         <option key={device.deviceId} value={device.deviceId}>
           {device.label || 'Camera'}
         </option>
@@ -31,5 +31,3 @@ const DeviceSelector = ({
     </select>
   );
 };
-
-export default DeviceSelector;

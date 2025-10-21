@@ -1,37 +1,37 @@
 import { useState } from 'react';
 
 import { useDateUtils } from '../../../hooks/useDateUtils';
-import { MealLogs, type MealProductType } from '../../../types/MealLogs';
-import DateMenu from './DateMenu/DateMenu';
-import Meal from './Meal/Meal';
+import { MealLogs, type ProductDetails } from '../../../types/MealLogs';
+import { DateMenu } from './DateMenu/DateMenu';
+import { Meal } from './Meal/Meal.tsx';
 
-const mealProducts: MealProductType[] = [
+const mealProducts: ProductDetails[] = [
   {
-    id: '1',
-    name: 'Bread',
-    quantity: 100,
-    calories: 100,
-    protein: 10,
-    carbohydrates: 10,
-    fat: 10,
+    productId: '1',
+    productName: 'Bread',
+    productQuantity: 100,
+    productCalories: 100,
+    productProtein: 10,
+    productCarbohydrates: 10,
+    productFat: 10,
   },
   {
-    id: '2',
-    name: 'Milk',
-    quantity: 200,
-    calories: 200,
-    protein: 20,
-    carbohydrates: 20,
-    fat: 20,
-  },  
+    productId: '2',
+    productName: 'Milk',
+    productQuantity: 200,
+    productCalories: 200,
+    productProtein: 20,
+    productCarbohydrates: 20,
+    productFat: 20,
+  },
   {
-    id: '3',
-    name: 'Eggs',
-    quantity: 300,
-    calories: 300,
-    protein: 30,
-    carbohydrates: 30,
-    fat: 30,
+    productId: '3',
+    productName: 'Eggs',
+    productQuantity: 300,
+    productCalories: 300,
+    productProtein: 30,
+    productCarbohydrates: 30,
+    productFat: 30,
   },
 ];
 
@@ -53,8 +53,7 @@ const meals = [
   },
 ];
 
-
-const DayOfEating = () => {
+export const DayOfEating = () => {
   const { formatDate } = useDateUtils();
   const [currentDate, setCurrentDate] = useState(new Date());
   return (
@@ -62,13 +61,20 @@ const DayOfEating = () => {
       <div className="day-of-eating__header">
         <DateMenu
           date={formatDate(currentDate)}
-          onPrevDateChange={() => setCurrentDate(new Date(currentDate.setDate(currentDate.getDate() - 1)))}
-          onNextDateChange={() => setCurrentDate(new Date(currentDate.setDate(currentDate.getDate() + 1)))}
+          onPrevDateChange={() =>
+            setCurrentDate(
+              new Date(currentDate.setDate(currentDate.getDate() - 1))
+            )
+          }
+          onNextDateChange={() =>
+            setCurrentDate(
+              new Date(currentDate.setDate(currentDate.getDate() + 1))
+            )
+          }
         />
       </div>
       <div className="day-of-eating__body">
-      {
-        meals.map(({ mealName, mealTime, mealProducts }, index) => (
+        {meals.map(({ mealName, mealTime, mealProducts }, index) => (
           <Meal
             key={`${mealName}-${index}`}
             mealProducts={mealProducts || []}
@@ -78,12 +84,9 @@ const DayOfEating = () => {
             totalMealProtein={10}
             totalMealCarbohydrates={10}
             totalMealFat={10}
-        />
-        ))
-      }
+          />
+        ))}
       </div>
     </div>
   );
 };
-
-export default DayOfEating;

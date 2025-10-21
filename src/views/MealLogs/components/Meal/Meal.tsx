@@ -4,15 +4,15 @@ import AddIcon from '@mui/icons-material/Add';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-import Button from '../../../../components/Button/Button';
-import type { MealProductType } from '../../../../types/MealLogs';
+import { Button } from '../../../../components/Button/Button';
+import type { ProductDetails } from '../../../../types/MealLogs';
 import { Macros } from '../Macros/Macros';
-import MealProduct from '../MealProduct/MealProduct';
+import { Product as MealProduct } from '../MealProduct/MealProduct';
 
 import './index.css';
 
 type MealProps = {
-  mealProducts: MealProductType[];
+  mealProducts: ProductDetails[];
   mealName: string;
   mealTime: string;
   totalMealCalories: number;
@@ -21,7 +21,7 @@ type MealProps = {
   totalMealFat: number;
 };
 
-const Meal = ({
+export const Meal = ({
   mealProducts,
   mealName,
   mealTime,
@@ -41,16 +41,17 @@ const Meal = ({
     <div className="meal">
       <div className="meal__header">
         <div className="meal__header-content">
-        <div className="meal__header-summary">
-          <span className="meal__header-title">{mealName}</span> 
+          <div className="meal__header-summary">
+            <span className="meal__header-title">{mealName}</span>
             <span className="meal__header-expand">
-            <Button
-            className="meal__header-expand-button"
-            Icon={isExpanded ? ExpandLessIcon : ExpandMoreIcon}
-            onClick={handleExpand}
-          />
+              <Button
+                className="meal__header-expand-button"
+                Icon={isExpanded ? ExpandLessIcon : ExpandMoreIcon}
+                onClick={handleExpand}
+              />
             </span>
-            <span className="meal__header-time">{mealTime}</span></div>
+            <span className="meal__header-time">{mealTime}</span>
+          </div>
           <Macros
             calories={totalMealCalories}
             protein={totalMealProtein}
@@ -66,17 +67,24 @@ const Meal = ({
       <div className={`meal__body ${isExpanded ? 'meal__body--expanded' : ''}`}>
         {mealProducts.map(
           (
-            { name, quantity, calories, protein, carbohydrates, fat },
+            {
+              productName,
+              productQuantity,
+              productCalories,
+              productProtein,
+              productCarbohydrates,
+              productFat,
+            },
             index
           ) => (
             <MealProduct
-              key={`${name}-${index}`}
-              name={name}
-              quantity={quantity}
-              calories={calories}
-              protein={protein}
-              carbohydrates={carbohydrates}
-              fat={fat}
+              key={`${productName}-${index}`}
+              name={productName}
+              quantity={productQuantity}
+              calories={productCalories}
+              protein={productProtein || 0}
+              carbohydrates={productCarbohydrates || 0}
+              fat={productFat || 0}
             />
           )
         )}
@@ -84,5 +92,3 @@ const Meal = ({
     </div>
   );
 };
-
-export default Meal;
