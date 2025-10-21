@@ -1,0 +1,69 @@
+---
+description: Rules for components and hooks (TypeScript)
+globs:
+  - '**/*.ts'
+  - '**/*.tsx'
+alwaysApply: true
+---
+
+# Components & Hooks Organization
+
+- Every **new component** or **hook** lives in its **own folder**. Structure:
+
+  ```
+  src/components/ComponentName/
+    ComponentName.tsx
+    ComponentName.types.ts
+    index.ts
+  ```
+
+  - **React component (`ComponentName.tsx`):**
+
+  ```tsx
+  type ComponentNameProps = {
+    
+  } 
+
+  export const ComponentName = (props: ComponentNameProps) => {
+    const { children, className, ...rest } = props;
+    return (
+      <div className={className} {...rest}>
+        {children}
+      </div>
+    );
+  };
+  ```
+
+  For hooks:
+
+  ```
+  src/hooks/use-something/
+    use-something.ts
+    use-something.types.ts
+    index.ts
+  ```
+
+- `*.types.ts` contains **types only** (Return/Config, etc.). **No
+  logic**.
+- All **public exports** go through the folder's `index.ts`.
+- Project imports must reference the **folder** (i.e., `index.ts`), not inner
+- ComponentNameProps always in component file ComponentName.tsx
+
+# Required exports in `index.ts`
+
+- **Component:**
+
+  ```ts
+  // src/components/ComponentName/index.ts
+  export { ComponentName } from './componentName';
+  ```
+
+- **Hook:**
+  ```ts
+  // src/hooks/use-something/index.ts
+  export { useSomething } from './use-something';
+  export type {
+    UseSomethingResult,
+    UseSomethingOptions,
+  } from './useSomething.type';
+  ```
