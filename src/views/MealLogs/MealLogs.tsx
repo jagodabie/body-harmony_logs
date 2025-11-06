@@ -1,4 +1,4 @@
-import { DayOfEating } from './components/DayOfEating';
+import { DayOfEating } from './DayOfEating/DayOfEating';
 
 export const MealLogs = () => {
   return (

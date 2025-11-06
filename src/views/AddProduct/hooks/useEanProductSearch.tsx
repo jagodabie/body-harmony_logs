@@ -14,12 +14,12 @@ type ProductResponse = {
   allergens?: string[];
   nutriments: {
     'energy-kcal_100g': number;
-    'proteins_100g': number;
-    'fat_100g': number;
+    proteins_100g: number;
+    fat_100g: number;
     'saturated-fat_100g': number;
-    'carbohydrates_100g': number;
-    'sugars_100g': number;
-    'salt_100g': number;
+    carbohydrates_100g: number;
+    sugars_100g: number;
+    salt_100g: number;
   };
   nutriscore?: string;
   nova?: number;
@@ -39,8 +39,11 @@ type UseEanProductSearchReturn = {
 
 export const useEanProductSearch = (): UseEanProductSearchReturn => {
   const [scanResult, setScanResult] = useState<ScanResult | null>(null);
-  const [productResponse, setProductResponse] = useState<ProductResponse | null>(null);
-  const [productDetails, setProductDetails] = useState<ProductDetails | null>(null);
+  const [productResponse, setProductResponse] =
+    useState<ProductResponse | null>(null);
+  const [productDetails, setProductDetails] = useState<ProductDetails | null>(
+    null
+  );
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -56,13 +59,18 @@ export const useEanProductSearch = (): UseEanProductSearchReturn => {
     const quantity = quantityMatch ? parseInt(quantityMatch[1], 10) : 100;
 
     return {
-      productId: productResponse._id,
-      productName: productResponse.name,
-      productQuantity: quantity,
-      productCalories: productResponse.nutriments['energy-kcal_100g'],
-      productProtein: productResponse.nutriments['proteins_100g'],
-      productCarbohydrates: productResponse.nutriments['carbohydrates_100g'],
-      productFat: productResponse.nutriments['fat_100g'],
+      _id: productResponse._id,
+      mealId: '', // Will be set when adding to a meal
+      productCode: {
+        name: productResponse.name,
+        code: productResponse.code,
+        nutriments: productResponse.nutriments,
+        brands: productResponse.brands,
+      },
+      quantity,
+      unit: 'g',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
     };
   };
 
@@ -79,6 +87,7 @@ export const useEanProductSearch = (): UseEanProductSearchReturn => {
       setProductResponse(data);
       const details = convertProductResponseToProductDetails(data);
       setProductDetails(details);
+      // TODO: Add product to meal logs store
       console.log('Converted product details:', details);
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Unknown error';

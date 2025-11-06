@@ -1,0 +1,2 @@
+export { SyncIndicator } from './SyncIndicator';
+

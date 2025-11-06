@@ -66,6 +66,18 @@
     display: block;
 }
 
+.meal__body-empty {
+    padding: var(--space-3);
+    text-align: center;
+}
+
+.meal__body-empty p {
+    color: var(--color-muted);
+    font-size: var(--font-size-sm);
+    font-style: italic;
+    margin: 0;
+}
+
 .macros.meal__header-macros > .macros__calories {
     font-size: 14px;
     font-weight: 600;

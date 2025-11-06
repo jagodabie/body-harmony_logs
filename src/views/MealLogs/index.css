@@ -1,0 +1,26 @@
+.day-of-eating {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  width: 100%;
+}
+
+.day-of-eating__header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.day-of-eating__header-top {
+  display: flex;
+  justify-content: flex-end;
+  padding: var(--space-2);
+}
+
+.day-of-eating__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-2);
+}
+

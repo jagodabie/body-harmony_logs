@@ -12,7 +12,8 @@ import { Product as MealProduct } from '../MealProduct/MealProduct';
 import './index.css';
 
 type MealProps = {
-  mealProducts: ProductDetails[];
+  mealId: string;
+  products: ProductDetails[];
   mealName: string;
   mealTime: string;
   totalMealCalories: number;
@@ -22,7 +23,8 @@ type MealProps = {
 };
 
 export const Meal = ({
-  mealProducts,
+  mealId,
+  products,
   mealName,
   mealTime,
   totalMealCalories,
@@ -65,29 +67,22 @@ export const Meal = ({
         </div>
       </div>
       <div className={`meal__body ${isExpanded ? 'meal__body--expanded' : ''}`}>
-        {mealProducts.map(
-          (
-            {
-              productName,
-              productQuantity,
-              productCalories,
-              productProtein,
-              productCarbohydrates,
-              productFat,
-            },
-            index
-          ) => (
+        {products.map(product => {
+          const nutriments = product.productCode.nutriments;
+          return (
             <MealProduct
-              key={`${productName}-${index}`}
-              name={productName}
-              quantity={productQuantity}
-              calories={productCalories}
-              protein={productProtein || 0}
-              carbohydrates={productCarbohydrates || 0}
-              fat={productFat || 0}
+              key={product._id}
+              mealId={mealId}
+              productId={product._id}
+              name={product.productCode.name}
+              quantity={product.quantity}
+              calories={nutriments['energy-kcal_100g'] || 0}
+              protein={nutriments.proteins_100g || 0}
+              carbohydrates={nutriments.carbohydrates_100g || 0}
+              fat={nutriments.fat_100g || 0}
             />
-          )
-        )}
+          );
+        })}
       </div>
     </div>
   );

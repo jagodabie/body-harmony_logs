@@ -1,0 +1,19 @@
+.sync-indicator {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2);
+}
+
+.sync-indicator__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-pill);
+  background-color: var(--color-success);
+}
+
+.sync-indicator__text {
+  font-size: var(--font-size-sm);
+  color: var(--color-muted);
+}
+

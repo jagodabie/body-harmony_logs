@@ -55,32 +55,35 @@ export const AddProduct = () => {
       </div>
       <div className="search-product__list">
         {products.length > 0 &&
-          products.map(product => (
-            <div
-              key={product.productId}
-              className={`search-product__item ${
-                selectedProducts === product.productId
-                  ? 'search-product__item--selected'
-                  : ''
-              }`}
-              onClick={() => handleProductClick(product.productId)}
-            >
-              <div className="search-product__item-name">
-                {product.productName}
+          products.map(product => {
+            const nutriments = product.productCode.nutriments;
+            return (
+              <div
+                key={product._id}
+                className={`search-product__item ${
+                  selectedProducts === product._id
+                    ? 'search-product__item--selected'
+                    : ''
+                }`}
+                onClick={() => handleProductClick(product._id)}
+              >
+                <div className="search-product__item-name">
+                  {product.productCode.name}
+                </div>
+                <div className="search-product__item-quantity">
+                  Quantity:
+                  {product.quantity} g
+                </div>
+                <Macros
+                  calories={nutriments['energy-kcal_100g'] || 0}
+                  protein={nutriments.proteins_100g || 0}
+                  carbohydrates={nutriments.carbohydrates_100g || 0}
+                  fat={nutriments.fat_100g || 0}
+                  className="search-product__item-macros"
+                />
               </div>
-              <div className="search-product__item-quantity">
-                Quantity:
-                {product.productQuantity} g
-              </div>
-              <Macros
-                calories={product.productCalories}
-                protein={product.productProtein}
-                carbohydrates={product.productCarbohydrates}
-                fat={product.productFat}
-                className="search-product__item-macros"
-              />
-            </div>
-          ))}
+            );
+          })}
       </div>
     </div>
   );
