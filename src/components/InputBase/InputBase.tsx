@@ -10,11 +10,14 @@ type InputBaseProps = {
   value?: string | number;
   rows?: number;
   required?: boolean;
-  onBlur?: (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+  onBlur?: (
+    event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => void;
   onChange?: (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void;
   error?: string;
+  min?: number;
 };
 
 export const InputBase = ({
@@ -27,12 +30,17 @@ export const InputBase = ({
   onChange,
   required = false,
   error,
+  min,
 }: InputBaseProps) => {
   const hasValue = value !== '' && value !== undefined;
 
   return (
     <div className="input-base__container">
-      <div className={clsx('input-base__wrapper', { 'input-base__wrapper--error': error })}>
+      <div
+        className={clsx('input-base__wrapper', {
+          'input-base__wrapper--error': error,
+        })}
+      >
         {type === 'textarea' ? (
           <textarea
             className={clsx('input-base__input', { filled: hasValue })}
@@ -49,6 +57,7 @@ export const InputBase = ({
           <input
             className={clsx('input-base__input', { filled: hasValue })}
             id={name}
+            min={min}
             name={name}
             required={required}
             type={type}
@@ -64,9 +73,7 @@ export const InputBase = ({
           </span>
         )}
       </div>
-      {error && (
-        <p className="input-base__error">{error}</p>
-      )}
+      {error && <p className="input-base__error">{error}</p>}
     </div>
   );
 };

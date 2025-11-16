@@ -37,33 +37,15 @@ alwaysApply: true
   For hooks:
 
   ```
-  src/hooks/use-something/
-    use-something.ts
-    use-something.types.ts
-    index.ts
+  src/hooks/useSomething/
+    useSomething.tsx
   ```
 
-- `*.types.ts` contains **types only** (Return/Config, etc.). **No
-  logic**.
-- All **public exports** go through the folder's `index.ts`.
-- Project imports must reference the **folder** (i.e., `index.ts`), not inner
 - ComponentNameProps always in component file ComponentName.tsx
-
-# Required exports in `index.ts`
 
 - **Component:**
 
   ```ts
   // src/components/ComponentName/index.ts
   export { ComponentName } from './componentName';
-  ```
-
-- **Hook:**
-  ```ts
-  // src/hooks/use-something/index.ts
-  export { useSomething } from './use-something';
-  export type {
-    UseSomethingResult,
-    UseSomethingOptions,
-  } from './useSomething.type';
   ```

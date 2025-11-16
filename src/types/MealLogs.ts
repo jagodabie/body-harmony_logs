@@ -18,14 +18,35 @@ export type ProductCode = {
   brands?: string;
 };
 
+export type ProductDetailsResponse = {
+  _id: string;
+  nutriments: Nutriments;
+  countries_tags: string[];
+  quantity: string;
+  categories: string;
+  brands: string;
+  code: string;
+  name: string;
+  nutriscore: string;
+  nova: number;
+  ingredients: string;
+  allergens: string[];
+  lastModified: string;
+  updatedAt: string;
+};
+
 export type ProductDetails = {
   _id: string;
   mealId: string;
   productCode: ProductCode;
+  // Here is the quantity of the product in packaging
   quantity: number;
   unit: string;
   createdAt: string;
   updatedAt: string;
+  name: string;
+  brands: string;
+  nutriments: Nutriments;
 };
 
 // Frontend meal input type

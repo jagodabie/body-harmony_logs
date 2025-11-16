@@ -1,0 +1,43 @@
+.product-card {
+    background-color: var(--color-surface-card);
+    padding: 10px 0;
+}
+.product-card__quantity {
+    display: flex;
+    align-items: center;
+    padding-top: 15px;
+}
+
+.product-card__quantity > .input-base__container {
+    flex: 2;
+}
+
+.product-card__quantity > .select__container {
+    flex: 2;
+}
+
+.product-card__quantity > .product-card__kcal {
+    flex: 1;
+    margin: 8px;
+}
+
+.product-card__header-content-name {
+    font-size: 20px;
+    text-transform: lowercase;
+    padding: 8px 5px;
+
+    &::first-letter {
+        text-transform: uppercase;
+    }
+
+    letter-spacing: 0.005em;
+    font-weight: 500;
+}
+
+.product-card__kcal-list-item {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    padding: 20px 20px 20px 15px;
+    border-bottom: var(--border);
+}

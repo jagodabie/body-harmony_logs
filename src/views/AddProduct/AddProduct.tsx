@@ -3,18 +3,22 @@ import { useEffect, useState } from 'react';
 import { EANCodeScanner } from '../../components/EANCodeScanner/EANCodeScanner';
 import type { ProductDetails } from '../../types/MealLogs';
 import { Macros } from '../MealLogs/components/Macros/Macros';
-import { Search } from './components/Search';
+import { ProductCard } from './components/ProductCard/ProductCard';
+import { ProductSearch } from './components/ProductSearch/ProductSearch';
 import { useEanProductSearch } from './hooks/useEanProductSearch';
 
 import './index.css';
 
 export const AddProduct = () => {
   const [products, setProducts] = useState<ProductDetails[]>([]);
-  const [selectedProducts, setSelectedProducts] = useState<string>('');
-  const { productDetails, handleScanSuccess } = useEanProductSearch();
+  const [selectedProduct, setSelectedProduct] = useState<ProductDetails | null>(
+    null
+  );
+  const { productDetails, isLoading, handleScanSuccess, clearProduct } =
+    useEanProductSearch();
 
-  const handleProductClick = (productId: string) => {
-    setSelectedProducts(prev => (prev === productId ? '' : productId));
+  const handleProductClick = (product: ProductDetails) => {
+    setSelectedProduct(prev => (prev?._id === product._id ? null : product));
   };
 
   const handleInvalidScan = (code: string) => {
@@ -25,66 +29,75 @@ export const AddProduct = () => {
   useEffect(() => {
     if (productDetails) {
       setProducts(prev => [...prev, productDetails]);
+      clearProduct();
     }
-  }, [productDetails]);
+  }, [productDetails, clearProduct]);
 
   return (
     <div className="add-product-page">
-      <button
-        onClick={() => {
-          handleScanSuccess({
-            code: '5900531000010',
-            type: 'EAN-13',
-            isValid: true,
-            timestamp: Date.now(),
-          });
-        }}
-      >
-        Search Product
-      </button>
-      <div className="add-product__search">
-        <Search />
-        <EANCodeScanner
-          onScanSuccess={handleScanSuccess}
-          config={{
-            validateChecksum: true,
-            debounceMs: 1500,
-            onInvalidScan: handleInvalidScan,
-          }}
-        />
-      </div>
-      <div className="search-product__list">
-        {products.length > 0 &&
-          products.map(product => {
-            const nutriments = product.productCode.nutriments;
-            return (
-              <div
-                key={product._id}
-                className={`search-product__item ${
-                  selectedProducts === product._id
-                    ? 'search-product__item--selected'
-                    : ''
-                }`}
-                onClick={() => handleProductClick(product._id)}
-              >
-                <div className="search-product__item-name">
-                  {product.productCode.name}
-                </div>
-                <div className="search-product__item-quantity">
-                  Quantity:
-                  {product.quantity} g
-                </div>
-                <Macros
-                  calories={nutriments['energy-kcal_100g'] || 0}
-                  protein={nutriments.proteins_100g || 0}
-                  carbohydrates={nutriments.carbohydrates_100g || 0}
-                  fat={nutriments.fat_100g || 0}
-                  className="search-product__item-macros"
-                />
-              </div>
-            );
-          })}
-      </div>
+      {/* Scanner i Search - zawsze widoczne gdy nie ma wybranego produktu */}
+      {!selectedProduct && (
+        <>
+          <button
+            onClick={() => {
+              handleScanSuccess({
+                code: '5900531000010',
+                type: 'EAN-13',
+                isValid: true,
+                timestamp: Date.now(),
+              });
+            }}
+          >
+            Search Product (Test)
+          </button>
+          <div className="add-product__search">
+            <ProductSearch />
+            <EANCodeScanner
+              onScanSuccess={handleScanSuccess}
+              config={{
+                validateChecksum: true,
+                debounceMs: 1500,
+                onInvalidScan: handleInvalidScan,
+              }}
+            />
+          </div>
+
+          {/* Loading state */}
+          {isLoading && <div className="add-product__loading">Loading...</div>}
+
+          {/* Lista produktów */}
+          <div className="search-product__list">
+            {products.length > 0 &&
+              products.map(product => {
+                const nutriments = product.productCode.nutriments;
+                return (
+                  <div
+                    key={product._id}
+                    className="search-product__item"
+                    onClick={() => handleProductClick(product)}
+                  >
+                    <div className="search-product__item-name">
+                      {product.productCode.name}
+                    </div>
+                    <div className="search-product__item-quantity">
+                      Quantity: {product.quantity} g
+                    </div>
+                    <Macros
+                      calories={nutriments['energy-kcal_100g'] || 0}
+                      protein={nutriments.proteins_100g || 0}
+                      carbohydrates={nutriments.carbohydrates_100g || 0}
+                      fat={nutriments.fat_100g || 0}
+                      className="search-product__item-macros"
+                    />
+                  </div>
+                );
+              })}
+          </div>
+        </>
+      )}
+
+      {/* ProductCard - pokazuje się po kliknięciu w produkt z listy */}
+      {selectedProduct && <ProductCard productDetails={selectedProduct} />}
     </div>
   );
 };

@@ -1,46 +1,25 @@
 import { useCallback, useEffect, useState } from 'react';
 
 import type { ScanResult } from '../../../components/EANCodeScanner/types';
-import type { ProductDetails } from '../../../types/MealLogs';
-
-type ProductResponse = {
-  _id: string;
-  code: string;
-  name: string;
-  quantity: string;
-  brands?: string;
-  categories?: string;
-  ingredients?: string;
-  allergens?: string[];
-  nutriments: {
-    'energy-kcal_100g': number;
-    proteins_100g: number;
-    fat_100g: number;
-    'saturated-fat_100g': number;
-    carbohydrates_100g: number;
-    sugars_100g: number;
-    salt_100g: number;
-  };
-  nutriscore?: string;
-  nova?: number;
-  countries_tags?: string[];
-  lastModified?: string;
-  updatedAt?: string;
-};
+import type {
+  ProductDetails,
+  ProductDetailsResponse,
+} from '../../../types/MealLogs';
 
 type UseEanProductSearchReturn = {
   scanResult: ScanResult | null;
-  productResponse: ProductResponse | null;
+  productResponse: ProductDetailsResponse | null;
   productDetails: ProductDetails | null;
   isLoading: boolean;
   error: string | null;
   handleScanSuccess: (result: ScanResult) => void;
+  clearProduct: () => void;
 };
 
 export const useEanProductSearch = (): UseEanProductSearchReturn => {
   const [scanResult, setScanResult] = useState<ScanResult | null>(null);
   const [productResponse, setProductResponse] =
-    useState<ProductResponse | null>(null);
+    useState<ProductDetailsResponse | null>(null);
   const [productDetails, setProductDetails] = useState<ProductDetails | null>(
     null
   );
@@ -49,10 +28,16 @@ export const useEanProductSearch = (): UseEanProductSearchReturn => {
 
   const handleScanSuccess = (result: ScanResult) => {
     setScanResult(result);
-    console.log('Scanned:', result);
+  };
+
+  const clearProduct = () => {
+    setProductDetails(null);
+    setScanResult(null);
+    setProductResponse(null);
+    setError(null);
   };
   const convertProductResponseToProductDetails = (
-    productResponse: ProductResponse
+    productResponse: ProductDetailsResponse
   ): ProductDetails => {
     // Parse quantity string (e.g., "200 g" -> 200)
     const quantityMatch = productResponse.quantity.match(/(\d+)/);
@@ -71,6 +56,9 @@ export const useEanProductSearch = (): UseEanProductSearchReturn => {
       unit: 'g',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
+      name: productResponse.name,
+      brands: productResponse.brands,
+      nutriments: productResponse.nutriments,
     };
   };
 
@@ -113,6 +101,7 @@ export const useEanProductSearch = (): UseEanProductSearchReturn => {
     isLoading,
     error,
     handleScanSuccess,
+    clearProduct,
   };
 };
 
