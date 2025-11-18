@@ -18,7 +18,7 @@
 
 .product-card__quantity > .product-card__kcal {
     flex: 1;
-    margin: 8px;
+    text-align: center;
 }
 
 .product-card__header-content-name {
@@ -38,6 +38,40 @@
     display: flex;
     width: 100%;
     justify-content: space-between;
+    align-items: center;
     padding: 20px 20px 20px 15px;
     border-bottom: var(--border);
+}
+
+.product-card__quantity-button {
+    margin: 0 10px;
+}
+
+.product-card__quantity-button > .button {
+    border-radius: 50px;
+    padding: 10px;
+    background-color: var(--color-black);
+}
+
+.product-card__quantity-button > .button:hover {
+    background-color: var(--color-black);
+    opacity: 0.6;
+}
+
+.product-card__kcal-list-item-name {
+    flex: 5;
+}
+
+.product-card__kcal-list-item-value {
+    flex: 1;
+    text-align: center;
+}
+
+.product-card__kcal-list-item-button {
+    flex: 1;
+}
+
+.product-card__quantity > .product-card__quantity-button{
+    margin-right: 28px;
+    margin-left: 0;
 }

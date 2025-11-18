@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 import { EANCodeScanner } from '../../components/EANCodeScanner/EANCodeScanner';
 import type { ProductDetails } from '../../types/MealLogs';
@@ -10,6 +11,7 @@ import { useEanProductSearch } from './hooks/useEanProductSearch';
 import './index.css';
 
 export const AddProduct = () => {
+  const { mealId } = useParams<{ mealId: string }>();
   const [products, setProducts] = useState<ProductDetails[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<ProductDetails | null>(
     null
@@ -65,7 +67,6 @@ export const AddProduct = () => {
           {/* Loading state */}
           {isLoading && <div className="add-product__loading">Loading...</div>}
 
-          {/* Lista produktów */}
           <div className="search-product__list">
             {products.length > 0 &&
               products.map(product => {
@@ -97,7 +98,9 @@ export const AddProduct = () => {
       )}
 
       {/* ProductCard - pokazuje się po kliknięciu w produkt z listy */}
-      {selectedProduct && <ProductCard productDetails={selectedProduct} />}
+      {selectedProduct && mealId && (
+        <ProductCard productDetails={selectedProduct} mealId={mealId} />
+      )}
     </div>
   );
 };

@@ -1,30 +1,66 @@
 import { useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
+import { Button } from '../../../../components/Button/Button';
 import { InputBase } from '../../../../components/InputBase/InputBase';
 import { SelectBase } from '../../../../components/SelectBase/SelectBase';
+import { useProductMacrosCalculator } from '../../../../hooks/useProductMacrosCalculator/useProductMacrosCalculator';
+import { useMealLogsStore } from '../../../../stores/useMealLogsStore';
 import type { ProductDetails } from '../../../../types/MealLogs';
 
 import './index.css';
 
 type ProductCardProps = {
   productDetails: ProductDetails;
+  mealId: string;
 };
 
-export const ProductCard = ({ productDetails }: ProductCardProps) => {
-  const [quantity, setQuantity] = useState<number>(100);
+export const ProductCard = ({ productDetails, mealId }: ProductCardProps) => {
+  const navigate = useNavigate();
+  const [quantity, setQuantity] = useState<number>(200);
   const [unit, setUnit] = useState<string>('g');
+  const { calculateCalories } = useProductMacrosCalculator();
+  const { addProductToMeal } = useMealLogsStore();
 
+  // TODO: set quantity based on unit
+  // TODO : input quantity should be validated
   const productAmountOptions = useMemo(() => {
-    const kcalPer100g = productDetails.nutriments['energy-kcal_100g'] || 0;
     const totalQuantity = productDetails.quantity;
-    const totalKcal = (totalQuantity * kcalPer100g) / 100;
 
     return [
-      { label: `1 package (${totalQuantity}g)`, value: totalKcal },
-      { label: 'per 100g', value: kcalPer100g },
-      { label: `1/2 package (${totalQuantity / 2}g)`, value: totalKcal / 2 },
+      {
+        id: 'full-package',
+        label: `1 package (${totalQuantity}g)`,
+        value: calculateCalories(productDetails.nutriments, totalQuantity),
+        quantity: totalQuantity,
+      },
+      {
+        id: 'per-100g',
+        label: 'per 100g',
+        value: calculateCalories(productDetails.nutriments, 100),
+        quantity: 100,
+      },
+      {
+        id: 'half-package',
+        label: `1/2 package (${totalQuantity / 2}g)`,
+        value: calculateCalories(productDetails.nutriments, totalQuantity / 2),
+        quantity: totalQuantity / 2,
+      },
     ];
-  }, [productDetails.quantity, productDetails.nutriments]);
+  }, [productDetails.quantity, productDetails.nutriments, calculateCalories]);
+
+  const handleAddProduct = (quantity: number) => {
+    const productToAdd: ProductDetails = {
+      ...productDetails,
+      mealId,
+      quantity,
+      unit,
+    };
+
+    addProductToMeal(mealId, productToAdd);
+    navigate('/meal-logs');
+  };
 
   return (
     <div className="product-card">
@@ -39,12 +75,18 @@ export const ProductCard = ({ productDetails }: ProductCardProps) => {
       </div>
       <div className="product-card__kcal-list">
         {productAmountOptions.map(option => (
-          <div className="product-card__kcal-list-item" key={option.value}>
+          <div className="product-card__kcal-list-item" key={option.id}>
             <div className="product-card__kcal-list-item-name">
               {option.label}
             </div>
             <div className="product-card__kcal-list-item-value">
               {option.value} kcal
+            </div>
+            <div className="product-card__quantity-button">
+              <Button
+                Icon={ArrowForwardIosIcon}
+                onClick={() => handleAddProduct(option.quantity)}
+              />
             </div>
           </div>
         ))}
@@ -74,7 +116,15 @@ export const ProductCard = ({ productDetails }: ProductCardProps) => {
           ]}
           required
         />
-        <div className="product-card__kcal">{quantity} kcal</div>
+        <div className="product-card__kcal">
+          {calculateCalories(productDetails.nutriments, quantity)} kcal
+        </div>
+        <div className="product-card__quantity-button">
+          <Button
+            Icon={ArrowForwardIosIcon}
+            onClick={() => handleAddProduct(Number(quantity))}
+          />
+        </div>
       </div>
     </div>
   );

@@ -63,7 +63,10 @@ export const Meal = ({
           />
         </div>
         <div className="meal__header-actions">
-          <Button Icon={AddIcon} onClick={() => navigate('/add-product')} />
+          <Button
+            Icon={AddIcon}
+            onClick={() => navigate(`/add-product/${mealId}`)}
+          />
         </div>
       </div>
       <div className={`meal__body ${isExpanded ? 'meal__body--expanded' : ''}`}>

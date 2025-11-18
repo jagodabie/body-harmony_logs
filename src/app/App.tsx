@@ -22,7 +22,7 @@ export const App = () => {
           </Route>
 
           <Route element={<AddProductLayout />}>
-            <Route path="/add-product" element={<AddProduct />} />
+            <Route path="/add-product/:mealId" element={<AddProduct />} />
           </Route>
         </Routes>
       </Router>

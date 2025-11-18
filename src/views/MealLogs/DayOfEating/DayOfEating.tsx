@@ -13,7 +13,7 @@ import '../index.css';
 export const DayOfEating = () => {
   const { formatDate } = useDateUtils();
   const [currentDate, setCurrentDate] = useState(new Date());
-  const {meals, isLoading, error, fetchCurrentDayMeals } = useMealLogsStore();
+  const { meals, isLoading, error, fetchCurrentDayMeals } = useMealLogsStore();
   const currentDateString = formatDateString(currentDate);
 
   useEffect(() => {
