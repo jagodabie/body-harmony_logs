@@ -2,14 +2,15 @@ import { useCallback, useEffect, useState } from 'react';
 
 import type { ScanResult } from '../../../components/EANCodeScanner/types';
 import type {
+  NutrimentsPer100g,
+  ProductByCodeApiResponse,
   ProductDetails,
-  ProductDetailsResponse,
 } from '../../../types/MealLogs';
 
 type UseEanProductSearchReturn = {
   scanResult: ScanResult | null;
-  productResponse: ProductDetailsResponse | null;
-  productDetails: ProductDetails | null;
+  productResponse: ProductByCodeApiResponse | null;
+  productDetails: ProductDetails<NutrimentsPer100g> | null;
   isLoading: boolean;
   error: string | null;
   handleScanSuccess: (result: ScanResult) => void;
@@ -19,10 +20,9 @@ type UseEanProductSearchReturn = {
 export const useEanProductSearch = (): UseEanProductSearchReturn => {
   const [scanResult, setScanResult] = useState<ScanResult | null>(null);
   const [productResponse, setProductResponse] =
-    useState<ProductDetailsResponse | null>(null);
-  const [productDetails, setProductDetails] = useState<ProductDetails | null>(
-    null
-  );
+    useState<ProductByCodeApiResponse | null>(null);
+  const [productDetails, setProductDetails] =
+    useState<ProductDetails<NutrimentsPer100g> | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -37,8 +37,8 @@ export const useEanProductSearch = (): UseEanProductSearchReturn => {
     setError(null);
   };
   const convertProductResponseToProductDetails = (
-    productResponse: ProductDetailsResponse
-  ): ProductDetails => {
+    productResponse: ProductByCodeApiResponse
+  ): ProductDetails<NutrimentsPer100g> => {
     // Parse quantity string (e.g., "200 g" -> 200)
     const quantityMatch = productResponse.quantity.match(/(\d+)/);
     const quantity = quantityMatch ? parseInt(quantityMatch[1], 10) : 100;
@@ -46,19 +46,12 @@ export const useEanProductSearch = (): UseEanProductSearchReturn => {
     return {
       _id: productResponse._id,
       mealId: '', // Will be set when adding to a meal
-      productCode: {
-        name: productResponse.name,
-        code: productResponse.code,
-        nutriments: productResponse.nutriments,
-        brands: productResponse.brands,
-      },
+      code: productResponse.code,
+      name: productResponse.name,
+      nutrition: productResponse.nutriments,
+      brands: productResponse.brands,
       quantity,
       unit: 'g',
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      name: productResponse.name,
-      brands: productResponse.brands,
-      nutriments: productResponse.nutriments,
     };
   };
 
@@ -70,6 +63,15 @@ export const useEanProductSearch = (): UseEanProductSearchReturn => {
       const response = await fetch(
         `${process.env.REACT_APP_API_BASE_URL}/products/${eanCode}`
       );
+      console.log('response', response);
+
+      if (!response.ok) {
+        if (response.status === 404) {
+          throw new Error(`Product with EAN code ${eanCode} not found`);
+        }
+        throw new Error(`Failed to fetch product: ${response.statusText}`);
+      }
+
       const data = await response.json();
       console.log('Product EAN searched:', data);
       setProductResponse(data);
@@ -83,6 +85,7 @@ export const useEanProductSearch = (): UseEanProductSearchReturn => {
       setError(errorMessage);
       setProductResponse(null);
       setProductDetails(null);
+      setScanResult(null);
     } finally {
       setIsLoading(false);
     }

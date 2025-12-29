@@ -1,29 +1,31 @@
 import { useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 import { Button } from '../../../../components/Button/Button';
 import { InputBase } from '../../../../components/InputBase/InputBase';
 import { SelectBase } from '../../../../components/SelectBase/SelectBase';
-import { useProductMacrosCalculator } from '../../../../hooks/useProductMacrosCalculator/useProductMacrosCalculator';
-import { useMealLogsStore } from '../../../../stores/useMealLogsStore';
-import type { ProductDetails } from '../../../../types/MealLogs';
+import { useAddProductToMeal } from '../../../../hooks/useAddProductToMeal/useAddProductToMeal';
+import type {
+  NutrimentsPer100g,
+  ProductDetails,
+} from '../../../../types/MealLogs';
+import { calculateCalories } from '../../../../utils/macrosCalculator';
 
 import './index.css';
 
 type ProductCardProps = {
-  productDetails: ProductDetails;
+  productDetails: ProductDetails<NutrimentsPer100g>;
   mealId: string;
 };
 
 export const ProductCard = ({ productDetails, mealId }: ProductCardProps) => {
-  const navigate = useNavigate();
-  const [quantity, setQuantity] = useState<number>(200);
+  const [quantity, setQuantity] = useState<number>(0);
   const [unit, setUnit] = useState<string>('g');
-  const { calculateCalories } = useProductMacrosCalculator();
-  const { addProductToMeal } = useMealLogsStore();
-
-  // TODO: set quantity based on unit
+  const { addProduct } = useAddProductToMeal({
+    mealId,
+    productDetails,
+    unit,
+  });
   // TODO : input quantity should be validated
   const productAmountOptions = useMemo(() => {
     const totalQuantity = productDetails.quantity;
@@ -32,34 +34,26 @@ export const ProductCard = ({ productDetails, mealId }: ProductCardProps) => {
       {
         id: 'full-package',
         label: `1 package (${totalQuantity}g)`,
-        value: calculateCalories(productDetails.nutriments, totalQuantity),
+        value: calculateCalories(productDetails.nutrition, totalQuantity),
         quantity: totalQuantity,
       },
       {
         id: 'per-100g',
         label: 'per 100g',
-        value: calculateCalories(productDetails.nutriments, 100),
+        value: calculateCalories(productDetails.nutrition, 100),
         quantity: 100,
       },
       {
         id: 'half-package',
         label: `1/2 package (${totalQuantity / 2}g)`,
-        value: calculateCalories(productDetails.nutriments, totalQuantity / 2),
+        value: calculateCalories(productDetails.nutrition, totalQuantity / 2),
         quantity: totalQuantity / 2,
       },
     ];
-  }, [productDetails.quantity, productDetails.nutriments, calculateCalories]);
+  }, [productDetails.quantity, productDetails.nutrition]);
 
-  const handleAddProduct = (quantity: number) => {
-    const productToAdd: ProductDetails = {
-      ...productDetails,
-      mealId,
-      quantity,
-      unit,
-    };
-
-    addProductToMeal(mealId, productToAdd);
-    navigate('/meal-logs');
+  const handleAddProduct = async (productQuantity: number) => {
+    await addProduct(productQuantity);
   };
 
   return (
@@ -99,7 +93,9 @@ export const ProductCard = ({ productDetails, mealId }: ProductCardProps) => {
           type="number"
           min={0}
           value={quantity}
-          onChange={e => setQuantity(Number(e.target.value))}
+          onChange={e => {
+            setQuantity(Number(e.target.value));
+          }}
           required
         />
         <SelectBase
@@ -117,7 +113,7 @@ export const ProductCard = ({ productDetails, mealId }: ProductCardProps) => {
           required
         />
         <div className="product-card__kcal">
-          {calculateCalories(productDetails.nutriments, quantity)} kcal
+          {calculateCalories(productDetails.nutrition, quantity)} kcal
         </div>
         <div className="product-card__quantity-button">
           <Button

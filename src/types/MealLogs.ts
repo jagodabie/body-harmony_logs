@@ -1,7 +1,7 @@
 export const MealLogs = ['BREAKFAST', 'LUNCH', 'DINNER', 'SNACK'] as const;
 export type MealLog = (typeof MealLogs)[number];
 
-export type Nutriments = {
+export type NutrimentsPer100g = {
   'energy-kcal_100g'?: number;
   proteins_100g?: number;
   fat_100g?: number;
@@ -11,16 +11,19 @@ export type Nutriments = {
   salt_100g?: number;
 };
 
-export type ProductCode = {
-  name: string;
-  code: string;
-  nutriments: Nutriments;
-  brands?: string;
+export type NutrimentsPerQuantity = {
+  calories: number;
+  proteins: number;
+  carbs: number;
+  fat: number;
+  sugars?: number;
+  salt?: number;
 };
 
-export type ProductDetailsResponse = {
+// API Response type for GET /products/:code endpoint (external API - Open Food Facts)
+export type ProductByCodeApiResponse = {
   _id: string;
-  nutriments: Nutriments;
+  nutriments: NutrimentsPer100g;
   countries_tags: string[];
   quantity: string;
   categories: string;
@@ -31,22 +34,29 @@ export type ProductDetailsResponse = {
   nova: number;
   ingredients: string;
   allergens: string[];
-  lastModified: string;
-  updatedAt: string;
+  lastModified?: string | null;
+  updatedAt?: string | null;
 };
 
-export type ProductDetails = {
+// Keep ProductDetailsResponse as alias for backward compatibility
+export type ProductDetailsResponse = ProductByCodeApiResponse;
+
+export type ProductDetails<T> = {
   _id: string;
   mealId: string;
-  productCode: ProductCode;
-  // Here is the quantity of the product in packaging
+  code: string;
+  name: string;
+  nutrition: T;
+  brands: string;
   quantity: number;
   unit: string;
-  createdAt: string;
-  updatedAt: string;
-  name: string;
-  brands: string;
-  nutriments: Nutriments;
+};
+
+export type ProductDetailsBody = Omit<
+  ProductDetails<NutrimentsPerQuantity>,
+  'code'
+> & {
+  productCode: string;
 };
 
 // Frontend meal input type
@@ -68,7 +78,8 @@ export type Meal = {
   notes: string | null;
   createdAt: string;
   updatedAt: string;
-  products: ProductDetails[];
+  macros: MacroNutrients;
+  products: ProductDetailsBody[];
 };
 
 export type MealsByDateResponse = {
@@ -78,7 +89,7 @@ export type MealsByDateResponse = {
 
 export type MacroNutrients = {
   calories: number;
-  protein: number;
+  proteins: number;
   carbs: number;
   fat: number;
 };

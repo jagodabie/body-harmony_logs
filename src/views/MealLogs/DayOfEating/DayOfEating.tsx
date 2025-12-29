@@ -6,7 +6,7 @@ import { useMealLogsStore } from '../../../stores/useMealLogsStore';
 import { type Meal as MealType } from '../../../types/MealLogs';
 import { DateMenu } from '../components/DateMenu/DateMenu';
 import { Meal } from '../components/Meal/Meal';
-import { calculateMealTotals, formatDateString, prepareMeals } from './utils/index';
+import { formatDateString } from './utils/index';
 
 import '../index.css';
 
@@ -14,11 +14,28 @@ export const DayOfEating = () => {
   const { formatDate } = useDateUtils();
   const [currentDate, setCurrentDate] = useState(new Date());
   const { meals, isLoading, error, fetchCurrentDayMeals } = useMealLogsStore();
+
   const currentDateString = formatDateString(currentDate);
 
   useEffect(() => {
     fetchCurrentDayMeals(currentDateString);
   }, [currentDateString, fetchCurrentDayMeals]);
+
+  const handlePrevDate = () => {
+    const newDate = new Date(currentDate);
+    newDate.setDate(newDate.getDate() - 1);
+    setCurrentDate(newDate);
+    fetchCurrentDayMeals(formatDateString(newDate), true);
+  };
+
+  const handleNextDate = () => {
+    const newDate = new Date(currentDate);
+    newDate.setDate(newDate.getDate() + 1);
+    setCurrentDate(newDate);
+    fetchCurrentDayMeals(formatDateString(newDate), true);
+  };
+
+  console.log('[DayOfEating] Meals:', meals);
 
   if (error) {
     return (
@@ -27,7 +44,6 @@ export const DayOfEating = () => {
       </div>
     );
   }
-
   return (
     <div className="day-of-eating">
       <div className="day-of-eating__header">
@@ -36,26 +52,15 @@ export const DayOfEating = () => {
         </div>
         <DateMenu
           date={formatDate(currentDate)}
-          onPrevDateChange={() =>
-            setCurrentDate(
-              new Date(currentDate.setDate(currentDate.getDate() - 1))
-            )
-          }
-          onNextDateChange={() =>
-            setCurrentDate(
-              new Date(currentDate.setDate(currentDate.getDate() + 1))
-            )
-          }
+          onPrevDateChange={handlePrevDate}
+          onNextDateChange={handleNextDate}
         />
       </div>
       <div className="day-of-eating__body">
         {isLoading ? (
           <div className="day-of-eating__loading">Loading meals...</div>
         ) : (
-          prepareMeals(meals, currentDateString).map((meal: MealType) => {
-            // TODO: for now, it will be ready from the backend, but in the future, we will need to calculate the totals here
-            const totals = calculateMealTotals(meal.products);
-
+          meals.map((meal: MealType) => {
             return (
               <Meal
                 key={meal._id}
@@ -63,10 +68,7 @@ export const DayOfEating = () => {
                 products={meal.products}
                 mealName={meal.name}
                 mealTime={meal.time}
-                totalMealCalories={Math.round(totals.calories)}
-                totalMealProtein={Math.round(totals.protein)}
-                totalMealCarbohydrates={Math.round(totals.carbs)}
-                totalMealFat={Math.round(totals.fat)}
+                macros={meal.macros}
               />
             );
           })

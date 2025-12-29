@@ -5,7 +5,10 @@ import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 import { Button } from '../../../../components/Button/Button';
-import type { ProductDetails } from '../../../../types/MealLogs';
+import type {
+  MacroNutrients,
+  ProductDetailsBody,
+} from '../../../../types/MealLogs';
 import { Macros } from '../Macros/Macros';
 import { Product as MealProduct } from '../MealProduct/MealProduct';
 
@@ -13,31 +16,21 @@ import './index.css';
 
 type MealProps = {
   mealId: string;
-  products: ProductDetails[];
+  products: ProductDetailsBody[];
+  macros: MacroNutrients;
   mealName: string;
   mealTime: string;
-  totalMealCalories: number;
-  totalMealProtein: number;
-  totalMealCarbohydrates: number;
-  totalMealFat: number;
 };
 
-export const Meal = ({
-  mealId,
-  products,
-  mealName,
-  mealTime,
-  totalMealCalories,
-  totalMealProtein,
-  totalMealCarbohydrates,
-  totalMealFat,
-}: MealProps) => {
+export const Meal = ({ mealId, products, macros, mealName, mealTime }: MealProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const handleExpand = () => {
     setIsExpanded(!isExpanded);
   };
   const navigate = useNavigate();
+
+  console.log('[Meal] Products:', products);
 
   return (
     <div className="meal">
@@ -55,10 +48,10 @@ export const Meal = ({
             <span className="meal__header-time">{mealTime}</span>
           </div>
           <Macros
-            calories={totalMealCalories}
-            protein={totalMealProtein}
-            carbohydrates={totalMealCarbohydrates}
-            fat={totalMealFat}
+            calories={macros?.calories || 0}
+            protein={macros?.proteins || 0}
+            carbohydrates={macros?.carbs || 0}
+            fat={macros?.fat || 0}
             className="meal__header-macros"
           />
         </div>
@@ -70,19 +63,19 @@ export const Meal = ({
         </div>
       </div>
       <div className={`meal__body ${isExpanded ? 'meal__body--expanded' : ''}`}>
-        {products.map(product => {
-          const nutriments = product.productCode.nutriments;
+        {products.map((product: ProductDetailsBody) => {
+          console.log('[Meal] Product:', product);
           return (
             <MealProduct
               key={product._id}
               mealId={mealId}
               productId={product._id}
-              name={product.productCode.name}
+              name={product.name}
               quantity={product.quantity}
-              calories={nutriments['energy-kcal_100g'] || 0}
-              protein={nutriments.proteins_100g || 0}
-              carbohydrates={nutriments.carbohydrates_100g || 0}
-              fat={nutriments.fat_100g || 0}
+              calories={product?.nutrition?.calories}
+              protein={product?.nutrition?.proteins}
+              carbohydrates={product.nutrition?.carbs}
+              fat={product.nutrition?.fat}
             />
           );
         })}

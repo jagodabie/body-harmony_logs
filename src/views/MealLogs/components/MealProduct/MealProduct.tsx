@@ -35,13 +35,6 @@ export const Product = ({
     removeProductFromMeal(mealId, productId);
   };
 
-  // Calculate actual macros based on quantity (values are per 100g)
-  const multiplier = quantity / 100;
-  const actualCalories = Math.round(calories * multiplier);
-  const actualProtein = Math.round(protein * multiplier);
-  const actualCarbs = Math.round(carbohydrates * multiplier);
-  const actualFat = Math.round(fat * multiplier);
-
   return (
     <div className="meal-product">
       <div className="meal-product__wrapper">
@@ -50,10 +43,10 @@ export const Product = ({
         </div>
         <div className="meal-product__quantity">{quantity} g</div>
         <Macros
-          calories={actualCalories}
-          protein={actualProtein}
-          carbohydrates={actualCarbs}
-          fat={actualFat}
+          calories={calories}
+          protein={protein}
+          carbohydrates={carbohydrates}
+          fat={fat}
         />
       </div>
       <div className="meal-product__delete">

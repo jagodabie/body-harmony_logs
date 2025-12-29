@@ -69,3 +69,30 @@
 .add-product-page {
   height: 100%;
 }
+
+.add-product__loading {
+  padding: var(--space-3);
+  text-align: center;
+}
+
+.add-product__error {
+  padding: var(--space-3);
+  margin: var(--space-2) 0;
+  background-color: var(--color-error);
+  color: var(--color-white);
+  border-radius: 6px;
+  text-align: center;
+}
+
+  .add-product__message {
+    padding: var(--space-3);
+    font-weight: 500;
+    margin: var(--space-2) 0;
+    border-radius: 6px;
+    text-align: center;
+  }
+
+.add-product__error strong {
+  display: block;
+  margin-bottom: var(--space-1);
+}
