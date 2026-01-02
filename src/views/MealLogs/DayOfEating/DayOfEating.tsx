@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import { OverlayLoader } from '../../../components/OverlayLoader/OverlayLoader';
-import { SyncIndicator } from '../../../components/SyncIndicator';
 import { useDateUtils } from '../../../hooks/useDateUtils';
 import { useMealLogsStore } from '../../../stores/useMealLogsStore';
 import { type Meal as MealType } from '../../../types/MealLogs';
@@ -73,9 +72,6 @@ export const DayOfEating = () => {
   return (
     <div className="day-of-eating">
       <div className="day-of-eating__header">
-        <div className="day-of-eating__header-top">
-          <SyncIndicator />
-        </div>
         <DateMenu
           date={formatDate(currentDate)}
           onPrevDateChange={handlePrevDate}

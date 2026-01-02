@@ -2,7 +2,6 @@ import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
 import type { Meal, MealLog, ProductDetailsBody } from '../types/MealLogs';
-import { indexedDBStorage } from '../utils/indexedDBStorage';
 import { prepareMeals } from '../views/MealLogs/DayOfEating/utils';
 
 type MealLogsState = {
@@ -216,7 +215,7 @@ export const useMealLogsStore = create<MealLogsState>()(
     }),
     {
       name: 'meal-logs-storage',
-      storage: createJSONStorage(() => indexedDBStorage),
+      storage: createJSONStorage(() => localStorage),
       partialize: state => ({
         meals: state.meals,
         currentDate: state.currentDate,
