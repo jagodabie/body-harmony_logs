@@ -2,6 +2,7 @@ import CloseIcon from '@mui/icons-material/Close';
 
 import { Button } from '../../../../components/Button/Button';
 import { useMealLogsStore } from '../../../../stores/useMealLogsStore';
+import { capitalizeFirstLetter } from '../../../../utils/stringUtils';
 import { Macros } from '../Macros/Macros';
 
 import './index.css';
@@ -17,7 +18,7 @@ type ProductProps = {
   fat: number;
 };
 
-export const Product = ({
+export const MealProduct = ({
   mealId,
   productId,
   name,
@@ -31,15 +32,22 @@ export const Product = ({
     state => state.removeProductFromMeal
   );
 
-  const handleDelete = () => {
-    removeProductFromMeal(mealId, productId);
+  const handleDelete = async () => {
+    try {
+      await removeProductFromMeal(mealId, productId);
+    } catch (error) {
+      console.error('[MealProduct] Failed to remove product:', error);
+      // TODO: Show error message to user
+    }
   };
 
   return (
     <div className="meal-product">
       <div className="meal-product__wrapper">
         <div className="meal-product__header">
-          <div className="meal-product__name">{name}</div>
+          <div className="meal-product__name">
+            {capitalizeFirstLetter(name)}
+          </div>
         </div>
         <div className="meal-product__quantity">{quantity} g</div>
         <Macros

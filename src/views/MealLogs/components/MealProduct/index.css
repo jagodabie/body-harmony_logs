@@ -1,7 +1,7 @@
   .meal-product {
     display: flex;
     gap: 30px;
-    padding: 5px 20px;
+    padding: 15px 20px;
     border-top: var(--border-light);
     justify-content: space-between;
     align-items: center;

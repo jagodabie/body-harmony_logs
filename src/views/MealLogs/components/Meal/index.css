@@ -1,7 +1,11 @@
 .meal {
-    padding-bottom: 10px;
+    padding-bottom: 0;
     background-color: var(--color-surface-card);
     margin: 5px 0;
+}
+
+.meal--collapsed {
+    padding-bottom: 34px;
 }
 
 .meal__header {

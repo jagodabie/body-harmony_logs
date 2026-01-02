@@ -3,6 +3,7 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 import { Button } from '../../../../components/Button/Button';
 import { InputBase } from '../../../../components/InputBase/InputBase';
+import { OverlayLoader } from '../../../../components/OverlayLoader/OverlayLoader';
 import { SelectBase } from '../../../../components/SelectBase/SelectBase';
 import { useAddProductToMeal } from '../../../../hooks/useAddProductToMeal/useAddProductToMeal';
 import type {
@@ -21,7 +22,7 @@ type ProductCardProps = {
 export const ProductCard = ({ productDetails, mealId }: ProductCardProps) => {
   const [quantity, setQuantity] = useState<number>(0);
   const [unit, setUnit] = useState<string>('g');
-  const { addProduct } = useAddProductToMeal({
+  const { addProduct, isAdding } = useAddProductToMeal({
     mealId,
     productDetails,
     unit,
@@ -80,6 +81,7 @@ export const ProductCard = ({ productDetails, mealId }: ProductCardProps) => {
               <Button
                 Icon={ArrowForwardIosIcon}
                 onClick={() => handleAddProduct(option.quantity)}
+                disabled={isAdding}
               />
             </div>
           </div>
@@ -119,9 +121,11 @@ export const ProductCard = ({ productDetails, mealId }: ProductCardProps) => {
           <Button
             Icon={ArrowForwardIosIcon}
             onClick={() => handleAddProduct(Number(quantity))}
+            disabled={isAdding || quantity <= 0}
           />
         </div>
       </div>
+      <OverlayLoader isLoading={isAdding} />
     </div>
   );
 };

@@ -10,7 +10,7 @@ import type {
   ProductDetailsBody,
 } from '../../../../types/MealLogs';
 import { Macros } from '../Macros/Macros';
-import { Product as MealProduct } from '../MealProduct/MealProduct';
+import { MealProduct } from '../MealProduct/MealProduct';
 
 import './index.css';
 
@@ -22,7 +22,13 @@ type MealProps = {
   mealTime: string;
 };
 
-export const Meal = ({ mealId, products, macros, mealName, mealTime }: MealProps) => {
+export const Meal = ({
+  mealId,
+  products,
+  macros,
+  mealName,
+  mealTime,
+}: MealProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const handleExpand = () => {
@@ -33,7 +39,7 @@ export const Meal = ({ mealId, products, macros, mealName, mealTime }: MealProps
   console.log('[Meal] Products:', products);
 
   return (
-    <div className="meal">
+    <div className={`meal ${!isExpanded ? 'meal--collapsed' : ''}`}>
       <div className="meal__header">
         <div className="meal__header-content">
           <div className="meal__header-summary">
@@ -42,6 +48,7 @@ export const Meal = ({ mealId, products, macros, mealName, mealTime }: MealProps
               <Button
                 className="meal__header-expand-button"
                 Icon={isExpanded ? ExpandLessIcon : ExpandMoreIcon}
+                disabled={products.length === 0}
                 onClick={handleExpand}
               />
             </span>

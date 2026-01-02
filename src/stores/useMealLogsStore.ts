@@ -12,25 +12,12 @@ type MealLogsState = {
   currentDate: string | null;
   setMeals: (meals: Meal[]) => void;
   fetchCurrentDayMeals: (date: string, force?: boolean) => Promise<void>;
-  createMealOnBackend: (
-    tempMeal: Meal,
-    product?: ProductDetailsBody
-  ) => Promise<Meal>;
-  addProductToMealOnBackend: (
+  createMeal: (tempMeal: Meal, product?: ProductDetailsBody) => Promise<void>;
+  addProductToMeal: (
     mealId: string,
     product: ProductDetailsBody
-  ) => Promise<ProductDetailsBody>;
-  addMeal: (meal: Meal) => void;
-  updateMeal: (mealId: string, updates: Partial<Meal>) => void;
-  updateMealFromBackend: (oldMealId: string, newMeal: Meal) => void;
-  deleteMeal: (mealId: string) => void;
-  addProductToMeal: (mealId: string, product: ProductDetailsBody) => void;
-  removeProductFromMeal: (mealId: string, productId: string) => void;
-  updateProductInMeal: (
-    mealId: string,
-    productId: string,
-    updates: Partial<ProductDetailsBody>
-  ) => void;
+  ) => Promise<void>;
+  removeProductFromMeal: (mealId: string, productId: string) => Promise<void>;
 };
 
 const apiUrl = process.env.REACT_APP_API_BASE_URL;
@@ -82,13 +69,10 @@ export const useMealLogsStore = create<MealLogsState>()(
         }
       },
 
-      createMealOnBackend: async (
-        tempMeal: Meal,
-        product?: ProductDetailsBody
-      ) => {
-        console.log('[createMealOnBackend] Creating meal on BE:', tempMeal);
+      createMeal: async (tempMeal: Meal, product?: ProductDetailsBody) => {
+        console.log('[createMeal] Creating meal:', tempMeal);
         if (product) {
-          console.log('[createMealOnBackend] With product:', product);
+          console.log('[createMeal] With product:', product);
         }
 
         try {
@@ -112,7 +96,7 @@ export const useMealLogsStore = create<MealLogsState>()(
             requestBody.products = [{ ...product, mealId: '' }];
           }
 
-          console.log('[createMealOnBackend] Request body:', requestBody);
+          console.log('[createMeal] Request body:', requestBody);
 
           const response = await fetch(`${apiUrl}/meals`, {
             method: 'POST',
@@ -127,29 +111,27 @@ export const useMealLogsStore = create<MealLogsState>()(
           }
 
           const createdMeal: Meal = await response.json();
-          console.log('[createMealOnBackend] Meal created on BE:', createdMeal);
+          console.log('[createMeal] Meal created on BE:', createdMeal);
 
-          return createdMeal;
+          // Re-fetch current day meals to update frontend
+          const currentDate = tempMeal.date.split('T')[0];
+          const state = useMealLogsStore.getState();
+          await state.fetchCurrentDayMeals(currentDate, true);
         } catch (error) {
           const errorMessage =
             error instanceof Error ? error.message : 'Unknown error';
-          console.error(
-            '[createMealOnBackend] Error creating meal:',
-            errorMessage
-          );
+          console.error('[createMeal] Error creating meal:', errorMessage);
           throw error;
         }
       },
 
-      addProductToMealOnBackend: async (
-        mealId: string,
-        product: ProductDetailsBody
-      ) => {
+      addProductToMeal: async (mealId: string, product: ProductDetailsBody) => {
         console.log(
-          '[addProductToMealOnBackend] Adding product to meal on BE:',
+          '[addProductToMeal] Adding product to meal:',
           mealId,
           product
         );
+
         try {
           const response = await fetch(`${apiUrl}/meals/${mealId}/products`, {
             method: 'POST',
@@ -158,111 +140,78 @@ export const useMealLogsStore = create<MealLogsState>()(
             },
             body: JSON.stringify(product),
           });
+
           if (!response.ok) {
             throw new Error(
               `Failed to add product to meal: ${response.statusText}`
             );
           }
+
           const addedProduct: ProductDetailsBody = await response.json();
           console.log(
-            '[addProductToMealOnBackend] Product added to meal on BE:',
+            '[addProductToMeal] Product added to meal on BE:',
             addedProduct
           );
-          return addedProduct;
+
+          // Re-fetch current day meals to update frontend
+          const state = useMealLogsStore.getState();
+          const meal = state.meals.find(m => m._id === mealId);
+          if (meal) {
+            const currentDate = meal.date.split('T')[0];
+            await state.fetchCurrentDayMeals(currentDate, true);
+          }
         } catch (error) {
           const errorMessage =
             error instanceof Error ? error.message : 'Unknown error';
           console.error(
-            '[addProductToMealOnBackend] Error adding product to meal:',
+            '[addProductToMeal] Error adding product to meal:',
             errorMessage
           );
           throw error;
         }
       },
 
-      addMeal: (meal: Meal) => {
-        set(state => ({
-          meals: [...state.meals, meal],
-        }));
-      },
+      removeProductFromMeal: async (mealId: string, productId: string) => {
+        console.log(
+          '[removeProductFromMeal] Removing product from meal:',
+          mealId,
+          productId
+        );
 
-      updateMeal: (mealId: string, updates: Partial<Meal>) => {
-        set(state => ({
-          meals: state.meals.map(meal =>
-            meal._id === mealId ? { ...meal, ...updates } : meal
-          ),
-        }));
-      },
+        try {
+          const response = await fetch(
+            `${apiUrl}/meals/${mealId}/products/${productId}`,
+            {
+              method: 'DELETE',
+            }
+          );
 
-      updateMealFromBackend: (oldMealId: string, newMeal: Meal) => {
-        set(state => ({
-          meals: state.meals.map(meal =>
-            meal._id === oldMealId ? newMeal : meal
-          ),
-        }));
-      },
-
-      deleteMeal: (mealId: string) => {
-        set(state => ({
-          meals: state.meals.filter(meal => meal._id !== mealId),
-        }));
-      },
-
-      addProductToMeal: (mealId: string, product: ProductDetailsBody) => {
-        // Simple function - only adds product to existing meal
-        // Assumes meal already exists (not temp)
-        set(state => {
-          const meal = state.meals.find(m => m._id === mealId);
-          if (!meal) {
-            console.error(`[addProductToMeal] Meal ${mealId} not found`);
+          if (!response.ok) {
+            throw new Error(
+              `Failed to remove product from meal: ${response.statusText}`
+            );
           }
-          return {
-            meals: state.meals.map(meal =>
-              meal._id === mealId
-                ? {
-                    ...meal,
-                    products: [...meal.products, product],
-                  }
-                : meal
-            ),
-          };
-        });
-      },
 
-      removeProductFromMeal: (mealId: string, productId: string) => {
-        set(state => ({
-          meals: state.meals.map(meal =>
-            meal._id === mealId
-              ? {
-                  ...meal,
-                  products: meal.products.filter(
-                    product => product._id !== productId
-                  ),
-                }
-              : meal
-          ),
-        }));
-      },
+          console.log(
+            '[removeProductFromMeal] Product removed from meal on BE'
+          );
 
-      updateProductInMeal: (
-        mealId: string,
-        productId: string,
-        updates: Partial<ProductDetailsBody>
-      ) => {
-        set(state => ({
-          meals: state.meals.map(meal =>
-            meal._id === mealId
-              ? {
-                  ...meal,
-                  products: meal.products.map(product =>
-                    product._id === productId
-                      ? { ...product, ...updates }
-                      : product
-                  ),
-                }
-              : meal
-          ),
-        }));
+          // Re-fetch current day meals to update frontend
+          const state = useMealLogsStore.getState();
+          const meal = state.meals.find(m => m._id === mealId);
+          if (meal) {
+            const currentDate = meal.date.split('T')[0];
+            await state.fetchCurrentDayMeals(currentDate, true);
+          }
+        } catch (error) {
+          const errorMessage =
+            error instanceof Error ? error.message : 'Unknown error';
+          console.error(
+            '[removeProductFromMeal] Error removing product from meal:',
+            errorMessage
+          );
+          throw error;
+        }
       },
     }),
     {

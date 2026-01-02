@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
+import { OverlayLoader } from '../../../components/OverlayLoader/OverlayLoader';
 import { SyncIndicator } from '../../../components/SyncIndicator';
 import { useDateUtils } from '../../../hooks/useDateUtils';
 import { useMealLogsStore } from '../../../stores/useMealLogsStore';
@@ -12,10 +14,34 @@ import '../index.css';
 
 export const DayOfEating = () => {
   const { formatDate } = useDateUtils();
-  const [currentDate, setCurrentDate] = useState(new Date());
+  const [searchParams] = useSearchParams();
+  const dateParam = searchParams.get('date');
+
+  // Initialize currentDate from URL param if available, otherwise use today
+  const getInitialDate = (): Date => {
+    if (dateParam) {
+      const parsedDate = new Date(dateParam);
+      if (!isNaN(parsedDate.getTime())) {
+        return parsedDate;
+      }
+    }
+    return new Date();
+  };
+
+  const [currentDate, setCurrentDate] = useState(getInitialDate());
   const { meals, isLoading, error, fetchCurrentDayMeals } = useMealLogsStore();
 
   const currentDateString = formatDateString(currentDate);
+
+  // Update currentDate when date param changes
+  useEffect(() => {
+    if (dateParam) {
+      const parsedDate = new Date(dateParam);
+      if (!isNaN(parsedDate.getTime())) {
+        setCurrentDate(parsedDate);
+      }
+    }
+  }, [dateParam]);
 
   useEffect(() => {
     fetchCurrentDayMeals(currentDateString);
@@ -57,9 +83,8 @@ export const DayOfEating = () => {
         />
       </div>
       <div className="day-of-eating__body">
-        {isLoading ? (
-          <div className="day-of-eating__loading">Loading meals...</div>
-        ) : (
+        <OverlayLoader isLoading={isLoading} />
+        {!isLoading &&
           meals.map((meal: MealType) => {
             return (
               <Meal
@@ -71,8 +96,7 @@ export const DayOfEating = () => {
                 macros={meal.macros}
               />
             );
-          })
-        )}
+          })}
       </div>
     </div>
   );
