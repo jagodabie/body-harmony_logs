@@ -63,7 +63,7 @@ export const useAddProductToMeal = ({
 
         // Navigate to meal-logs with the date from the meal that was modified
         const mealDate = meal.date.split('T')[0];
-        navigate('/meal-logs', { state: { date: mealDate } });
+        navigate(`/meal-logs?date=${mealDate}`);
       } catch (error) {
         console.error('[useAddProductToMeal] Failed to add product:', error);
         // TODO: Show error message to user

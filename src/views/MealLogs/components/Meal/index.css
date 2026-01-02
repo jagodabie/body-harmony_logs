@@ -1,9 +1,11 @@
 .meal {
     padding-bottom: 0;
-    background-color: var(--color-surface-card);
     margin: 5px 0;
-}
+    background: var(--color-surface-card);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
 
+}
 .meal--collapsed {
     padding-bottom: 34px;
 }
@@ -13,6 +15,18 @@
     align-items: center;
     justify-content: space-between;
     padding: 0 15px;
+}
+
+.meal__header-summary-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 5px;
+}
+
+/* meal__header-content */
+.meal__header-content {
+   width: 100%;
 }
 
 .meal__header-summary {

@@ -43,16 +43,24 @@ export const Meal = ({
       <div className="meal__header">
         <div className="meal__header-content">
           <div className="meal__header-summary">
-            <span className="meal__header-title">{mealName}</span>
-            <span className="meal__header-expand">
+            <div className="meal__header-summary-content">
+              <span className="meal__header-title">{mealName}</span>
+              <span className="meal__header-expand">
+                <Button
+                  className="meal__header-expand-button"
+                  Icon={isExpanded ? ExpandLessIcon : ExpandMoreIcon}
+                  disabled={products.length === 0}
+                  onClick={handleExpand}
+                />
+              </span>
+              <span className="meal__header-time">{mealTime}</span>
+            </div>
+            <div className="meal__header-actions">
               <Button
-                className="meal__header-expand-button"
-                Icon={isExpanded ? ExpandLessIcon : ExpandMoreIcon}
-                disabled={products.length === 0}
-                onClick={handleExpand}
+                Icon={AddIcon}
+                onClick={() => navigate(`/add-product/${mealId}`)}
               />
-            </span>
-            <span className="meal__header-time">{mealTime}</span>
+            </div>
           </div>
           <Macros
             calories={macros?.calories || 0}
@@ -60,12 +68,6 @@ export const Meal = ({
             carbohydrates={macros?.carbs || 0}
             fat={macros?.fat || 0}
             className="meal__header-macros"
-          />
-        </div>
-        <div className="meal__header-actions">
-          <Button
-            Icon={AddIcon}
-            onClick={() => navigate(`/add-product/${mealId}`)}
           />
         </div>
       </div>

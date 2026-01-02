@@ -63,6 +63,12 @@
     
     /* Layout dimensions */
     --space-header-height: 60px;
+
+    /* Radii */
+    --radius-md: 8px;
+
+    /* Shadows */
+    --shadow-md: 0 3px 5px rgba(0, 0, 0, 0.18);
   }
 
   p, h1, h2, h3, h4, h5, h6, label, input, textarea, select, button {
