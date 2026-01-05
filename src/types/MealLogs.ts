@@ -36,6 +36,7 @@ export type ProductByCodeApiResponse = {
   allergens: string[];
   lastModified?: string | null;
   updatedAt?: string | null;
+  nutritionPer100g: NutrimentsPer100g;
 };
 
 // Keep ProductDetailsResponse as alias for backward compatibility
@@ -59,6 +60,10 @@ export type ProductDetailsBody = Omit<
   productCode: string;
 };
 
+export type ProductDetailsResponseBody = ProductDetailsBody & {
+  nutritionPer100g: NutrimentsPer100g;
+};
+
 // Frontend meal input type
 export type MealInput = {
   _id: string;
@@ -79,7 +84,7 @@ export type Meal = {
   createdAt: string;
   updatedAt: string;
   macros: MacroNutrients;
-  products: ProductDetailsBody[];
+  products: ProductDetailsResponseBody[];
 };
 
 export type MealsByDateResponse = {

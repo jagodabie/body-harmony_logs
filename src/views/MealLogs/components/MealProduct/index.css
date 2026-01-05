@@ -19,12 +19,17 @@
   .meal-product__wrapper {
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 6px;
     flex: 1;
   }
 
   .meal-product__quantity {
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 500;
-    font-style: italic;
+    color: var(--color-muted);
   }
+
+  .macros.meal-product__name {
+    font-size: 16px;
+    font-weight: 600;
+}

@@ -2,6 +2,7 @@ import CloseIcon from '@mui/icons-material/Close';
 
 import { Button } from '../../../../components/Button/Button';
 import { useMealLogsStore } from '../../../../stores/useMealLogsStore';
+import type { NutrimentsPer100g } from '../../../../types/MealLogs';
 import { capitalizeFirstLetter } from '../../../../utils/stringUtils';
 import { Macros } from '../Macros/Macros';
 
@@ -16,6 +17,7 @@ type ProductProps = {
   protein: number;
   carbohydrates: number;
   fat: number;
+  nutritionPer100g: NutrimentsPer100g;
 };
 
 export const MealProduct = ({
@@ -27,6 +29,7 @@ export const MealProduct = ({
   protein,
   carbohydrates,
   fat,
+  nutritionPer100g,
 }: ProductProps) => {
   const removeProductFromMeal = useMealLogsStore(
     state => state.removeProductFromMeal
@@ -41,8 +44,12 @@ export const MealProduct = ({
     }
   };
 
+  const handleClick = () => {
+    console.log('[MealProduct] Clicked:', nutritionPer100g);
+  };
+
   return (
-    <div className="meal-product">
+    <div className="meal-product" onClick={handleClick}>
       <div className="meal-product__wrapper">
         <div className="meal-product__header">
           <div className="meal-product__name">

@@ -7,7 +7,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Button } from '../../../../components/Button/Button';
 import type {
   MacroNutrients,
-  ProductDetailsBody,
+  ProductDetailsResponseBody,
 } from '../../../../types/MealLogs';
 import { Macros } from '../Macros/Macros';
 import { MealProduct } from '../MealProduct/MealProduct';
@@ -16,7 +16,7 @@ import './index.css';
 
 type MealProps = {
   mealId: string;
-  products: ProductDetailsBody[];
+  products: ProductDetailsResponseBody[];
   macros: MacroNutrients;
   mealName: string;
   mealTime: string;
@@ -72,8 +72,7 @@ export const Meal = ({
         </div>
       </div>
       <div className={`meal__body ${isExpanded ? 'meal__body--expanded' : ''}`}>
-        {products.map((product: ProductDetailsBody) => {
-          console.log('[Meal] Product:', product);
+        {products.map(product => {
           return (
             <MealProduct
               key={product._id}
@@ -85,6 +84,7 @@ export const Meal = ({
               protein={product?.nutrition?.proteins}
               carbohydrates={product.nutrition?.carbs}
               fat={product.nutrition?.fat}
+              nutritionPer100g={product.nutritionPer100g}
             />
           );
         })}
