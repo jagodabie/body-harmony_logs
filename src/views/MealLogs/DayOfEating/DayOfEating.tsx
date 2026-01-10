@@ -60,8 +60,6 @@ export const DayOfEating = () => {
     fetchCurrentDayMeals(formatDateString(newDate), true);
   };
 
-  console.log('[DayOfEating] Meals:', meals);
-
   if (error) {
     return (
       <div className="day-of-eating">

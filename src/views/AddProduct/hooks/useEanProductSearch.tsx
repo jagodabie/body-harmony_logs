@@ -60,11 +60,9 @@ export const useEanProductSearch = (): UseEanProductSearchReturn => {
     try {
       setIsLoading(true);
       setError(null);
-      console.log('API Base URL:', process.env.REACT_APP_API_BASE_URL);
       const response = await fetch(
         `${process.env.REACT_APP_API_BASE_URL}/products/${eanCode}`
       );
-      console.log('response', response);
 
       if (!response.ok) {
         if (response.status === 404) {
@@ -74,12 +72,10 @@ export const useEanProductSearch = (): UseEanProductSearchReturn => {
       }
 
       const data = await response.json();
-      console.log('Product EAN searched:', data);
       setProductResponse(data);
       const details = convertProductResponseToProductDetails(data);
       setProductDetails(details);
       // TODO: Add product to meal logs store
-      console.log('Converted product details:', details);
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Unknown error';
       console.error('Error searching product EAN:', errorMessage);

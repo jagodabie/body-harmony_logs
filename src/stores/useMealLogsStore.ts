@@ -36,13 +36,9 @@ export const useMealLogsStore = create<MealLogsState>()(
       fetchCurrentDayMeals: async (date: string, force = false) => {
         const state = useMealLogsStore.getState();
         if (!force && state.currentDate === date && state.meals.length > 0) {
-          console.log(
-            '[fetchCurrentDayMeals] Data for this date already loaded, skipping fetch'
-          );
           return;
         }
 
-        console.log('[fetchCurrentDayMeals] Fetching data for date:', date);
         set({ isLoading: true, error: null });
         try {
           const response = await fetch(
@@ -54,7 +50,6 @@ export const useMealLogsStore = create<MealLogsState>()(
           }
 
           const responseData = await response.json();
-          console.log('response data:', responseData);
           const mealsFromBackend: Meal[] = responseData.meals || [];
 
           const meals = prepareMeals(mealsFromBackend, date);
@@ -69,11 +64,6 @@ export const useMealLogsStore = create<MealLogsState>()(
       },
 
       createMeal: async (tempMeal: Meal, product?: ProductDetailsBody) => {
-        console.log('[createMeal] Creating meal:', tempMeal);
-        if (product) {
-          console.log('[createMeal] With product:', product);
-        }
-
         try {
           const requestBody: {
             name: string;
@@ -95,8 +85,6 @@ export const useMealLogsStore = create<MealLogsState>()(
             requestBody.products = [{ ...product, mealId: '' }];
           }
 
-          console.log('[createMeal] Request body:', requestBody);
-
           const response = await fetch(`${apiUrl}/meals`, {
             method: 'POST',
             headers: {
@@ -110,7 +98,6 @@ export const useMealLogsStore = create<MealLogsState>()(
           }
 
           const createdMeal: Meal = await response.json();
-          console.log('[createMeal] Meal created on BE:', createdMeal);
 
           // Re-fetch current day meals to update frontend
           const currentDate = tempMeal.date.split('T')[0];
@@ -125,12 +112,6 @@ export const useMealLogsStore = create<MealLogsState>()(
       },
 
       addProductToMeal: async (mealId: string, product: ProductDetailsBody) => {
-        console.log(
-          '[addProductToMeal] Adding product to meal:',
-          mealId,
-          product
-        );
-
         try {
           const response = await fetch(`${apiUrl}/meals/${mealId}/products`, {
             method: 'POST',
@@ -147,10 +128,6 @@ export const useMealLogsStore = create<MealLogsState>()(
           }
 
           const addedProduct: ProductDetailsBody = await response.json();
-          console.log(
-            '[addProductToMeal] Product added to meal on BE:',
-            addedProduct
-          );
 
           // Re-fetch current day meals to update frontend
           const state = useMealLogsStore.getState();
@@ -171,12 +148,6 @@ export const useMealLogsStore = create<MealLogsState>()(
       },
 
       removeProductFromMeal: async (mealId: string, productId: string) => {
-        console.log(
-          '[removeProductFromMeal] Removing product from meal:',
-          mealId,
-          productId
-        );
-
         try {
           const response = await fetch(
             `${apiUrl}/meals/${mealId}/products/${productId}`,
@@ -190,10 +161,6 @@ export const useMealLogsStore = create<MealLogsState>()(
               `Failed to remove product from meal: ${response.statusText}`
             );
           }
-
-          console.log(
-            '[removeProductFromMeal] Product removed from meal on BE'
-          );
 
           // Re-fetch current day meals to update frontend
           const state = useMealLogsStore.getState();

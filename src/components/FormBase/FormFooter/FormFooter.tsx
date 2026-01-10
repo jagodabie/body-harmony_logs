@@ -1,3 +1,5 @@
+import './index.css';
+
 type FormFooterProps = {
   canSubmit: boolean;
   onCancel: () => void;
@@ -13,3 +15,4 @@ export const FormFooter = ({ canSubmit, onCancel }: FormFooterProps) => (
     </button>
   </div>
 );
+

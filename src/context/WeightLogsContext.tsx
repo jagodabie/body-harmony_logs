@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
+import { OverlayLoader } from '../components/OverlayLoader/OverlayLoader';
 import { Snackbar } from '../components/Snackbar/Snackbar';
 import type {
   FormWeightLog,
@@ -192,11 +193,9 @@ export const WeightLogsProvider = ({ children }: WeightLogsProviderProps) => {
       }}
     >
       <>
+        <OverlayLoader isLoading={loading} />
         {snackbar && (
-          <Snackbar
-            snackbar={snackbar}
-            onClose={() => setSnackbar(null)}
-          />
+          <Snackbar snackbar={snackbar} onClose={() => setSnackbar(null)} />
         )}
         {children}
       </>

@@ -7,15 +7,9 @@ import { type FormWeightLog } from '../../types/WeightLog';
 import { Button } from '../Button/Button';
 import { GenericLogModal } from '../GenericLogModal/GenericLogModal';
 import { defaultValuesConverter, formFields } from '../GenericLogModal/utils';
-import { withSkeleton } from '../Loading/Loading/withSkeleton/withSkeleton';
 import { WeightLogItem } from './WeightLogItem/WeightLogItem';
 
 import './index.css';
-
-const WeightLogItemWithSkeleton = withSkeleton(WeightLogItem, {
-  height: '200px',
-  marginBottom: '1rem',
-});
 
 export const WeightLogsList = () => {
   const [openModal, setOpenModal] = useState(false);
@@ -26,7 +20,6 @@ export const WeightLogsList = () => {
   }
   const {
     weightLogs,
-    loading,
     setEditedWeightLog,
     createWeightLog,
     editedWeightLog,
@@ -42,8 +35,7 @@ export const WeightLogsList = () => {
       </div>
       <div className="weight-logs-list">
         {weightLogs.map((log) => (
-          <WeightLogItemWithSkeleton
-            loading={loading}
+          <WeightLogItem
             key={log._id}
             weightLog={log}
             onEdit={() => {

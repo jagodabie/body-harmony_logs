@@ -1,0 +1,46 @@
+.form-base__footer {
+  display: flex;
+  gap: 1rem;
+  margin: 1rem;
+}
+
+.primary-button {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: opacity 0.3s ease;
+}
+
+.primary-button:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+.primary-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.cancel-button {
+  border: 1px solid var(--color-primary);
+  color: var(--color-primary);
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  background: none;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.cancel-button:hover:not(:disabled),
+.cancel-button:active:not(:disabled) {
+  background-color: var(--color-primary-82);
+  border: 1px solid var(--color-primary-82);
+  color: var(--color-white);
+}
+

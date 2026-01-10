@@ -47,8 +47,6 @@ export const useAddProductToMeal = ({
 
         const meal = meals.find(m => m._id === mealId);
 
-        console.log('[useAddProductToMeal] Meal:', meal);
-
         if (!meal) {
           console.error('[useAddProductToMeal] Meal not found:', mealId);
           // TODO: Show error message to user
