@@ -44,4 +44,5 @@
 .action-button:disabled:hover {
   background-color: var(--color-transparent);
   transform: none;
-} 
+}
+

@@ -97,7 +97,7 @@ export const useMealLogsStore = create<MealLogsState>()(
             throw new Error(`Failed to create meal: ${response.statusText}`);
           }
 
-          const createdMeal: Meal = await response.json();
+          await response.json();
 
           // Re-fetch current day meals to update frontend
           const currentDate = tempMeal.date.split('T')[0];
@@ -127,7 +127,7 @@ export const useMealLogsStore = create<MealLogsState>()(
             );
           }
 
-          const addedProduct: ProductDetailsBody = await response.json();
+          await response.json();
 
           // Re-fetch current day meals to update frontend
           const state = useMealLogsStore.getState();

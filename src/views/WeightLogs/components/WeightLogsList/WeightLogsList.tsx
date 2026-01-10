@@ -1,23 +1,18 @@
 import { useState } from 'react';
 import AddIcon from '@mui/icons-material/Add';
 
-import { useWeightLogsContext } from '../../context/WeightLogsContext';
-import type { FieldConfig } from '../../types';
-import { type FormWeightLog } from '../../types/WeightLog';
-import { Button } from '../Button/Button';
-import { GenericLogModal } from '../GenericLogModal/GenericLogModal';
-import { defaultValuesConverter, formFields } from '../GenericLogModal/utils';
+import type { FieldConfig } from '../../../../types';
+import { type FormWeightLog } from '../../../../types/WeightLog';
+import { Button } from '../../../../components/Button/Button';
+import { GenericLogModal } from '../../../../components/GenericLogModal/GenericLogModal';
+import { defaultValuesConverter, formFields } from '../../../../components/GenericLogModal/utils';
+import { useWeightLogsStore } from '../../../../stores/useWeightLogsStore';
 import { WeightLogItem } from './WeightLogItem/WeightLogItem';
 
 import './index.css';
 
 export const WeightLogsList = () => {
   const [openModal, setOpenModal] = useState(false);
-  const context = useWeightLogsContext();
-  if (!context) {
-    console.error('WeightLogsContext is not available');
-    return null;
-  }
   const {
     weightLogs,
     setEditedWeightLog,
@@ -25,7 +20,7 @@ export const WeightLogsList = () => {
     editedWeightLog,
     updateWeightLog,
     deleteWeightLog,
-  } = context;
+  } = useWeightLogsStore();
 
   return (
     <div className="weight-logs__container">
@@ -64,3 +59,4 @@ export const WeightLogsList = () => {
     </div>
   );
 };
+

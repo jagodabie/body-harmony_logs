@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { EANCodeScanner } from '../../components/EANCodeScanner/EANCodeScanner';
+import { OverlayLoader } from '../../components/OverlayLoader/OverlayLoader';
 import { ProductCard } from '../../components/ProductCard/ProductCard';
 import type { NutrimentsPer100g, ProductDetails } from '../../types/MealLogs';
 import { ProductSearch } from './components/ProductSearch/ProductSearch';
@@ -53,7 +54,7 @@ export const AddProduct = () => {
               }}
             />
           </div>
-          {isLoading && <div className="add-product__loading">Loading...</div>}
+          <OverlayLoader isLoading={isLoading} />
           {error && (
             <div className="add-product__message" role="alert">
               {error}
