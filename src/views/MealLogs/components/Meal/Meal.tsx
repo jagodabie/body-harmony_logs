@@ -36,8 +36,6 @@ export const Meal = ({
   };
   const navigate = useNavigate();
 
-  console.log('[Meal] Products:', products);
-
   return (
     <div className={`meal ${!isExpanded ? 'meal--collapsed' : ''}`}>
       <div className="meal__header">
@@ -85,6 +83,7 @@ export const Meal = ({
               carbohydrates={product.nutrition?.carbs}
               fat={product.nutrition?.fat}
               nutritionPer100g={product.nutritionPer100g}
+              product={product}
             />
           );
         })}

@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { EANCodeScanner } from '../../components/EANCodeScanner/EANCodeScanner';
+import { ProductCard } from '../../components/ProductCard/ProductCard';
 import type { NutrimentsPer100g, ProductDetails } from '../../types/MealLogs';
-import { ProductCard } from './components/ProductCard/ProductCard';
 import { ProductSearch } from './components/ProductSearch/ProductSearch';
 import { useEanProductSearch } from './hooks/useEanProductSearch';
 

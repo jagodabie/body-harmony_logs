@@ -52,6 +52,7 @@ export const useEanProductSearch = (): UseEanProductSearchReturn => {
       brands: productResponse.brands,
       quantity,
       unit: 'g',
+      
     };
   };
 

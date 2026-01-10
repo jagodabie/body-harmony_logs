@@ -1,16 +1,16 @@
 import { useMemo, useState } from 'react';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
-import { Button } from '../../../../components/Button/Button';
-import { InputBase } from '../../../../components/InputBase/InputBase';
-import { OverlayLoader } from '../../../../components/OverlayLoader/OverlayLoader';
-import { SelectBase } from '../../../../components/SelectBase/SelectBase';
-import { useAddProductToMeal } from '../../../../hooks/useAddProductToMeal/useAddProductToMeal';
+import { useAddProductToMeal } from '../../hooks/useAddProductToMeal/useAddProductToMeal';
 import type {
   NutrimentsPer100g,
   ProductDetails,
-} from '../../../../types/MealLogs';
-import { calculateCalories } from '../../../../utils/macrosCalculator';
+} from '../../types/MealLogs';
+import { calculateCalories } from '../../utils/macrosCalculator';
+import { Button } from '../Button/Button';
+import { InputBase } from '../InputBase/InputBase';
+import { OverlayLoader } from '../OverlayLoader/OverlayLoader';
+import { SelectBase } from '../SelectBase/SelectBase';
 
 import './index.css';
 
@@ -129,3 +129,5 @@ export const ProductCard = ({ productDetails, mealId }: ProductCardProps) => {
     </div>
   );
 };
+
+
