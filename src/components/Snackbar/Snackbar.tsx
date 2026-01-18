@@ -1,10 +1,13 @@
 import { useEffect, useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 
+import type { SnackbarType } from '../../stores/useUIStore';
+
 import './index.css';
 
+
 type SnackbarProps = {
-  snackbar: { message: string; type: 'success' | 'error' };
+  snackbar: { message: string; type: SnackbarType };
   onClose: () => void;
   duration?: number;
 };

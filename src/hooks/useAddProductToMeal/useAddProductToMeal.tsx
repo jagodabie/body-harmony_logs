@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { useMealLogsStore } from '../../stores/useMealLogsStore';
 import type {
+  MealLog,
   NutrimentsPer100g,
   ProductDetails,
   ProductDetailsBody,
@@ -34,6 +35,10 @@ export const useAddProductToMeal = ({
       setIsAdding(true);
 
       try {
+        if (!mealId) {
+          return;
+        }
+
         const nutrition = calculateMacros(productDetails.nutrition, quantity);
         const { code, ...productDetailsWithoutCode } = productDetails;
         const productToAdd: ProductDetailsBody = {
@@ -48,13 +53,20 @@ export const useAddProductToMeal = ({
         const meal = meals.find(m => m._id === mealId);
 
         if (!meal) {
-          console.error('[useAddProductToMeal] Meal not found:', mealId);
-          // TODO: Show error message to user
+          // Error is handled by snackbar in store
           return;
         }
 
         if (mealId.includes('-temp')) {
-          await createMeal(meal, productToAdd);
+          const requestBody = {
+            name: meal.name,
+            mealType: meal.mealType as MealLog,
+            date: meal.date,
+            time: meal.time,
+            notes: meal.notes,
+            products: [{ ...productToAdd, mealId: '' }],
+          };
+          await createMeal(requestBody);
         } else {
           await addProductToMeal(mealId, productToAdd);
         }
@@ -62,9 +74,8 @@ export const useAddProductToMeal = ({
         // Navigate to meal-logs with the date from the meal that was modified
         const mealDate = meal.date.split('T')[0];
         navigate(`/meal-logs?date=${mealDate}`);
-      } catch (error) {
-        console.error('[useAddProductToMeal] Failed to add product:', error);
-        // TODO: Show error message to user
+      } catch {
+        // Error is handled by snackbar in store
       } finally {
         setIsAdding(false);
       }

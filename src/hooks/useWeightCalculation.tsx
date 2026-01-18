@@ -1,5 +1,7 @@
 import { useMemo } from 'react';
 
+import { DEFAULT_HEIGHT_CM } from '../constants';
+
 interface UseWeightCalculationProps {
   weight: number;
   height?: number; // in cm
@@ -20,7 +22,7 @@ const bmiStrategies = [
 
 export const useWeightCalculation = ({
   weight,
-  height = 170,
+  height = DEFAULT_HEIGHT_CM,
 }: UseWeightCalculationProps): WeightCalculationResult => {
   const calculation = useMemo(() => {
     // Convert height from cm to meters
@@ -34,7 +36,7 @@ export const useWeightCalculation = ({
     const {
       category: bmiCategory = 'Unknown',
       isHealthy: isHealthyWeight = false,
-    } = bmiStrategies.find((strategy) => bmiValue < strategy.max) || {};
+    } = bmiStrategies.find(strategy => bmiValue < strategy.max) || {};
 
     return {
       bmi,

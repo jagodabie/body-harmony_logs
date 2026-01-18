@@ -1,11 +1,15 @@
 import { useCallback, useEffect, useState } from 'react';
 
+import { fetchProductByEan } from '../../../api/products.api';
 import type { ScanResult } from '../../../components/EANCodeScanner/types';
+import { extractErrorMessage } from '../../../stores/errorHandling';
+import { useUIStore } from '../../../stores/useUIStore';
 import type {
   NutrimentsPer100g,
   ProductByCodeApiResponse,
   ProductDetails,
 } from '../../../types/MealLogs';
+import { convertProductResponseToProductDetails } from './utils';
 
 type UseEanProductSearchReturn = {
   scanResult: ScanResult | null;
@@ -25,6 +29,7 @@ export const useEanProductSearch = (): UseEanProductSearchReturn => {
     useState<ProductDetails<NutrimentsPer100g> | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const showSnackbar = useUIStore(state => state.showSnackbar);
 
   const handleScanSuccess = (result: ScanResult) => {
     setScanResult(result);
@@ -36,57 +41,45 @@ export const useEanProductSearch = (): UseEanProductSearchReturn => {
     setProductResponse(null);
     setError(null);
   };
-  const convertProductResponseToProductDetails = (
-    productResponse: ProductByCodeApiResponse
-  ): ProductDetails<NutrimentsPer100g> => {
-    // Parse quantity string (e.g., "200 g" -> 200)
-    const quantityMatch = productResponse.quantity.match(/(\d+)/);
-    const quantity = quantityMatch ? parseInt(quantityMatch[1], 10) : 100;
 
-    return {
-      _id: productResponse._id,
-      mealId: '', // Will be set when adding to a meal
-      code: productResponse.code,
-      name: productResponse.name,
-      nutrition: productResponse.nutriments,
-      brands: productResponse.brands,
-      quantity,
-      unit: 'g',
-      
-    };
-  };
 
-  const searchProductByEan = useCallback(async (eanCode: string) => {
-    try {
-      setIsLoading(true);
-      setError(null);
-      const response = await fetch(
-        `${process.env.REACT_APP_API_BASE_URL}/products/${eanCode}`
-      );
+  const searchProductByEan = useCallback(
+    async (eanCode : string) => {
+      // TODO: Remove this after testing
+      // eanCode = "5905186302250"
+      try {
+        setIsLoading(true);
+        setError(null);
+        const data = await fetchProductByEan(eanCode);
+        setProductResponse(data);
+        const details = convertProductResponseToProductDetails(data);
+        setProductDetails(details);
+      } catch (err) {
+        const errorMessage = extractErrorMessage(err);
+        const error = err as Error;
 
-      if (!response.ok) {
-        if (response.status === 404) {
-          throw new Error(`Product with EAN code ${eanCode} not found`);
+        // Handle 404 errors differently - show in UI instead of snackbar
+        // Check if error message contains the default 404 message pattern
+        if (
+          error.message.toLowerCase().includes('not found')
+        ) {
+          setError(errorMessage);
+          setProductResponse(null);
+          setProductDetails(null);
+          setScanResult(null);
+          return;
         }
-        throw new Error(`Failed to fetch product: ${response.statusText}`);
-      }
 
-      const data = await response.json();
-      setProductResponse(data);
-      const details = convertProductResponseToProductDetails(data);
-      setProductDetails(details);
-      // TODO: Add product to meal logs store
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Unknown error';
-      console.error('Error searching product EAN:', errorMessage);
-      setError(errorMessage);
-      setProductResponse(null);
-      setProductDetails(null);
-      setScanResult(null);
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
+        showSnackbar(errorMessage, 'error');
+        setProductResponse(null);
+        setProductDetails(null);
+        setScanResult(null);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [showSnackbar]
+  );
 
   useEffect(() => {
     if (scanResult?.code) {

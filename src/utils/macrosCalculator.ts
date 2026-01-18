@@ -44,6 +44,3 @@ export const calculateMacros = (
     fat: Number(((nutriments.fat_100g ?? 0) * ratio).toFixed(1)),
   };
 };
-
-// Convert product details to products macros
-export const convertProductDetailsToProductsMacros = () => {};

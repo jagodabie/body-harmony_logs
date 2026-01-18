@@ -50,8 +50,7 @@ export const MealProduct = ({
     try {
       await removeProductFromMeal(mealId, productId);
     } catch (error) {
-      console.error('[MealProduct] Failed to remove product:', error);
-      // TODO: Show error message to user
+      // Error is handled by snackbar in store
     }
   };
 

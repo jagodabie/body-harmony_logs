@@ -1,3 +1,4 @@
+import { DEFAULT_HEIGHT_CM } from '../../../../../constants';
 import { useWeightCalculation } from '../../../../../hooks/useWeightCalculation';
 import type { WeightLog } from '../../../../../types/WeightLog';
 import { formatDate, formatTime } from '../../../../../utils/dateUtils';
@@ -16,7 +17,7 @@ interface WeightLogItemProps {
 export const WeightLogItem = ({ weightLog, onEdit, onDelete }: WeightLogItemProps) => {
   const { bmi, bmiCategory } = useWeightCalculation({
     weight: parseFloat(weightLog.value),
-    height: 170, // TODO: get from user profile
+    height: DEFAULT_HEIGHT_CM,
   });
 
   const bmiCategoryClass = `weight-log-item__bmi-label--${bmiCategory.toLowerCase()}`;

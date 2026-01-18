@@ -1,17 +1,33 @@
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
+import {
+  addProductToMeal as addProductToMealApi,
+  createMeal as createMealApi,
+  fetchMealsByDate,
+  removeProductFromMeal as removeProductFromMealApi,
+} from '../api/meals.api';
 import type { Meal, MealLog, ProductDetailsBody } from '../types/MealLogs';
 import { prepareMeals } from '../views/MealLogs/DayOfEating/utils';
+import { extractErrorMessage } from './errorHandling';
+import { useUIStore } from './useUIStore';
+
+type CreateMealRequest = {
+  name: string;
+  mealType: MealLog;
+  date: string;
+  time: string;
+  notes: string | null;
+  products?: ProductDetailsBody[];
+};
 
 type MealLogsState = {
   meals: Meal[];
   isLoading: boolean;
-  error: string | null;
   currentDate: string | null;
   setMeals: (meals: Meal[]) => void;
   fetchCurrentDayMeals: (date: string, force?: boolean) => Promise<void>;
-  createMeal: (tempMeal: Meal, product?: ProductDetailsBody) => Promise<void>;
+  createMeal: (requestBody: CreateMealRequest) => Promise<void>;
   addProductToMeal: (
     mealId: string,
     product: ProductDetailsBody
@@ -19,14 +35,11 @@ type MealLogsState = {
   removeProductFromMeal: (mealId: string, productId: string) => Promise<void>;
 };
 
-const apiUrl = process.env.REACT_APP_API_BASE_URL;
-
 export const useMealLogsStore = create<MealLogsState>()(
   persist(
     set => ({
       meals: [],
       isLoading: false,
-      error: null,
       currentDate: null,
 
       setMeals: (meals: Meal[]) => {
@@ -39,95 +52,43 @@ export const useMealLogsStore = create<MealLogsState>()(
           return;
         }
 
-        set({ isLoading: true, error: null });
+        set({ isLoading: true });
         try {
-          const response = await fetch(
-            `${apiUrl}/meals/by-date/${date}/with-products`
-          );
-
-          if (!response.ok) {
-            throw new Error(`Failed to fetch meals: ${response.statusText}`);
-          }
-
-          const responseData = await response.json();
+          const responseData = await fetchMealsByDate(date);
           const mealsFromBackend: Meal[] = responseData.meals || [];
 
           const meals = prepareMeals(mealsFromBackend, date);
 
           set({ meals, currentDate: date, isLoading: false });
         } catch (error) {
-          const errorMessage =
-            error instanceof Error ? error.message : 'Unknown error';
-          console.error('Error fetching meals:', errorMessage);
-          set({ error: errorMessage, isLoading: false });
+          const errorMessage = extractErrorMessage(error);
+          useUIStore.getState().showSnackbar(errorMessage, 'error');
+          set({ isLoading: false });
         }
       },
 
-      createMeal: async (tempMeal: Meal, product?: ProductDetailsBody) => {
+      createMeal: async (requestBody: CreateMealRequest) => {
         try {
-          const requestBody: {
-            name: string;
-            mealType: MealLog;
-            date: string;
-            time: string;
-            notes: string | null;
-            products?: ProductDetailsBody[];
-          } = {
-            name: tempMeal.name,
-            mealType: tempMeal.mealType,
-            date: tempMeal.date,
-            time: tempMeal.time,
-            notes: tempMeal.notes,
-          };
-
-          // If product is provided, include it in the request
-          if (product) {
-            requestBody.products = [{ ...product, mealId: '' }];
-          }
-
-          const response = await fetch(`${apiUrl}/meals`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(requestBody),
-          });
-
-          if (!response.ok) {
-            throw new Error(`Failed to create meal: ${response.statusText}`);
-          }
-
-          await response.json();
+          await createMealApi(requestBody);
 
           // Re-fetch current day meals to update frontend
-          const currentDate = tempMeal.date.split('T')[0];
+          const currentDate = requestBody.date.split('T')[0];
           const state = useMealLogsStore.getState();
           await state.fetchCurrentDayMeals(currentDate, true);
+
+          useUIStore
+            .getState()
+            .showSnackbar('Meal created successfully', 'success');
         } catch (error) {
-          const errorMessage =
-            error instanceof Error ? error.message : 'Unknown error';
-          console.error('[createMeal] Error creating meal:', errorMessage);
+          const errorMessage = extractErrorMessage(error);
+          useUIStore.getState().showSnackbar(errorMessage, 'error');
           throw error;
         }
       },
 
       addProductToMeal: async (mealId: string, product: ProductDetailsBody) => {
         try {
-          const response = await fetch(`${apiUrl}/meals/${mealId}/products`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(product),
-          });
-
-          if (!response.ok) {
-            throw new Error(
-              `Failed to add product to meal: ${response.statusText}`
-            );
-          }
-
-          await response.json();
+          await addProductToMealApi(mealId, product);
 
           // Re-fetch current day meals to update frontend
           const state = useMealLogsStore.getState();
@@ -136,31 +97,20 @@ export const useMealLogsStore = create<MealLogsState>()(
             const currentDate = meal.date.split('T')[0];
             await state.fetchCurrentDayMeals(currentDate, true);
           }
+
+          useUIStore
+            .getState()
+            .showSnackbar('Product added to meal successfully', 'success');
         } catch (error) {
-          const errorMessage =
-            error instanceof Error ? error.message : 'Unknown error';
-          console.error(
-            '[addProductToMeal] Error adding product to meal:',
-            errorMessage
-          );
+          const errorMessage = extractErrorMessage(error);
+          useUIStore.getState().showSnackbar(errorMessage, 'error');
           throw error;
         }
       },
 
       removeProductFromMeal: async (mealId: string, productId: string) => {
         try {
-          const response = await fetch(
-            `${apiUrl}/meals/${mealId}/products/${productId}`,
-            {
-              method: 'DELETE',
-            }
-          );
-
-          if (!response.ok) {
-            throw new Error(
-              `Failed to remove product from meal: ${response.statusText}`
-            );
-          }
+          await removeProductFromMealApi(mealId, productId);
 
           // Re-fetch current day meals to update frontend
           const state = useMealLogsStore.getState();
@@ -169,13 +119,13 @@ export const useMealLogsStore = create<MealLogsState>()(
             const currentDate = meal.date.split('T')[0];
             await state.fetchCurrentDayMeals(currentDate, true);
           }
+
+          useUIStore
+            .getState()
+            .showSnackbar('Product removed from meal successfully', 'success');
         } catch (error) {
-          const errorMessage =
-            error instanceof Error ? error.message : 'Unknown error';
-          console.error(
-            '[removeProductFromMeal] Error removing product from meal:',
-            errorMessage
-          );
+          const errorMessage = extractErrorMessage(error);
+          useUIStore.getState().showSnackbar(errorMessage, 'error');
           throw error;
         }
       },

@@ -12,22 +12,12 @@ import './index.css';
 
 export const AddProduct = () => {
   const { mealId } = useParams<{ mealId: string }>();
-  // TODO: Add products list when search will be implemented
-  // const [products, setProducts] = useState<ProductDetails<NutrimentsPer100g>[]>(
-  //   []
-  // );
   const [selectedProduct, setSelectedProduct] =
     useState<ProductDetails<NutrimentsPer100g> | null>(null);
-  const { productDetails, isLoading, error, handleScanSuccess, clearProduct } =
+  const { productDetails, isLoading, error, handleScanSuccess } =
     useEanProductSearch();
-
-  // TODO: Add products list when search will be implemented
-  // const handleProductClick = (product: ProductDetails<NutrimentsPer100g>) => {
-  //   setSelectedProduct(prev => (prev?._id === product._id ? null : product));
-  // };
-
-  const handleInvalidScan = (code: string) => {
-    console.warn('Invalid barcode scanned:', code);
+    
+  const handleInvalidScan = () => {
     // TODO: Show user feedback for invalid scan
   };
 
@@ -37,7 +27,7 @@ export const AddProduct = () => {
     } else {
       setSelectedProduct(null);
     }
-  }, [productDetails, clearProduct]);
+  }, [productDetails]);
 
   return (
     <div className="add-product-page">
@@ -60,7 +50,6 @@ export const AddProduct = () => {
               {error}
             </div>
           )}
-          {/* TODO: Add products list  when search will be implemented*/}
           {/* <div className="search-product__list">
             {products.length > 0 &&
               products.map(product => (

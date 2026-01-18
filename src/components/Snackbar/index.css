@@ -26,6 +26,14 @@
     background-color: var(--color-error);
   }
   
+  .snackbar.info {
+    background-color: var(--color-info);
+  }
+  
+  .snackbar.warning {
+    background-color: var(--color-warning);
+  }
+  
   .snackbar-close {
     background: none;
     border: none;

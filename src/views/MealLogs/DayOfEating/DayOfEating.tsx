@@ -28,7 +28,7 @@ export const DayOfEating = () => {
   };
 
   const [currentDate, setCurrentDate] = useState(getInitialDate());
-  const { meals, isLoading, error, fetchCurrentDayMeals } = useMealLogsStore();
+  const { meals, isLoading, fetchCurrentDayMeals } = useMealLogsStore();
 
   const currentDateString = formatDateString(currentDate);
 
@@ -60,13 +60,6 @@ export const DayOfEating = () => {
     fetchCurrentDayMeals(formatDateString(newDate), true);
   };
 
-  if (error) {
-    return (
-      <div className="day-of-eating">
-        <div className="day-of-eating__error">Error: {error}</div>
-      </div>
-    );
-  }
   return (
     <div className="day-of-eating">
       <div className="day-of-eating__header">

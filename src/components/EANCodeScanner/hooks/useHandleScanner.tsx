@@ -61,7 +61,6 @@ export const useHandleScanner = (
         );
         setDeviceId(backCamera?.deviceId || cams[0]?.deviceId);
       } catch (e) {
-        console.debug('Device enumeration failed', e);
         if (mounted) {
           setError({
             type: 'DEVICE_NOT_FOUND',
@@ -185,7 +184,6 @@ export const useHandleScanner = (
         const caps = track?.getCapabilities?.();
         setTorchAvailable(Boolean(caps?.torch));
       } catch (e) {
-        console.debug('Torch capability check failed', e);
         setTorchAvailable(false);
       }
 
@@ -195,13 +193,12 @@ export const useHandleScanner = (
         const camsAfter = listAfter.filter(d => d.kind === 'videoinput');
         setDevices(camsAfter);
       } catch (e) {
-        console.debug('Device list refresh failed', e);
+        // Device list refresh failed - non-critical
       }
 
       controlsRef.current = controls;
       setState('active');
     } catch (e) {
-      console.error('Scanner start failed', e);
       setState('error');
       setError({
         type: 'SCANNER_INIT',
@@ -224,7 +221,7 @@ export const useHandleScanner = (
       });
       setTorchOn(prev => !prev);
     } catch (e) {
-      console.debug('Torch toggle failed', e);
+      // Torch toggle failed - non-critical
     }
   }, [torchAvailable, torchOn]);
 
