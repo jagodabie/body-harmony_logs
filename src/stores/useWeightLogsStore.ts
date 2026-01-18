@@ -13,8 +13,7 @@ import type {
   WeightLog,
 } from '../types/WeightLog';
 import { WeightLogTypes, WeightLogUnits } from '../types/WeightLog';
-import { extractErrorMessage } from './errorHandling';
-import { useUIStore } from './useUIStore';
+import { handleAsyncOperation } from './storeHelpers';
 
 type WeightLogsState = {
   weightLogs: WeightLog[];
@@ -34,14 +33,15 @@ export const useWeightLogsStore = create<WeightLogsState>(set => ({
   editedWeightLog: null,
 
   fetchWeightLogs: async () => {
-    set({ loading: true });
-    try {
-      const data = await fetchWeightLogsApi();
-      set({ weightLogs: data, loading: false });
-    } catch (err) {
-      useUIStore.getState().showSnackbar(extractErrorMessage(err), 'error');
-      set({ loading: false });
-    }
+    await handleAsyncOperation({
+      setLoading: (loading) => set({ loading }),
+      operation: async () => {
+        const data = await fetchWeightLogsApi();
+        set({ weightLogs: data });
+        return data;
+      },
+      showErrorMessage: true,
+    });
   },
 
   updateWeightLog: async (logData: FormWeightLog) => {
@@ -49,8 +49,6 @@ export const useWeightLogsStore = create<WeightLogsState>(set => ({
     if (!state.editedWeightLog) {
       throw new Error('No edited weight log found');
     }
-
-    set({ loading: true });
 
     const updatedLog: UpdateWeightLogRequest = {
       _id: state.editedWeightLog._id,
@@ -64,71 +62,60 @@ export const useWeightLogsStore = create<WeightLogsState>(set => ({
       type: state.editedWeightLog.type,
     };
 
-    try {
-      const updatedLogResponse = await updateWeightLogApi(
-        state.editedWeightLog._id,
-        updatedLog
-      );
-      set(state => ({
-        weightLogs: state.weightLogs.map(log =>
-          log._id === updatedLogResponse._id ? updatedLogResponse : log
-        ),
-        editedWeightLog: null,
-        loading: false,
-      }));
-      useUIStore
-        .getState()
-        .showSnackbar('Weight log updated successfully', 'success');
-    } catch (err) {
-      useUIStore.getState().showSnackbar(extractErrorMessage(err), 'error');
-      set({ loading: false });
-      throw err;
-    }
+    await handleAsyncOperation({
+      setLoading: (loading) => set({ loading }),
+      operation: async () => {
+        const updatedLogResponse = await updateWeightLogApi(
+          state.editedWeightLog!._id,
+          updatedLog
+        );
+        set(state => ({
+          weightLogs: state.weightLogs.map(log =>
+            log._id === updatedLogResponse._id ? updatedLogResponse : log
+          ),
+          editedWeightLog: null,
+        }));
+        return updatedLogResponse;
+      },
+      showSuccessMessage: 'Weight log updated successfully',
+      showErrorMessage: true,
+    });
   },
 
   createWeightLog: async (logData: FormWeightLog) => {
-    set({ loading: true });
-
-    try {
-      const { weight, notes, date } = logData;
-      const newLog = await createWeightLogApi({
-        value: weight,
-        notes,
-        date,
-        type: WeightLogTypes[0],
-        unit: WeightLogUnits[0],
-      });
-      set(state => ({
-        weightLogs: [newLog, ...state.weightLogs],
-        loading: false,
-      }));
-      useUIStore
-        .getState()
-        .showSnackbar('Weight log created successfully', 'success');
-    } catch (err) {
-      useUIStore.getState().showSnackbar(extractErrorMessage(err), 'error');
-      set({ loading: false });
-      throw err;
-    }
+    await handleAsyncOperation({
+      setLoading: (loading) => set({ loading }),
+      operation: async () => {
+        const { weight, notes, date } = logData;
+        const newLog = await createWeightLogApi({
+          value: weight,
+          notes,
+          date,
+          type: WeightLogTypes[0],
+          unit: WeightLogUnits[0],
+        });
+        set(state => ({
+          weightLogs: [newLog, ...state.weightLogs],
+        }));
+        return newLog;
+      },
+      showSuccessMessage: 'Weight log created successfully',
+      showErrorMessage: true,
+    });
   },
 
   deleteWeightLog: async (logId: string) => {
-    set({ loading: true });
-
-    try {
-      await deleteWeightLogApi(logId);
-
-      set(state => ({
-        weightLogs: state.weightLogs.filter(log => log._id !== logId),
-        loading: false,
-      }));
-      useUIStore
-        .getState()
-        .showSnackbar('Weight log deleted successfully', 'success');
-    } catch (err) {
-      useUIStore.getState().showSnackbar(extractErrorMessage(err), 'error');
-      set({ loading: false });
-    }
+    await handleAsyncOperation({
+      setLoading: (loading) => set({ loading }),
+      operation: async () => {
+        await deleteWeightLogApi(logId);
+        set(state => ({
+          weightLogs: state.weightLogs.filter(log => log._id !== logId),
+        }));
+      },
+      showSuccessMessage: 'Weight log deleted successfully',
+      showErrorMessage: true,
+    });
   },
 
   setEditedWeightLog: (log: Nullable<UpdateWeightLogRequest>) => {

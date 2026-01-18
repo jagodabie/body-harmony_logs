@@ -9,8 +9,7 @@ import {
 } from '../api/meals.api';
 import type { Meal, MealLog, ProductDetailsBody } from '../types/MealLogs';
 import { prepareMeals } from '../views/MealLogs/DayOfEating/utils';
-import { extractErrorMessage } from './errorHandling';
-import { useUIStore } from './useUIStore';
+import { handleAsyncOperation } from './storeHelpers';
 
 type CreateMealRequest = {
   name: string;
@@ -52,82 +51,68 @@ export const useMealLogsStore = create<MealLogsState>()(
           return;
         }
 
-        set({ isLoading: true });
-        try {
-          const responseData = await fetchMealsByDate(date);
-          const mealsFromBackend: Meal[] = responseData.meals || [];
-
-          const meals = prepareMeals(mealsFromBackend, date);
-
-          set({ meals, currentDate: date, isLoading: false });
-        } catch (error) {
-          const errorMessage = extractErrorMessage(error);
-          useUIStore.getState().showSnackbar(errorMessage, 'error');
-          set({ isLoading: false });
-        }
+        await handleAsyncOperation({
+          setLoading: (loading) => set({ isLoading: loading }),
+          operation: async () => {
+            const responseData = await fetchMealsByDate(date);
+            const mealsFromBackend: Meal[] = responseData.meals || [];
+            const meals = prepareMeals(mealsFromBackend, date);
+            set({ meals, currentDate: date });
+            return meals;
+          },
+          showErrorMessage: true,
+        });
       },
 
       createMeal: async (requestBody: CreateMealRequest) => {
-        try {
-          await createMealApi(requestBody);
-
-          // Re-fetch current day meals to update frontend
-          const currentDate = requestBody.date.split('T')[0];
-          const state = useMealLogsStore.getState();
-          await state.fetchCurrentDayMeals(currentDate, true);
-
-          useUIStore
-            .getState()
-            .showSnackbar('Meal created successfully', 'success');
-        } catch (error) {
-          const errorMessage = extractErrorMessage(error);
-          useUIStore.getState().showSnackbar(errorMessage, 'error');
-          throw error;
-        }
+        await handleAsyncOperation({
+          setLoading: () => {}, // No loading state for this operation
+          operation: async () => {
+            await createMealApi(requestBody);
+            // Re-fetch current day meals to update frontend
+            const currentDate = requestBody.date.split('T')[0];
+            const state = useMealLogsStore.getState();
+            await state.fetchCurrentDayMeals(currentDate, true);
+          },
+          showSuccessMessage: 'Meal created successfully',
+          showErrorMessage: true,
+        });
       },
 
       addProductToMeal: async (mealId: string, product: ProductDetailsBody) => {
-        try {
-          await addProductToMealApi(mealId, product);
-
-          // Re-fetch current day meals to update frontend
-          const state = useMealLogsStore.getState();
-          const meal = state.meals.find(m => m._id === mealId);
-          if (meal) {
-            const currentDate = meal.date.split('T')[0];
-            await state.fetchCurrentDayMeals(currentDate, true);
-          }
-
-          useUIStore
-            .getState()
-            .showSnackbar('Product added to meal successfully', 'success');
-        } catch (error) {
-          const errorMessage = extractErrorMessage(error);
-          useUIStore.getState().showSnackbar(errorMessage, 'error');
-          throw error;
-        }
+        await handleAsyncOperation({
+          setLoading: () => {}, // No loading state for this operation
+          operation: async () => {
+            await addProductToMealApi(mealId, product);
+            // Re-fetch current day meals to update frontend
+            const state = useMealLogsStore.getState();
+            const meal = state.meals.find(m => m._id === mealId);
+            if (meal) {
+              const currentDate = meal.date.split('T')[0];
+              await state.fetchCurrentDayMeals(currentDate, true);
+            }
+          },
+          showSuccessMessage: 'Product added to meal successfully',
+          showErrorMessage: true,
+        });
       },
 
       removeProductFromMeal: async (mealId: string, productId: string) => {
-        try {
-          await removeProductFromMealApi(mealId, productId);
-
-          // Re-fetch current day meals to update frontend
-          const state = useMealLogsStore.getState();
-          const meal = state.meals.find(m => m._id === mealId);
-          if (meal) {
-            const currentDate = meal.date.split('T')[0];
-            await state.fetchCurrentDayMeals(currentDate, true);
-          }
-
-          useUIStore
-            .getState()
-            .showSnackbar('Product removed from meal successfully', 'success');
-        } catch (error) {
-          const errorMessage = extractErrorMessage(error);
-          useUIStore.getState().showSnackbar(errorMessage, 'error');
-          throw error;
-        }
+        await handleAsyncOperation({
+          setLoading: () => {}, // No loading state for this operation
+          operation: async () => {
+            await removeProductFromMealApi(mealId, productId);
+            // Re-fetch current day meals to update frontend
+            const state = useMealLogsStore.getState();
+            const meal = state.meals.find(m => m._id === mealId);
+            if (meal) {
+              const currentDate = meal.date.split('T')[0];
+              await state.fetchCurrentDayMeals(currentDate, true);
+            }
+          },
+          showSuccessMessage: 'Product removed from meal successfully',
+          showErrorMessage: true,
+        });
       },
     }),
     {

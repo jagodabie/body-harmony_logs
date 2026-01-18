@@ -9,7 +9,6 @@ export const fetchProductByEan = async (
   const response = await fetch(`${apiUrl}/products/${eanCode}`, {
     cache: 'no-cache',
   });
-console.log(response);
   if (!response.ok) {
     throw await parseApiError(
       response,
