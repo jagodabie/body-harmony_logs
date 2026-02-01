@@ -1,7 +1,6 @@
 import type { UpdateWeightLogRequest, WeightLog } from '../types/WeightLog';
+import { bodyMetricsUrl } from './config';
 import { parseApiError } from './errorHandling';
-
-const apiUrl = process.env.REACT_APP_API_BASE_URL;
 
 type CreateWeightLogRequest = {
   value: string;
@@ -12,7 +11,7 @@ type CreateWeightLogRequest = {
 };
 
 export const fetchWeightLogs = async (): Promise<WeightLog[]> => {
-  const response = await fetch(`${apiUrl}/logs`, {
+  const response = await fetch(bodyMetricsUrl, {
     cache: 'no-cache',
   });
 
@@ -32,7 +31,7 @@ export const updateWeightLog = async (
   id: string,
   body: UpdateWeightLogRequest
 ): Promise<WeightLog> => {
-  const response = await fetch(`${apiUrl}/logs/${id}`, {
+  const response = await fetch(`${bodyMetricsUrl}/${id}`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(body),
@@ -49,7 +48,7 @@ export const updateWeightLog = async (
 export const createWeightLog = async (
   body: CreateWeightLogRequest
 ): Promise<WeightLog> => {
-  const response = await fetch(`${apiUrl}/logs`, {
+  const response = await fetch(bodyMetricsUrl, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -66,7 +65,7 @@ export const createWeightLog = async (
 };
 
 export const deleteWeightLog = async (logId: string): Promise<void> => {
-  const response = await fetch(`${apiUrl}/logs/${logId}`, {
+  const response = await fetch(`${bodyMetricsUrl}/${logId}`, {
     method: 'DELETE',
     cache: 'no-cache',
   });

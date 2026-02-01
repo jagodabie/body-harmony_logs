@@ -1,7 +1,6 @@
 import type { Meal, MealLog, ProductDetailsBody } from '../types/MealLogs';
+import { mealsUrl } from './config';
 import { parseApiError } from './errorHandling';
-
-const apiUrl = process.env.REACT_APP_API_BASE_URL;
 
 type CreateMealRequest = {
   name: string;
@@ -20,7 +19,7 @@ export const fetchMealsByDate = async (
   date: string
 ): Promise<MealsByDateResponse> => {
   const response = await fetch(
-    `${apiUrl}/meals/by-date/${date}/with-products`,
+    `${mealsUrl}/by-date/${date}/with-products`,
     {
       cache: 'no-cache',
     }
@@ -41,7 +40,7 @@ export const fetchMealsByDate = async (
 export const createMeal = async (
   requestBody: CreateMealRequest
 ): Promise<void> => {
-  const response = await fetch(`${apiUrl}/meals`, {
+  const response = await fetch(mealsUrl, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -61,7 +60,7 @@ export const addProductToMeal = async (
   mealId: string,
   product: ProductDetailsBody
 ): Promise<void> => {
-  const response = await fetch(`${apiUrl}/meals/${mealId}/products`, {
+  const response = await fetch(`${mealsUrl}/${mealId}/products`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -82,7 +81,7 @@ export const removeProductFromMeal = async (
   productId: string
 ): Promise<void> => {
   const response = await fetch(
-    `${apiUrl}/meals/${mealId}/products/${productId}`,
+    `${mealsUrl}/${mealId}/products/${productId}`,
     {
       method: 'DELETE',
       cache: 'no-cache',
