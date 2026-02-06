@@ -43,10 +43,6 @@
     border-bottom: var(--border);
 }
 
-.product-card__quantity-button {
-    margin: 0 10px;
-}
-
 .product-card__quantity-button > .button {
     border-radius: 50px;
     padding: 10px;
