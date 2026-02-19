@@ -1,7 +1,6 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import { fetchProductByEan } from '../../../api/products.api';
-import type { ScanResult } from '../../../components/EANCodeScanner/types';
 import { extractErrorMessage } from '../../../stores/errorHandling';
 import { useUIStore } from '../../../stores/useUIStore';
 import type {
@@ -12,17 +11,16 @@ import type {
 import { convertProductResponseToProductDetails } from './utils';
 
 type UseEanProductSearchReturn = {
-  scanResult: ScanResult | null;
   productResponse: ProductByCodeApiResponse | null;
   productDetails: ProductDetails<NutrimentsPer100g> | null;
   isLoading: boolean;
   error: string | null;
-  handleScanSuccess: (result: ScanResult) => void;
+  setError: (error: string | null) => void;
+  searchByEan: (code: string) => void;
   clearProduct: () => void;
 };
 
 export const useEanProductSearch = (): UseEanProductSearchReturn => {
-  const [scanResult, setScanResult] = useState<ScanResult | null>(null);
   const [productResponse, setProductResponse] =
     useState<ProductByCodeApiResponse | null>(null);
   const [productDetails, setProductDetails] =
@@ -31,20 +29,14 @@ export const useEanProductSearch = (): UseEanProductSearchReturn => {
   const [error, setError] = useState<string | null>(null);
   const showSnackbar = useUIStore(state => state.showSnackbar);
 
-  const handleScanSuccess = (result: ScanResult) => {
-    setScanResult(result);
-  };
-
   const clearProduct = () => {
     setProductDetails(null);
-    setScanResult(null);
     setProductResponse(null);
     setError(null);
   };
 
-
   const searchProductByEan = useCallback(
-    async (eanCode : string) => {
+    async (eanCode: string) => {
       // TODO: Remove this after testing
       // eanCode = "5905186302250"
       try {
@@ -60,20 +52,16 @@ export const useEanProductSearch = (): UseEanProductSearchReturn => {
 
         // Handle 404 errors differently - show in UI instead of snackbar
         // Check if error message contains the default 404 message pattern
-        if (
-          error.message.toLowerCase().includes('not found')
-        ) {
+        if (error.message.toLowerCase().includes('not found')) {
           setError(errorMessage);
           setProductResponse(null);
           setProductDetails(null);
-          setScanResult(null);
           return;
         }
 
         showSnackbar(errorMessage, 'error');
         setProductResponse(null);
         setProductDetails(null);
-        setScanResult(null);
       } finally {
         setIsLoading(false);
       }
@@ -81,20 +69,20 @@ export const useEanProductSearch = (): UseEanProductSearchReturn => {
     [showSnackbar]
   );
 
-  useEffect(() => {
-    if (scanResult?.code) {
-      searchProductByEan(scanResult.code);
-    }
-  }, [scanResult, searchProductByEan]);
+  const searchByEan = useCallback(
+    (code: string) => {
+      searchProductByEan(code);
+    },
+    [searchProductByEan]
+  );
 
   return {
-    scanResult,
     productResponse,
     productDetails,
     isLoading,
     error,
-    handleScanSuccess,
+    setError,
+    searchByEan,
     clearProduct,
   };
 };
-

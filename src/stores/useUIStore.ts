@@ -24,4 +24,3 @@ export const useUIStore = create<UIState>(set => ({
     set({ snackbar: null });
   },
 }));
-

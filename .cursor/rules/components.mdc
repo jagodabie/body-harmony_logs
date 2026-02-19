@@ -1,51 +1,74 @@
 ---
-description: Rules for components and hooks (TypeScript)
+description: React component template (TypeScript + local index.css)
 globs:
-  - '**/*.ts'
-  - '**/*.tsx'
+  - "**/src/components/**/index.tsx"
+  - "**/src/components/**/index.css"
 alwaysApply: true
 ---
 
-# Components & Hooks Organization
+# Components (React + TypeScript + index.css)
 
-- Every **new component** or **hook** lives in its **own folder**. Structure:
+## Folder structure
 
-  ```
-  src/components/ComponentName/
-    ComponentName.tsx
-    ComponentName.types.ts
-    index.ts
-  ```
+Every component must live in its own folder:
 
-  - **React component (`ComponentName.tsx`):**
+``` src/components/ComponentName/ComponentName.tsx ```
 
-  ```tsx
-  type ComponentNameProps = {
-    
-  } 
+- The component implementation is always in `ComponentName.tsx`.
+- Styles are always in `index.css` in the same folder.
+- Each component must import its local CSS file at the top:
+``` import "./index.css" ```
 
-  export const ComponentName = (props: ComponentNameProps) => {
-    const { children, className, ...rest } = props;
-    return (
-      <div className={className} {...rest}>
-        {children}
-      </div>
-    );
-  };
-  ```
+Do not use:
+- CSS Modules
+- styled-components
+- emotion
+- inline styles
 
-  For hooks:
+Do not import CSS from outside the component folder.
 
-  ```
-  src/hooks/useSomething/
-    useSomething.tsx
-  ```
+## Hooks folder
 
-- ComponentNameProps always in component file ComponentName.tsx
+Component logic (state, effects, data fetching, event handlers) must be extracted into custom hooks and placed in a `hooks/` subfolder inside the component folder:
 
-- **Component:**
+```
+src/components/ComponentName/
+├── ComponentName.tsx
+├── index.css
+└── hooks/
+    └── useComponentLogic.ts
+```
 
+- Each hook lives in its own file named after the hook (e.g. `useDebouncedSearch.ts`).
+- Hooks are imported in the component file:
   ```ts
-  // src/components/ComponentName/index.ts
-  export { ComponentName } from './componentName';
+  import { useDebouncedSearch } from "./hooks/useDebouncedSearch";
   ```
+- The component file should focus on rendering (JSX) — keep business logic in hooks.
+- If a component has only trivial state (e.g. a single `useState` toggle), a hooks folder is not required.
+
+## Props definition
+
+Props must be defined in the same file (ComponentName.tsx).
+Use type, not interface.
+Props must be named ```type ComponentNameProps = {} ```.
+
+
+## Component declaration
+
+Use named export only (no default export).
+Always use arrow function.
+Always destructure props in the function parameter.
+Always set className = "" as default value.
+
+```tsx
+export const ComponentName = ({
+  className = "",
+}: ComponentNameProps) => {
+  return (
+    <div className={`component-name ${className}`}>
+      ...
+    </div>
+  );
+};
+```

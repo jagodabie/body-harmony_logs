@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { EANCodeScanner } from '../../components/EANCodeScanner/EANCodeScanner';
 import { OverlayLoader } from '../../components/OverlayLoader/OverlayLoader';
 import { ProductCard } from '../../components/ProductCard/ProductCard';
+import { useUIStore } from '../../stores/useUIStore';
 import type { NutrimentsPer100g, ProductDetails } from '../../types/MealLogs';
 import { ProductSearch } from './components/ProductSearch/ProductSearch';
 import { useEanProductSearch } from './hooks/useEanProductSearch';
@@ -14,12 +15,24 @@ export const AddProduct = () => {
   const { mealId } = useParams<{ mealId: string }>();
   const [selectedProduct, setSelectedProduct] =
     useState<ProductDetails<NutrimentsPer100g> | null>(null);
-  const { productDetails, isLoading, error, handleScanSuccess } =
+  const { productDetails, isLoading, error, setError, searchByEan } =
     useEanProductSearch();
-    
-  const handleInvalidScan = () => {
-    // TODO: Show user feedback for invalid scan
-  };
+  const showSnackbar = useUIStore(state => state.showSnackbar);
+
+  const handleInvalidBarcode = useCallback(
+    (code: string) => {
+      showSnackbar(
+        `Invalid barcode: ${code}. Please check and try again.`,
+        'warning'
+      );
+    },
+    [showSnackbar]
+  );
+
+  const handleTextSearch = useCallback((query: string) => {
+    /* TODO: text search API when available */
+    void query;
+  }, []);
 
   useEffect(() => {
     if (productDetails) {
@@ -34,13 +47,17 @@ export const AddProduct = () => {
       {!selectedProduct && (
         <>
           <div className="add-product__search">
-            <ProductSearch />
+            <ProductSearch
+              onValidBarcodeDetected={searchByEan}
+              onTextSearch={handleTextSearch}
+              onChangeEanCode={setError}
+            />
             <EANCodeScanner
-              onScanSuccess={handleScanSuccess}
+              onScanSuccess={result => searchByEan(result.code)}
               config={{
                 validateChecksum: true,
                 debounceMs: 1500,
-                onInvalidScan: handleInvalidScan,
+                onInvalidScan: handleInvalidBarcode,
               }}
             />
           </div>

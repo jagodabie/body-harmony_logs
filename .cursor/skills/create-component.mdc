@@ -1,0 +1,66 @@
+---
+name: create-component
+description: Create a React component using the project component template (index.tsx + index.css)
+---
+
+# Skill: Create Component
+
+## Input
+
+- `name` – component name in PascalCase (e.g. Macros, Button, NutritionCard)
+
+---
+
+## Instructions
+
+When asked to create a component with a given `name`:
+
+1. Create a folder:
+
+`src/components/{name}/`
+
+2. Inside the folder create:
+
+componentName file `name.tsx `
+
+1. Generate `name.tsx` with this structure:
+
+- Import local CSS using:
+
+```tsx
+import './index.css';
+```
+
+4. Generate file structure.
+
+```tsx
+import "./index.css";
+
+type {name}Props = {
+  className?: string;
+};
+
+export const {name} = ({
+  className = "",
+}: {name}Props) => {
+  return (
+    <div className={`{kebab-name} ${className}`}>
+      <div className="{kebab-name}__content">
+        {name} component
+      </div>
+    </div>
+  );
+};
+
+```
+
+5.  Generate empty index.css with base selector:
+    `.{kebab-name} {}`
+
+    No default export.
+    No interface (only type).
+    No inline styles.
+    No CSS modules.
+    No styled-components.
+    No extra files.
+    Always use 2-space indentation.

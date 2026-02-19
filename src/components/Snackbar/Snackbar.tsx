@@ -5,7 +5,6 @@ import type { SnackbarType } from '../../stores/useUIStore';
 
 import './index.css';
 
-
 type SnackbarProps = {
   snackbar: { message: string; type: SnackbarType };
   onClose: () => void;
