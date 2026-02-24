@@ -1,7 +1,11 @@
-import { type Meal as MealType, type MealLog, MealLogs } from '../../../../types/MealLogs';
+import {
+  type Meal as MealType,
+  type MealLog,
+  MealLogs,
+} from '../../../../types/MealLogs';
 
 export const formatDateString = (date: Date): string =>
-    date.toISOString().split('T')[0];
+  date.toISOString().split('T')[0];
 
 export const prepareMeals = (meals: MealType[], date: string): MealType[] => {
   const defaultTimes: Record<MealLog, string> = {
@@ -18,7 +22,7 @@ export const prepareMeals = (meals: MealType[], date: string): MealType[] => {
     }
 
     return {
-      _id: `${mealType}-${date}-temp`,
+      id: `${mealType}-${date}-temp`,
       mealType,
       products: [],
       name: mealType,

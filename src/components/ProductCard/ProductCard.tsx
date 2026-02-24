@@ -2,10 +2,7 @@ import { useMemo, useState } from 'react';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 import { useAddProductToMeal } from '../../hooks/useAddProductToMeal/useAddProductToMeal';
-import type {
-  NutrimentsPer100g,
-  ProductDetails,
-} from '../../types/MealLogs';
+import type { ProductDetails } from '../../types/MealLogs';
 import { calculateCalories } from '../../utils/macrosCalculator';
 import { Button } from '../Button/Button';
 import { InputBase } from '../InputBase/InputBase';
@@ -15,7 +12,7 @@ import { SelectBase } from '../SelectBase/SelectBase';
 import './index.css';
 
 type ProductCardProps = {
-  productDetails: ProductDetails<NutrimentsPer100g>;
+  productDetails: ProductDetails;
   mealId: string;
 };
 
@@ -35,23 +32,23 @@ export const ProductCard = ({ productDetails, mealId }: ProductCardProps) => {
       {
         id: 'full-package',
         label: `1 package (${totalQuantity}g)`,
-        value: calculateCalories(productDetails.nutrition, totalQuantity),
+        value: calculateCalories(productDetails.nutritionPer100g, totalQuantity),
         quantity: totalQuantity,
       },
       {
         id: 'per-100g',
         label: 'per 100g',
-        value: calculateCalories(productDetails.nutrition, 100),
+        value: calculateCalories(productDetails.nutritionPer100g, 100),
         quantity: 100,
       },
       {
         id: 'half-package',
         label: `1/2 package (${totalQuantity / 2}g)`,
-        value: calculateCalories(productDetails.nutrition, totalQuantity / 2),
+        value: calculateCalories(productDetails.nutritionPer100g, totalQuantity / 2),
         quantity: totalQuantity / 2,
       },
     ];
-  }, [productDetails.quantity, productDetails.nutrition]);
+  }, [productDetails.quantity, productDetails.nutritionPer100g]);
 
   const handleAddProduct = async (productQuantity: number) => {
     await addProduct(productQuantity);
@@ -115,7 +112,7 @@ export const ProductCard = ({ productDetails, mealId }: ProductCardProps) => {
           required
         />
         <div className="product-card__kcal">
-          {calculateCalories(productDetails.nutrition, quantity)} kcal
+          {calculateCalories(productDetails.nutritionPer100g, quantity)} kcal
         </div>
         <div className="product-card__quantity-button">
           <Button

@@ -23,14 +23,14 @@ export const ProductSearch = ({
   className = '',
   onChangeEanCode,
 }: ProductSearchProps) => {
-  const { value, handleChange, handleBlur, handleKeyDown, feedback } =
+  const { value, handleChange, handleBlur, handleKeyDown, validation } =
     useDebouncedSearch({
       onValidBarcodeDetected,
       onTextSearch,
       onInvalidBarcode,
     });
 
-  const { validationClass, helperText, isError } = feedback;
+  const { validationClass, helperText, isError } = validation;
 
   return (
     <FormControl

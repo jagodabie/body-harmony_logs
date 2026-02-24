@@ -5,7 +5,7 @@ import { EANCodeScanner } from '../../components/EANCodeScanner/EANCodeScanner';
 import { OverlayLoader } from '../../components/OverlayLoader/OverlayLoader';
 import { ProductCard } from '../../components/ProductCard/ProductCard';
 import { useUIStore } from '../../stores/useUIStore';
-import type { NutrimentsPer100g, ProductDetails } from '../../types/MealLogs';
+import type { ProductDetails } from '../../types/MealLogs';
 import { ProductSearch } from './components/ProductSearch/ProductSearch';
 import { useEanProductSearch } from './hooks/useEanProductSearch';
 
@@ -14,7 +14,7 @@ import './index.css';
 export const AddProduct = () => {
   const { mealId } = useParams<{ mealId: string }>();
   const [selectedProduct, setSelectedProduct] =
-    useState<ProductDetails<NutrimentsPer100g> | null>(null);
+    useState<ProductDetails | null>(null);
   const { productDetails, isLoading, error, setError, searchByEan } =
     useEanProductSearch();
   const showSnackbar = useUIStore(state => state.showSnackbar);
@@ -71,7 +71,7 @@ export const AddProduct = () => {
             {products.length > 0 &&
               products.map(product => (
                 <div
-                  key={product._id}
+                  key={product.id}
                   className="search-product__item"
                   onClick={() => handleProductClick(product)}
                 >
@@ -82,10 +82,10 @@ export const AddProduct = () => {
                     Quantity: {product.quantity} g
                   </div>
                   <Macros
-                    calories={product.nutrition?.['energy-kcal_100g'] ?? 0}
-                    protein={product.nutrition?.proteins_100g ?? 0}
-                    carbohydrates={product.nutrition?.carbohydrates_100g ?? 0}
-                    fat={product.nutrition?.fat_100g ?? 0}
+                    calories={product.nutritionPer100g?.calories ?? 0}
+                    protein={product.nutritionPer100g?.proteins ?? 0}
+                    carbohydrates={product.nutritionPer100g?.carbs ?? 0}
+                    fat={product.nutritionPer100g?.fat ?? 0}
                     className="search-product__item-macros"
                   />
                 </div>

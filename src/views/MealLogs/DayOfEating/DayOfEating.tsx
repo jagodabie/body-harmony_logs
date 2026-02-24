@@ -75,8 +75,8 @@ export const DayOfEating = () => {
           meals.map((meal: MealType) => {
             return (
               <Meal
-                key={meal._id}
-                mealId={meal._id}
+                key={meal.id}
+                mealId={meal.id}
                 products={meal.products}
                 mealName={meal.name}
                 mealTime={meal.time}

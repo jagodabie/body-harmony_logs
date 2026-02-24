@@ -52,7 +52,7 @@ export const useMealLogsStore = create<MealLogsState>()(
         }
 
         await handleAsyncOperation({
-          setLoading: (loading) => set({ isLoading: loading }),
+          setLoading: loading => set({ isLoading: loading }),
           operation: async () => {
             const responseData = await fetchMealsByDate(date);
             const mealsFromBackend: Meal[] = responseData.meals || [];
@@ -86,7 +86,7 @@ export const useMealLogsStore = create<MealLogsState>()(
             await addProductToMealApi(mealId, product);
             // Re-fetch current day meals to update frontend
             const state = useMealLogsStore.getState();
-            const meal = state.meals.find(m => m._id === mealId);
+            const meal = state.meals.find(m => m.id === mealId);
             if (meal) {
               const currentDate = meal.date.split('T')[0];
               await state.fetchCurrentDayMeals(currentDate, true);
@@ -104,7 +104,7 @@ export const useMealLogsStore = create<MealLogsState>()(
             await removeProductFromMealApi(mealId, productId);
             // Re-fetch current day meals to update frontend
             const state = useMealLogsStore.getState();
-            const meal = state.meals.find(m => m._id === mealId);
+            const meal = state.meals.find(m => m.id === mealId);
             if (meal) {
               const currentDate = meal.date.split('T')[0];
               await state.fetchCurrentDayMeals(currentDate, true);
@@ -125,4 +125,3 @@ export const useMealLogsStore = create<MealLogsState>()(
     }
   )
 );
-

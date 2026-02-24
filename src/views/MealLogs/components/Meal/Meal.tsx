@@ -73,16 +73,15 @@ export const Meal = ({
         {products.map(product => {
           return (
             <MealProduct
-              key={product._id}
+              key={product.id}
               mealId={mealId}
-              productId={product._id}
+              productId={product.id}
               name={product.name}
               quantity={product.quantity}
-              calories={product?.nutrition?.calories}
-              protein={product?.nutrition?.proteins}
-              carbohydrates={product.nutrition?.carbs}
-              fat={product.nutrition?.fat}
-              nutritionPer100g={product.nutritionPer100g}
+              calories={product.nutritionPer100g?.calories ?? 0}
+              protein={product.nutritionPer100g?.proteins ?? 0}
+              carbohydrates={product.nutritionPer100g?.carbs ?? 0}
+              fat={product.nutritionPer100g?.fat ?? 0}
               product={product}
             />
           );

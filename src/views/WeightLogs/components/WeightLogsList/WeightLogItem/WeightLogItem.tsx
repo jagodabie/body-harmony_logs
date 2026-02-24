@@ -37,7 +37,7 @@ export const WeightLogItem = ({ weightLog, onEdit, onDelete }: WeightLogItemProp
               <EditIcon />
             </ActionButton>
             <ActionButton
-              onClick={() => onDelete(weightLog._id)}
+              onClick={() => onDelete(weightLog.id)}
               ariaLabel="Delete entry"
               variant="delete"
             >

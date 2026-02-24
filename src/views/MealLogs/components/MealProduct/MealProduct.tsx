@@ -5,7 +5,6 @@ import { Button } from '../../../../components/Button/Button';
 import { ProductCard } from '../../../../components/ProductCard/ProductCard';
 import { useMealLogsStore } from '../../../../stores/useMealLogsStore';
 import type {
-  NutrimentsPer100g,
   ProductDetails,
   ProductDetailsResponseBody,
 } from '../../../../types/MealLogs';
@@ -23,7 +22,6 @@ type ProductProps = {
   protein: number;
   carbohydrates: number;
   fat: number;
-  nutritionPer100g: NutrimentsPer100g;
   product: ProductDetailsResponseBody;
 };
 
@@ -60,13 +58,13 @@ export const MealProduct = ({
 
   const convertToProductDetails = (
     product: ProductDetailsResponseBody
-  ): ProductDetails<NutrimentsPer100g> => {
+  ): ProductDetails => {
     return {
-      _id: product._id,
+      id: product.id,
       mealId: product.mealId,
       code: product.productCode,
       name: product.name,
-      nutrition: product.nutritionPer100g,
+      nutritionPer100g: product.nutritionPer100g,
       brands: product.brands,
       quantity: product.quantity,
       unit: product.unit,

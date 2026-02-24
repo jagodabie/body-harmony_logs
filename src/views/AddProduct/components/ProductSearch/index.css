@@ -10,16 +10,20 @@
 
 .search-input {
   padding: 4px;
+}
+
+.search-input .MuiInputBase-input {
+  border: 1.5px solid var(--color-transparent);
+  border-radius: var(--radius-sm);
+  box-shadow: 0 0 0 2px var(--color-transparent);
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .search-input--invalid .MuiInputBase-input {
-  border: 1.5px solid var(--color-error);
-  border-radius: var(--radius-sm);
+  border-color: var(--color-error);
   box-shadow: 0 0 0 2px var(--color-red-10);
 }
 
 .search-input--valid .MuiInputBase-input {
-  border: 1.5px solid var(--color-success);
-  border-radius: var(--radius-sm);
+  border-color: var(--color-success);
 }

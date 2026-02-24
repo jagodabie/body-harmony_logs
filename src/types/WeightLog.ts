@@ -7,7 +7,7 @@ export type WeightLogUnit = typeof WeightLogUnits[number];
 export type Nullable<T> = T | null;
 
 export interface WeightLog {
-  _id: string;
+  id: string;
   type: WeightLogType;
   value: string;
   unit: WeightLogUnit;
@@ -23,7 +23,7 @@ export interface FormWeightLog {
   date: string;
 } 
 export interface UpdateWeightLogRequest {
-  _id: string,
+  id: string,
   type: WeightLogType,
   value: string,
   unit: WeightLogUnit,

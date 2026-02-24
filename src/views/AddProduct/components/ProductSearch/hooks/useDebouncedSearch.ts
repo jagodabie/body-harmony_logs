@@ -1,62 +1,10 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
-import {
-  type BarcodeValidationState,
-  getBarcodeValidationState,
-  isValidBarcode,
-} from '../../../../../utils/barcodeValidation';
+import { useBarcodeInput } from './useBarcodeInput';
 
 const DEBOUNCE_MS = 400;
 const MIN_TEXT_SEARCH_LENGTH = 3;
 const DIGITS_ONLY = /^\d+$/;
-const VALID_EAN_LENGTHS = [8, 13];
-
-type SearchInputFeedback = {
-  validationClass: string;
-  helperText: string | null;
-  isError: boolean;
-};
-
-export const getSearchInputFeedback = (
-  barcodeValidation: BarcodeValidationState,
-  inputLength: number
-): SearchInputFeedback => {
-  switch (barcodeValidation) {
-    case 'typing': {
-      if (inputLength < 8) {
-        return {
-          validationClass: 'search-input--invalid',
-          helperText: 'EAN code is too short',
-          isError: true,
-        };
-      }
-      return {
-        validationClass: 'search-input--invalid',
-        helperText: `Invalid EAN length. Valid lengths: ${VALID_EAN_LENGTHS.join(', ')}`,
-        isError: true,
-      };
-    }
-    case 'invalid':
-      return {
-        validationClass: 'search-input--invalid',
-        helperText: 'EAN code is invalid',
-        isError: true,
-      };
-    case 'valid':
-      return {
-        validationClass: 'search-input--valid',
-        helperText: null,
-        isError: false,
-      };
-    case 'idle':
-    default:
-      return {
-        validationClass: '',
-        helperText: null,
-        isError: false,
-      };
-  }
-};
 
 type UseDebouncedSearchParams = {
   onValidBarcodeDetected: (code: string) => void;
@@ -71,16 +19,11 @@ export const useDebouncedSearch = ({
 }: UseDebouncedSearchParams) => {
   const [value, setValue] = useState('');
 
-  const barcodeValidation = useMemo(() => {
-    const trimmed = value.trim();
-    if (trimmed.length === 0) return 'idle';
-    return getBarcodeValidationState(trimmed);
-  }, [value]);
-
-  const feedback = useMemo(
-    () => getSearchInputFeedback(barcodeValidation, value.trim().length),
-    [barcodeValidation, value]
-  );
+  const { validation, submitBarcode } = useBarcodeInput({
+    value,
+    onValidBarcodeDetected,
+    onInvalidBarcode,
+  });
 
   useEffect(() => {
     const trimmed = value.trim();
@@ -93,19 +36,6 @@ export const useDebouncedSearch = ({
 
     return () => window.clearTimeout(timer);
   }, [value, onTextSearch]);
-
-  const submitBarcode = useCallback(
-    (trimmed: string) => {
-      if (!DIGITS_ONLY.test(trimmed)) return;
-      if (isValidBarcode(trimmed)) {
-        onValidBarcodeDetected(trimmed);
-        return;
-      }
-
-      onInvalidBarcode?.(trimmed);
-    },
-    [onValidBarcodeDetected, onInvalidBarcode]
-  );
 
   const handleChange = useCallback((newValue: string) => {
     setValue(newValue);
@@ -133,7 +63,6 @@ export const useDebouncedSearch = ({
     handleChange,
     handleBlur,
     handleKeyDown,
-    barcodeValidation,
-    feedback,
+    validation,
   };
 };

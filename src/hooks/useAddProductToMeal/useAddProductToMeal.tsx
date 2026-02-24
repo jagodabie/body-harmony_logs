@@ -4,15 +4,13 @@ import { useNavigate } from 'react-router-dom';
 import { useMealLogsStore } from '../../stores/useMealLogsStore';
 import type {
   MealLog,
-  NutrimentsPer100g,
   ProductDetails,
   ProductDetailsBody,
 } from '../../types/MealLogs';
-import { calculateMacros } from '../../utils/macrosCalculator';
 
 type UseAddProductToMealParams = {
   mealId: string;
-  productDetails: ProductDetails<NutrimentsPer100g>;
+  productDetails: ProductDetails;
   unit: string;
 };
 
@@ -39,18 +37,16 @@ export const useAddProductToMeal = ({
           return;
         }
 
-        const nutrition = calculateMacros(productDetails.nutrition, quantity);
         const { code, ...productDetailsWithoutCode } = productDetails;
         const productToAdd: ProductDetailsBody = {
           ...productDetailsWithoutCode,
-          nutrition,
           mealId,
           quantity,
           productCode: code,
           unit,
         };
 
-        const meal = meals.find(m => m._id === mealId);
+        const meal = meals.find(m => m.id === mealId);
 
         if (!meal) {
           // Error is handled by snackbar in store

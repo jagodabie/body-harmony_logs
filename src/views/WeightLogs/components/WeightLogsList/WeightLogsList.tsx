@@ -34,13 +34,13 @@ export const WeightLogsList = () => {
       <div className="weight-logs-list">
         {weightLogs.map((log) => (
           <WeightLogItem
-            key={log._id}
+            key={log.id}
             weightLog={log}
             onEdit={() => {
               setEditedWeightLog(log);
               setOpenModal(true);
             }}
-            onDelete={() => deleteWeightLog(log._id)}
+            onDelete={() => deleteWeightLog(log.id)}
           />
         ))}
         {openModal && (

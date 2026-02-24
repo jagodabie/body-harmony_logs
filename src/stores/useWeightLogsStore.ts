@@ -51,7 +51,7 @@ export const useWeightLogsStore = create<WeightLogsState>(set => ({
     }
 
     const updatedLog: UpdateWeightLogRequest = {
-      _id: state.editedWeightLog._id,
+      id: state.editedWeightLog.id,
       value: logData.weight || state.editedWeightLog.value,
       unit: state.editedWeightLog.unit,
       notes:
@@ -66,12 +66,12 @@ export const useWeightLogsStore = create<WeightLogsState>(set => ({
       setLoading: (loading) => set({ loading }),
       operation: async () => {
         const updatedLogResponse = await updateWeightLogApi(
-          state.editedWeightLog!._id,
+          state.editedWeightLog!.id,
           updatedLog
         );
         set(state => ({
           weightLogs: state.weightLogs.map(log =>
-            log._id === updatedLogResponse._id ? updatedLogResponse : log
+            log.id === updatedLogResponse.id ? updatedLogResponse : log
           ),
           editedWeightLog: null,
         }));
@@ -110,7 +110,7 @@ export const useWeightLogsStore = create<WeightLogsState>(set => ({
       operation: async () => {
         await deleteWeightLogApi(logId);
         set(state => ({
-          weightLogs: state.weightLogs.filter(log => log._id !== logId),
+          weightLogs: state.weightLogs.filter(log => log.id !== logId),
         }));
       },
       showSuccessMessage: 'Weight log deleted successfully',

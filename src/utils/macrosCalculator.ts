@@ -1,46 +1,31 @@
-import type {
-  NutrimentsPer100g,
-  NutrimentsPerQuantity,
-} from '../types/MealLogs';
-
-export type CalculatedMacros = {
-  calories: number;
-  protein: number;
-  carbs: number;
-  fat: number;
-};
+import type { MacroNutrients } from '../types/MealLogs';
 
 export const calculateCalories = (
-  nutriments: NutrimentsPer100g | undefined,
+  nutritionPer100g: MacroNutrients | undefined,
   quantity: number
 ): number => {
-  if (!nutriments || quantity <= 0) {
+  if (!nutritionPer100g || quantity <= 0) {
     return 0;
   }
 
   const ratio = quantity / 100;
-  return Math.round((nutriments['energy-kcal_100g'] ?? 0) * ratio);
+  return Math.round(nutritionPer100g.calories * ratio);
 };
 
 export const calculateMacros = (
-  nutriments: NutrimentsPer100g | undefined,
+  nutritionPer100g: MacroNutrients | undefined,
   quantity: number
-): NutrimentsPerQuantity => {
-  if (!nutriments || quantity <= 0) {
-    return {
-      calories: 0,
-      proteins: 0,
-      carbs: 0,
-      fat: 0,
-    };
+): MacroNutrients => {
+  if (!nutritionPer100g || quantity <= 0) {
+    return { calories: 0, proteins: 0, carbs: 0, fat: 0 };
   }
 
   const ratio = quantity / 100;
 
   return {
-    calories: Math.round((nutriments['energy-kcal_100g'] ?? 0) * ratio),
-    proteins: Number(((nutriments.proteins_100g ?? 0) * ratio).toFixed(1)),
-    carbs: Number(((nutriments.carbohydrates_100g ?? 0) * ratio).toFixed(1)),
-    fat: Number(((nutriments.fat_100g ?? 0) * ratio).toFixed(1)),
+    calories: Math.round(nutritionPer100g.calories * ratio),
+    proteins: Number((nutritionPer100g.proteins * ratio).toFixed(1)),
+    carbs: Number((nutritionPer100g.carbs * ratio).toFixed(1)),
+    fat: Number((nutritionPer100g.fat * ratio).toFixed(1)),
   };
 };

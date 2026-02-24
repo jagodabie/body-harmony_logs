@@ -4,7 +4,6 @@ import { fetchProductByEan } from '../../../api/products.api';
 import { extractErrorMessage } from '../../../stores/errorHandling';
 import { useUIStore } from '../../../stores/useUIStore';
 import type {
-  NutrimentsPer100g,
   ProductByCodeApiResponse,
   ProductDetails,
 } from '../../../types/MealLogs';
@@ -12,7 +11,7 @@ import { convertProductResponseToProductDetails } from './utils';
 
 type UseEanProductSearchReturn = {
   productResponse: ProductByCodeApiResponse | null;
-  productDetails: ProductDetails<NutrimentsPer100g> | null;
+  productDetails: ProductDetails | null;
   isLoading: boolean;
   error: string | null;
   setError: (error: string | null) => void;
@@ -24,7 +23,7 @@ export const useEanProductSearch = (): UseEanProductSearchReturn => {
   const [productResponse, setProductResponse] =
     useState<ProductByCodeApiResponse | null>(null);
   const [productDetails, setProductDetails] =
-    useState<ProductDetails<NutrimentsPer100g> | null>(null);
+    useState<ProductDetails | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const showSnackbar = useUIStore(state => state.showSnackbar);
