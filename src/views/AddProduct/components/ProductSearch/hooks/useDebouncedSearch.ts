@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useBarcodeInput } from './useBarcodeInput';
 
@@ -37,25 +37,22 @@ export const useDebouncedSearch = ({
     return () => window.clearTimeout(timer);
   }, [value, onTextSearch]);
 
-  const handleChange = useCallback((newValue: string) => {
+  const handleChange = (newValue: string) => {
     setValue(newValue);
-  }, []);
+  };
 
-  const handleBlur = useCallback(() => {
+  const handleBlur = () => {
     const trimmed = value.trim();
     if (trimmed.length === 0) return;
     submitBarcode(trimmed);
-  }, [value, submitBarcode]);
+  };
 
-  const handleKeyDown = useCallback(
-    (e: React.KeyboardEvent<HTMLInputElement>) => {
-      if (e.key !== 'Enter') return;
-      const trimmed = value.trim();
-      if (trimmed.length === 0) return;
-      submitBarcode(trimmed);
-    },
-    [value, submitBarcode]
-  );
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key !== 'Enter') return;
+    const trimmed = value.trim();
+    if (trimmed.length === 0) return;
+    submitBarcode(trimmed);
+  };
 
   return {
     value,

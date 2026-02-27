@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import type { FieldConfig } from '../../types';
 import type { Nullable } from '../../types/WeightLog';
@@ -38,24 +38,21 @@ export const FormBase = <TForm,>({
     );
   }, [formData]);
 
-  const handleSubmit = useCallback(
-    async (e: React.FormEvent<HTMLFormElement>) => {
-      e.preventDefault();
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
-      const fieldErrors = handleSubmitValidation(formData, fields);
-      setErrors(fieldErrors);
+    const fieldErrors = handleSubmitValidation(formData, fields);
+    setErrors(fieldErrors);
 
-      if (Object.values(fieldErrors).some(error => error !== '')) {
-        return;
-      }
+    if (Object.values(fieldErrors).some(error => error !== '')) {
+      return;
+    }
 
-      handleClose();
-      await onSubmit(formData);
-      setFormData(createEmptyFormData(fields));
-      setErrors({});
-    },
-    [formData, fields, onSubmit, handleClose]
-  );
+    handleClose();
+    await onSubmit(formData);
+    setFormData(createEmptyFormData(fields));
+    setErrors({});
+  };
 
   return (
     <form className="form-base__container" onSubmit={handleSubmit}>

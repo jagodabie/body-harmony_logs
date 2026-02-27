@@ -30,6 +30,8 @@ export const ProductSearch = ({
       onInvalidBarcode,
     });
 
+  console.log('Product re-re');
+
   const { validationClass, helperText, isError } = validation;
 
   return (

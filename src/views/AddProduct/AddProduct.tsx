@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { EANCodeScanner } from '../../components/EANCodeScanner/EANCodeScanner';
@@ -13,21 +13,19 @@ import './index.css';
 
 export const AddProduct = () => {
   const { mealId } = useParams<{ mealId: string }>();
-  const [selectedProduct, setSelectedProduct] =
-    useState<ProductDetails | null>(null);
-  const { productDetails, isLoading, error, setError, searchByEan } =
+  const [selectedProduct, setSelectedProduct] = useState<ProductDetails | null>(
+    null
+  );
+  const { productDetails, isLoading, error, setError, searchProductByEan } =
     useEanProductSearch();
   const showSnackbar = useUIStore(state => state.showSnackbar);
 
-  const handleInvalidBarcode = useCallback(
-    (code: string) => {
-      showSnackbar(
-        `Invalid barcode: ${code}. Please check and try again.`,
-        'warning'
-      );
-    },
-    [showSnackbar]
-  );
+  const handleInvalidBarcode = (code: string) => {
+    showSnackbar(
+      `Invalid barcode: ${code}. Please check and try again.`,
+      'warning'
+    );
+  };
 
   const handleTextSearch = useCallback((query: string) => {
     /* TODO: text search API when available */
@@ -42,18 +40,28 @@ export const AddProduct = () => {
     }
   }, [productDetails]);
 
+  console.log('Add Product re-re');
+
+  const scannerConfig = useMemo(
+    () => ({
+      validateChecksum: true,
+      debounceMs: 1500,
+      onInvalidScan: handleInvalidBarcode,
+    }),
+    [handleInvalidBarcode]
+  );
   return (
     <div className="add-product-page">
       {!selectedProduct && (
         <>
           <div className="add-product__search">
             <ProductSearch
-              onValidBarcodeDetected={searchByEan}
+              onValidBarcodeDetected={searchProductByEan}
               onTextSearch={handleTextSearch}
               onChangeEanCode={setError}
             />
             <EANCodeScanner
-              onScanSuccess={result => searchByEan(result.code)}
+              onScanSuccess={result => searchProductByEan(result.code)}
               config={{
                 validateChecksum: true,
                 debounceMs: 1500,

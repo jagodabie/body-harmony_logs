@@ -15,15 +15,16 @@ type UseEanProductSearchReturn = {
   isLoading: boolean;
   error: string | null;
   setError: (error: string | null) => void;
-  searchByEan: (code: string) => void;
+  searchProductByEan: (code: string) => void;
   clearProduct: () => void;
 };
 
 export const useEanProductSearch = (): UseEanProductSearchReturn => {
   const [productResponse, setProductResponse] =
     useState<ProductByCodeApiResponse | null>(null);
-  const [productDetails, setProductDetails] =
-    useState<ProductDetails | null>(null);
+  const [productDetails, setProductDetails] = useState<ProductDetails | null>(
+    null
+  );
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const showSnackbar = useUIStore(state => state.showSnackbar);
@@ -68,20 +69,13 @@ export const useEanProductSearch = (): UseEanProductSearchReturn => {
     [showSnackbar]
   );
 
-  const searchByEan = useCallback(
-    (code: string) => {
-      searchProductByEan(code);
-    },
-    [searchProductByEan]
-  );
-
   return {
     productResponse,
     productDetails,
     isLoading,
     error,
     setError,
-    searchByEan,
+    searchProductByEan,
     clearProduct,
   };
 };
