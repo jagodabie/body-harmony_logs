@@ -7,7 +7,7 @@ description: Create a React component using the project component template (inde
 
 ## Input
 
-- `name` – component name in PascalCase (e.g. Macros, Button, NutritionCard)
+- `name` – component name in PascalCase (e.g. Macros, Button, NutrientsCard)
 
 ---
 
