@@ -43,7 +43,7 @@ export const DayOfEating = () => {
   }, [dateParam]);
 
   useEffect(() => {
-    fetchCurrentDayMeals(currentDateString);
+    fetchCurrentDayMeals(currentDateString, true);
   }, [currentDateString, fetchCurrentDayMeals]);
 
   const handlePrevDate = () => {

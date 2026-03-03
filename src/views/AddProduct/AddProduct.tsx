@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { EANCodeScanner } from '../../components/EANCodeScanner/EANCodeScanner';
@@ -40,16 +40,6 @@ export const AddProduct = () => {
     }
   }, [productDetails]);
 
-  console.log('Add Product re-re');
-
-  const scannerConfig = useMemo(
-    () => ({
-      validateChecksum: true,
-      debounceMs: 1500,
-      onInvalidScan: handleInvalidBarcode,
-    }),
-    [handleInvalidBarcode]
-  );
   return (
     <div className="add-product-page">
       {!selectedProduct && (

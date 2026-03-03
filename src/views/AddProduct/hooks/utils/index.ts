@@ -8,7 +8,7 @@ export const convertProductResponseToProductDetails = (
       mealId: '',
       code: productResponse.code,
       name: productResponse.name,
-      nutritionPer100g: productResponse.nutritionPer100g,
+      nutrientsPer100g: productResponse.nutrientsPer100g,
       brands: productResponse.brands,
       quantity: 100,
       unit: 'g',

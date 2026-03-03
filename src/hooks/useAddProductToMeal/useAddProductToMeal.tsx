@@ -37,12 +37,9 @@ export const useAddProductToMeal = ({
           return;
         }
 
-        const { code, ...productDetailsWithoutCode } = productDetails;
         const productToAdd: ProductDetailsBody = {
-          ...productDetailsWithoutCode,
-          mealId,
+          productCode: productDetails.code,
           quantity,
-          productCode: code,
           unit,
         };
 
@@ -60,7 +57,7 @@ export const useAddProductToMeal = ({
             date: meal.date,
             time: meal.time,
             notes: meal.notes,
-            products: [{ ...productToAdd, mealId: '' }],
+            products: [productToAdd],
           };
           await createMeal(requestBody);
         } else {

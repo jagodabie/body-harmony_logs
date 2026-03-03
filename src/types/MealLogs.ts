@@ -17,7 +17,7 @@ export type ProductByCodeApiResponse = {
   nutriscore: string;
   allergens: string[];
   updatedAt?: string | null;
-  nutritionPer100g: MacroNutrients;
+  nutrientsPer100g: MacroNutrients;
 };
 
 export type ProductDetails = {
@@ -25,15 +25,17 @@ export type ProductDetails = {
   mealId: string;
   code: string;
   name: string;
-  nutritionPer100g: MacroNutrients;
+  nutrientsPer100g: MacroNutrients;
   brands: string;
   quantity: number;
   unit: string;
 };
 
-export type ProductDetailsBody = Omit<ProductDetails, 'code'> & {
+export interface ProductDetailsBody {
   productCode: string;
-};
+  quantity: number;
+  unit?: string;
+}
 
 export type ProductDetailsResponseBody = Omit<ProductDetails, 'code'> & {
   productCode: string;

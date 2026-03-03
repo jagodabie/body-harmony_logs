@@ -11,19 +11,10 @@ type CreateMealRequest = {
   products?: ProductDetailsBody[];
 };
 
-type MealsByDateResponse = {
-  meals: Meal[];
-};
-
-export const fetchMealsByDate = async (
-  date: string
-): Promise<MealsByDateResponse> => {
-  const response = await fetch(
-    `${mealsUrl}/by-date/${date}/with-products`,
-    {
-      cache: 'no-cache',
-    }
-  );
+export const fetchMealsByDate = async (date: string): Promise<Meal[]> => {
+  const response = await fetch(`${mealsUrl}/by-date/${date}/with-products`, {
+    cache: 'no-cache',
+  });
 
   if (!response.ok) {
     throw await parseApiError(response, 'Failed to fetch meals');
@@ -80,16 +71,12 @@ export const removeProductFromMeal = async (
   mealId: string,
   productId: string
 ): Promise<void> => {
-  const response = await fetch(
-    `${mealsUrl}/${mealId}/products/${productId}`,
-    {
-      method: 'DELETE',
-      cache: 'no-cache',
-    }
-  );
+  const response = await fetch(`${mealsUrl}/${mealId}/products/${productId}`, {
+    method: 'DELETE',
+    cache: 'no-cache',
+  });
 
   if (!response.ok) {
     throw await parseApiError(response, 'Failed to remove product from meal');
   }
 };
-

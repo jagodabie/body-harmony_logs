@@ -1,4 +1,4 @@
-export const WeightLogTypes = ['weight', 'measurement', 'mood', 'energy', 'sleep', 'exercise', 'nutrition', 'water'] as const;
+export const WeightLogTypes = ['weight', 'measurement', 'mood', 'energy', 'sleep', 'exercise', 'nutrients', 'water'] as const;
 export type WeightLogType = typeof WeightLogTypes[number];
 
 export const WeightLogUnits = ['kg', 'cm', 'lbs', 'inches', 'hours', 'minutes', 'glasses', 'calories', 'liters', null] as const;

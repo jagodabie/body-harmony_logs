@@ -1,3 +1,5 @@
+//TODO : przeslanie macros do tego
+
 import FormControl from '@mui/material/FormControl';
 import FormHelperText from '@mui/material/FormHelperText';
 import InputBase from '@mui/material/InputBase';
@@ -29,8 +31,6 @@ export const ProductSearch = ({
       onTextSearch,
       onInvalidBarcode,
     });
-
-  console.log('Product re-re');
 
   const { validationClass, helperText, isError } = validation;
 

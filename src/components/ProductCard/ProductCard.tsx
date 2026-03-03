@@ -32,23 +32,23 @@ export const ProductCard = ({ productDetails, mealId }: ProductCardProps) => {
       {
         id: 'full-package',
         label: `1 package (${totalQuantity}g)`,
-        value: calculateCalories(productDetails.nutritionPer100g, totalQuantity),
+        value: calculateCalories(productDetails.nutrientsPer100g, totalQuantity),
         quantity: totalQuantity,
       },
       {
         id: 'per-100g',
         label: 'per 100g',
-        value: calculateCalories(productDetails.nutritionPer100g, 100),
+        value: calculateCalories(productDetails.nutrientsPer100g, 100),
         quantity: 100,
       },
       {
         id: 'half-package',
         label: `1/2 package (${totalQuantity / 2}g)`,
-        value: calculateCalories(productDetails.nutritionPer100g, totalQuantity / 2),
+        value: calculateCalories(productDetails.nutrientsPer100g, totalQuantity / 2),
         quantity: totalQuantity / 2,
       },
     ];
-  }, [productDetails.quantity, productDetails.nutritionPer100g]);
+  }, [productDetails.quantity, productDetails.nutrientsPer100g]);
 
   const handleAddProduct = async (productQuantity: number) => {
     await addProduct(productQuantity);
@@ -112,7 +112,7 @@ export const ProductCard = ({ productDetails, mealId }: ProductCardProps) => {
           required
         />
         <div className="product-card__kcal">
-          {calculateCalories(productDetails.nutritionPer100g, quantity)} kcal
+          {calculateCalories(productDetails.nutrientsPer100g, quantity)} kcal
         </div>
         <div className="product-card__quantity-button">
           <Button

@@ -64,7 +64,7 @@ export const MealProduct = ({
       mealId: product.mealId,
       code: product.productCode,
       name: product.name,
-      nutritionPer100g: product.nutritionPer100g,
+      nutrientsPer100g: product.nutrientsPer100g,
       brands: product.brands,
       quantity: product.quantity,
       unit: product.unit,

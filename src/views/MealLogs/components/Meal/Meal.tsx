@@ -78,10 +78,10 @@ export const Meal = ({
               productId={product.id}
               name={product.name}
               quantity={product.quantity}
-              calories={product.nutritionPer100g?.calories ?? 0}
-              protein={product.nutritionPer100g?.proteins ?? 0}
-              carbohydrates={product.nutritionPer100g?.carbs ?? 0}
-              fat={product.nutritionPer100g?.fat ?? 0}
+              calories={product.nutrientsPer100g?.calories ?? 0}
+              protein={product.nutrientsPer100g?.proteins ?? 0}
+              carbohydrates={product.nutrientsPer100g?.carbs ?? 0}
+              fat={product.nutrientsPer100g?.fat ?? 0}
               product={product}
             />
           );

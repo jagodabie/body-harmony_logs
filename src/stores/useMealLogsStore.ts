@@ -47,6 +47,7 @@ export const useMealLogsStore = create<MealLogsState>()(
 
       fetchCurrentDayMeals: async (date: string, force = false) => {
         const state = useMealLogsStore.getState();
+
         if (!force && state.currentDate === date && state.meals.length > 0) {
           return;
         }
@@ -55,7 +56,7 @@ export const useMealLogsStore = create<MealLogsState>()(
           setLoading: loading => set({ isLoading: loading }),
           operation: async () => {
             const responseData = await fetchMealsByDate(date);
-            const mealsFromBackend: Meal[] = responseData.meals || [];
+            const mealsFromBackend: Meal[] = responseData || [];
             const meals = prepareMeals(mealsFromBackend, date);
             set({ meals, currentDate: date });
             return meals;
