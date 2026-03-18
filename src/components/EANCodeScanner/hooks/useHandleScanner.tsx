@@ -56,10 +56,16 @@ export const useHandleScanner = (
         if (!mounted) return;
 
         setDevices(cams);
-        const backCamera = cams.find(c =>
-          CAMERA_LABELS.BACK_PATTERN.test(c.label)
-        );
-        setDeviceId(backCamera?.deviceId || cams[0]?.deviceId);
+        // On iOS, labels are empty until camera permission is granted.
+        // If no labels available, leave deviceId undefined so start() falls back
+        // to facingMode: 'environment' which reliably opens the back camera.
+        const hasLabels = cams.some(c => c.label);
+        if (hasLabels) {
+          const backCamera = cams.find(c =>
+            CAMERA_LABELS.BACK_PATTERN.test(c.label)
+          );
+          setDeviceId(backCamera?.deviceId ?? cams[0]?.deviceId);
+        }
       } catch (e) {
         if (mounted) {
           setError({
@@ -177,12 +183,18 @@ export const useHandleScanner = (
         return;
       }
 
-      // Check torch capability
+      // Check torch capability + sync deviceId (important for iOS: labels were
+      // empty on init, so deviceId was undefined and facingMode fallback was used)
       try {
         const stream = videoRef.current?.srcObject as MediaStream | null;
         const track = stream?.getVideoTracks?.()?.[0];
         const caps = track?.getCapabilities?.();
         setTorchAvailable(Boolean(caps?.torch));
+
+        if (!deviceId) {
+          const activeDeviceId = track?.getSettings?.()?.deviceId;
+          if (activeDeviceId) setDeviceId(activeDeviceId);
+        }
       } catch (e) {
         setTorchAvailable(false);
       }

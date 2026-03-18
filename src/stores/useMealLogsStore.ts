@@ -58,7 +58,7 @@ export const useMealLogsStore = create<MealLogsState>()(
             const responseData = await fetchMealsByDate(date);
             const mealsFromBackend: Meal[] = responseData || [];
             const meals = prepareMeals(mealsFromBackend, date);
-            set({ meals, currentDate: date });
+                        set({ meals, currentDate: date });
             return meals;
           },
           showErrorMessage: true,

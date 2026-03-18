@@ -1,3 +1,4 @@
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import clsx from 'clsx';
 
 import { ScannerControls } from './components/ScannerControls';
@@ -25,12 +26,10 @@ export const EANCodeScanner = ({
     devices,
     deviceId,
     setDeviceId,
-    state,
     error,
     start,
     stop,
     closeVideoArea,
-    showVideoArea,
     isActive,
     isInitializing,
   } = useHandleScanner(onScanSuccess, config);
@@ -40,7 +39,6 @@ export const EANCodeScanner = ({
       className={clsx('scanner', className, {
         'scanner--active': isActive,
         'scanner--initializing': isInitializing,
-        'scanner--error': state === 'error',
       })}
     >
       <ScannerControls
@@ -53,10 +51,10 @@ export const EANCodeScanner = ({
         onStart={start}
         onClose={closeVideoArea}
       />
-
-      {error && showVideoArea && (
-        <div className="scanner__error" role="alert">
-          <strong>Scanner Error:</strong> {error.message}
+      {error && !isActive && (
+        <div className="scanner__inline-error" role="alert">
+          <ErrorOutlineIcon className="scanner__inline-error-icon" />
+          <span>{error.message}</span>
         </div>
       )}
       <ScannerVideo videoRef={videoRef} active={isActive} onStop={stop} />

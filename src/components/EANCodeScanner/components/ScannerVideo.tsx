@@ -28,7 +28,9 @@ export const ScannerVideo = ({
             autoPlay
             playsInline
           />
-          <div className="scanner__overlay" aria-hidden />
+          <div className="scanner__overlay" aria-hidden>
+            <div className="scanner__scan-line" aria-hidden />
+          </div>
         </div>
         <Button
           label="Cancel"
