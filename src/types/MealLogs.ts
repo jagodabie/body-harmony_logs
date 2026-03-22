@@ -8,18 +8,8 @@ export type MacroNutrients = {
   fat: number;
 };
 
-export type ProductNutriments = {
-  'energy-kcal_100g': number;
-  proteins_100g: number;
-  fat_100g: number;
-  'saturated-fat_100g': number;
-  carbohydrates_100g: number;
-  sugars_100g: number;
-  salt_100g: number;
-};
-
 export type ProductByCodeApiResponse = {
-  _id: string;
+  id: string;
   code: string;
   name: string;
   brands: string;
@@ -27,7 +17,7 @@ export type ProductByCodeApiResponse = {
   nutriscore: string;
   allergens: string[];
   updatedAt?: string | null;
-  nutriments: ProductNutriments;
+  nutrientsPer100g: MacroNutrients;
 };
 
 export type ProductDetails = {
