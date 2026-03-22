@@ -27,6 +27,12 @@ export const useDebouncedSearch = ({
 
   useEffect(() => {
     const trimmed = value.trim();
+
+    if (trimmed.length === 0) {
+      onTextSearch?.('');
+      return;
+    }
+
     if (trimmed.length < MIN_TEXT_SEARCH_LENGTH) return;
     if (DIGITS_ONLY.test(trimmed)) return;
 

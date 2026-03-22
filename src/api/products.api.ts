@@ -17,3 +17,18 @@ export const fetchProductByEan = async (
 
   return await response.json();
 };
+
+export const fetchProductsByName = async (
+  query: string,
+  limit = 10
+): Promise<ProductByCodeApiResponse[]> => {
+  const response = await fetch(
+    `${productsUrl}/search?q=${encodeURIComponent(query)}&limit=${limit}`,
+    { cache: 'no-cache' }
+  );
+  if (!response.ok) {
+    throw await parseApiError(response, 'Failed to search products');
+  }
+
+  return await response.json();
+};
