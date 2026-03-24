@@ -101,3 +101,7 @@ Available tokens: `--color-primary`, `--color-surface`, `--color-text`, `--space
 
 1. Authentication (currently none — single-user)
 2. Testing agent (no FE tests — intentional for now)
+
+### Proactive Suggestions
+- Propose improvements proactively, but **always ask before implementing**.
+- Keep suggestions focused — no unsolicited refactors beyond what was asked.
