@@ -28,8 +28,13 @@ npm run dev:tunnel   # cloudflared tunnel (PWA testing on mobile)
 Single environment variable — backend URL:
 
 ```
-VITE_API_URL=http://localhost:PORT
+VITE_API_URL=http://localhost:PORT   # local dev (.env)
+VITE_API_URL=https://web-production-e7a84.up.railway.app  # production
 ```
+
+- `.env` — local dev, ignored by git
+- `.env.production` — local production build, ignored by git
+- **Vercel** — set `VITE_API_URL` in project Settings → Environment Variables (Vite injects it at build time)
 
 Backend is hosted on Railway in production. FE deployed on Vercel. No staging — dev and production only.
 
