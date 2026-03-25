@@ -41,7 +41,7 @@
   transform: translateY(-50%);
   color: var(--color-muted);
   pointer-events: none;
-  background: white;
+  background: var(--color-surface-card);
   transition: all 0.2s ease;
   padding: 0 0.25rem;
   font-size: 12px;
