@@ -1,4 +1,4 @@
-import type { Meal, MealLog, ProductDetailsBody } from '../types/MealLogs';
+import type { MealLog, MealsByDateResponse, ProductDetailsBody } from '../types/MealLogs';
 import { mealsUrl } from './config';
 import { parseApiError } from './errorHandling';
 
@@ -11,7 +11,7 @@ type CreateMealRequest = {
   products?: ProductDetailsBody[];
 };
 
-export const fetchMealsByDate = async (date: string): Promise<Meal[]> => {
+export const fetchMealsByDate = async (date: string): Promise<MealsByDateResponse> => {
   const response = await fetch(`${mealsUrl}/by-date/${date}/with-products`, {
     cache: 'no-cache',
   });

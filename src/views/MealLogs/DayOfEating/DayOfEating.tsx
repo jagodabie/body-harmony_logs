@@ -5,6 +5,7 @@ import { OverlayLoader } from '../../../components/OverlayLoader/OverlayLoader';
 import { useDateUtils } from '../../../hooks/useDateUtils';
 import { useMealLogsStore } from '../../../stores/useMealLogsStore';
 import { type Meal as MealType } from '../../../types/MealLogs';
+import { CalorieProgressBar } from '../components/CalorieProgressBar/CalorieProgressBar';
 import { DateMenu } from '../components/DateMenu/DateMenu';
 import { Meal } from '../components/Meal/Meal';
 import { formatDateString } from './utils/index';
@@ -28,7 +29,7 @@ export const DayOfEating = () => {
   };
 
   const [currentDate, setCurrentDate] = useState(getInitialDate());
-  const { meals, isLoading, fetchCurrentDayMeals } = useMealLogsStore();
+  const { meals, dailyTotals, isLoading, fetchCurrentDayMeals } = useMealLogsStore();
 
   const currentDateString = formatDateString(currentDate);
 
@@ -84,6 +85,9 @@ export const DayOfEating = () => {
               />
             );
           })}
+      </div>
+      <div className="day-of-eating__footer">
+      {dailyTotals && <CalorieProgressBar consumed={dailyTotals} />}
       </div>
     </div>
   );

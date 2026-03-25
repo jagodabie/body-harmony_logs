@@ -1,0 +1,37 @@
+.macro-bar {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.macro-bar__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.macro-bar__label {
+  font-size: 0.7rem;
+  color: var(--color-muted);
+}
+
+.macro-bar__value {
+  font-size: 0.7rem;
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+.macro-bar__track {
+  height: 4px;
+  background: var(--color-surface-alt);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.macro-bar__fill {
+  height: 100%;
+  background: var(--color-primary);
+  border-radius: var(--radius-md);
+  transition: width 0.3s ease;
+}

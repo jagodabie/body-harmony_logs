@@ -39,6 +39,7 @@ export interface ProductDetailsBody {
 
 export type ProductDetailsResponseBody = Omit<ProductDetails, 'code'> & {
   productCode: string;
+  nutrientsPerPortion: MacroNutrients;
 };
 
 // Frontend meal input type
@@ -67,6 +68,7 @@ export type Meal = {
 export type MealsByDateResponse = {
   date: string;
   meals: Meal[];
+  dailyTotals: MacroNutrients;
 };
 
 export type UserSettings = {

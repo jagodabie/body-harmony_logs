@@ -7,7 +7,7 @@ import {
   fetchMealsByDate,
   removeProductFromMeal as removeProductFromMealApi,
 } from '../api/meals.api';
-import type { Meal, MealLog, ProductDetailsBody } from '../types/MealLogs';
+import type { Meal, MacroNutrients, MealLog, ProductDetailsBody } from '../types/MealLogs';
 import { prepareMeals } from '../views/MealLogs/DayOfEating/utils';
 import { handleAsyncOperation } from './storeHelpers';
 
@@ -22,6 +22,7 @@ type CreateMealRequest = {
 
 type MealLogsState = {
   meals: Meal[];
+  dailyTotals: MacroNutrients | null;
   isLoading: boolean;
   currentDate: string | null;
   setMeals: (meals: Meal[]) => void;
@@ -38,6 +39,7 @@ export const useMealLogsStore = create<MealLogsState>()(
   persist(
     set => ({
       meals: [],
+      dailyTotals: null,
       isLoading: false,
       currentDate: null,
 
@@ -56,9 +58,10 @@ export const useMealLogsStore = create<MealLogsState>()(
           setLoading: loading => set({ isLoading: loading }),
           operation: async () => {
             const responseData = await fetchMealsByDate(date);
-            const mealsFromBackend: Meal[] = responseData || [];
+            const mealsFromBackend: Meal[] = responseData.meals || [];
+            const dailyTotals = responseData.dailyTotals ?? null;
             const meals = prepareMeals(mealsFromBackend, date);
-                        set({ meals, currentDate: date });
+            set({ meals, dailyTotals, currentDate: date });
             return meals;
           },
           showErrorMessage: true,
@@ -121,6 +124,7 @@ export const useMealLogsStore = create<MealLogsState>()(
       storage: createJSONStorage(() => localStorage),
       partialize: state => ({
         meals: state.meals,
+        dailyTotals: state.dailyTotals,
         currentDate: state.currentDate,
       }),
     }
