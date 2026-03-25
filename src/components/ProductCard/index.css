@@ -5,7 +5,7 @@
 .product-card__quantity {
     display: flex;
     align-items: center;
-    padding-top: 15px;
+    border-bottom: var(--border);
 }
 
 .product-card__quantity > .input-base__container {
@@ -17,14 +17,19 @@
 }
 
 .product-card__quantity > .product-card__kcal {
-    flex: 1;
+    flex: 2;
+    font-size: 14px;
     text-align: center;
+    color: var(--color-primary-dark);
+    font-weight: 500;
+    font-size: 14px;
 }
 
 .product-card__header-content-name {
-    font-size: 20px;
+    font-size: 18px;
     text-transform: lowercase;
     padding: 8px 5px;
+    color: var(--color-text);
 
     &::first-letter {
         text-transform: uppercase;
@@ -39,28 +44,38 @@
     width: 100%;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 20px 20px 15px;
+    padding: 14px 16px 14px 12px;
     border-bottom: var(--border);
 }
 
 .product-card__quantity-button > .button {
     border-radius: 50px;
-    padding: 10px;
-    background-color: var(--color-black);
+    padding: 4px;
+    background-color: var(--color-secondary);
+}
+
+.product-card__quantity-button > .button .button-icon {
+    font-size: 16px;
+    padding: 0 2px;
 }
 
 .product-card__quantity-button > .button:hover {
-    background-color: var(--color-black);
-    opacity: 0.6;
+    background-color: var(--color-secondary);
+    opacity: 0.7;
 }
 
 .product-card__kcal-list-item-name {
     flex: 5;
+    color: var(--color-text);
+    font-size: 15px;
 }
 
 .product-card__kcal-list-item-value {
-    flex: 1;
+    flex: 3;
     text-align: center;
+    color: var(--color-primary-dark);
+    font-weight: 500;
+    font-size: 14px;
 }
 
 .product-card__kcal-list-item-button {
@@ -68,11 +83,5 @@
 }
 
 .product-card__quantity > .product-card__quantity-button{
-    margin-right: 28px;
-    margin-left: 0;
+   padding: 0 16px;
 }
-
-
-
-
-
