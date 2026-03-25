@@ -1,0 +1,52 @@
+.add-log-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: var(--space-3) var(--space-2);
+  border-radius: 16px;
+  border: none;
+  cursor: pointer;
+  min-height: 110px;
+}
+
+.add-log-card .MuiSvgIcon-root {
+  font-size: 36px !important;
+  width: 36px !important;
+  height: 36px !important;
+}
+
+.add-log-card__label {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.add-log-card__sub {
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.add-log-card--weight {
+  background-color: var(--color-primary-50);
+  border: 2px solid var(--color-primary);
+  color: var(--color-primary-dark);
+}
+
+.add-log-card--temp {
+  background-color: var(--color-warning-50);
+  border: 2px solid var(--color-transparent);
+  color: var(--color-warning-600);
+}
+
+.add-log-card--mood {
+  background-color: var(--color-purple-50);
+  border: 2px solid var(--color-transparent);
+  color: var(--color-purple-600);
+}
+
+.add-log-card--activity {
+  background-color: var(--color-info-50);
+  border: 2px solid var(--color-transparent);
+  color: var(--color-info-600);
+}

@@ -1,8 +1,14 @@
-export const WeightLogTypes = ['weight', 'measurement', 'mood', 'energy', 'sleep', 'exercise', 'nutrients', 'water'] as const;
+export const WeightLogTypes = ['weight', 'temperature', 'mood', 'activity', 'measurement', 'energy', 'sleep', 'exercise', 'nutrients', 'water'] as const;
 export type WeightLogType = typeof WeightLogTypes[number];
 
-export const WeightLogUnits = ['kg', 'cm', 'lbs', 'inches', 'hours', 'minutes', 'glasses', 'calories', 'liters', null] as const;
+export const WeightLogUnits = ['kg', '°C', 'pts', 'min', 'cm', 'lbs', 'inches', 'hours', 'minutes', 'glasses', 'calories', 'liters', null] as const;
 export type WeightLogUnit = typeof WeightLogUnits[number];
+
+export type LogTabConfig = {
+  type: WeightLogType;
+  label: string;
+  unit: WeightLogUnit;
+};
 
 export type Nullable<T> = T | null;
 

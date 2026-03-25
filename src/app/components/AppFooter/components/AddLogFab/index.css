@@ -1,0 +1,27 @@
+.add-log-fab__slot {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.add-log-fab {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-md);
+  position: absolute;
+  transition: background-color 0.2s ease;
+}
+
+.add-log-fab:hover {
+  background-color: var(--color-primary-dark);
+}

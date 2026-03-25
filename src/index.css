@@ -27,8 +27,15 @@
     --color-error: #e57373;
     --color-success: #81c784;
     --color-warning: #f0ad4e;
+    --color-warning-50: #fef0ec;
+    --color-warning-600: #c0622a;
     --color-danger: #d9534f;
     --color-info: #3498db;
+    --color-info-50: #e8f2fb;
+    --color-info-600: #2a78b5;
+    --color-purple-50: #f0eef8;
+    --color-purple-600: #6b5aad;
+    --color-primary-50: #edf5e9;
 
     /* Neutral colors */
     --color-white: #ffffff;

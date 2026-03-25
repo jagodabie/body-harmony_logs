@@ -1,0 +1,5 @@
+.bottom-nav {
+  display: flex;
+  align-items: center;
+  height: var(--space-header-height);
+}
