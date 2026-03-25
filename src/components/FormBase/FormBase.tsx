@@ -48,8 +48,8 @@ export const FormBase = <TForm,>({
       return;
     }
 
-    handleClose();
     await onSubmit(formData);
+    handleClose();
     setFormData(createEmptyFormData(fields));
     setErrors({});
   };

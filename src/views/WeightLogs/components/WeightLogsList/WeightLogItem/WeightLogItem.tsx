@@ -2,7 +2,7 @@ import { DEFAULT_HEIGHT_CM } from '../../../../../constants';
 import { useWeightCalculation } from '../../../../../hooks/useWeightCalculation';
 import type { WeightLog } from '../../../../../types/WeightLog';
 import { formatDate, formatTime } from '../../../../../utils/dateUtils';
-import { ActionButton } from './actionButton/ActionButton';
+import { ActionButton } from './components/ActionButton/ActionButton';
 import { DeleteIcon } from './components/DeleteIcon';
 import { EditIcon } from './components/EditIcon';
 
