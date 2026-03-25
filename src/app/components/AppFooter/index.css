@@ -1,53 +1,88 @@
-
-.nav-buttons {
-  display: flex;
-  justify-content: center;
-  color: var(--color-white);
-  align-items: center;
+.app-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: var(--color-surface-card);
+  border-top: var(--border-light);
+  z-index: var(--z-overlay);
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
-.primary-item,
-.nav-item {
-  border-radius: 0;
-  font-size: 15px;
+.bottom-nav {
   display: flex;
   align-items: center;
-  transition: background-color 0.3s ease;
-  padding: 10px 20px;
-  width: 100%;
-  justify-content: center;
   height: var(--space-header-height);
 }
 
-.nav-item {
-  background-color: var(--color-primary);
+.bottom-nav__item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-muted);
+  padding: var(--space-1) 0;
+  height: 100%;
 }
 
-.nav-item.dark-green {
+.bottom-nav__item span {
+  font-size: 11px;
+  font-weight: 500;
+  color: inherit;
+}
+
+.bottom-nav__item--active {
+  color: var(--color-primary);
+}
+
+.bottom-nav__fab-slot {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.bottom-nav__fab {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-md);
+  position: absolute;
+  transition: background-color 0.2s ease;
+}
+
+.bottom-nav__fab:hover {
   background-color: var(--color-primary-dark);
 }
 
-.primary-item > span,
-.nav-item > span {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--color-white);
+.bottom-nav__drawer {
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+  padding: var(--space-3) var(--space-4) var(--space-4);
+}
+
+.bottom-nav__drawer-handle {
+  width: 40px;
+  height: 4px;
+  border-radius: 2px;
+  background-color: var(--color-surface-alt);
+  margin: 0 auto var(--space-3);
+}
+
+.bottom-nav__drawer-placeholder {
   text-align: center;
-  margin-left: 4px;
-}
-
-.primary-item:hover,
-.nav-item:hover {
-  opacity: 0.9;
-}
-
-.primary-item:focus,
-.nav-item:focus {
-  outline: 2px solid transparent;
-  outline-offset: 2px;
-}
-
-.nav-item.active {
-  background-color: var(--color-primary-dark); 
-  color: var(--color-white);
+  color: var(--color-muted);
+  padding: var(--space-4) 0;
 }
