@@ -42,7 +42,7 @@ export const useLogsStore = create<LogsState>((set, get) => ({
   loading: false,
   editedLog: null,
 
-  setActiveType: (type: WeightLogType) => {
+  setActiveType: (type: LogType) => {
     set({ activeType: type, logs: [], editedLog: null });
   },
 
