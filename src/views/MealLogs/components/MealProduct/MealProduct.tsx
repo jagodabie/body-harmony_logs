@@ -1,13 +1,7 @@
-import { useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 
 import { Button } from '../../../../components/Button/Button';
-import { ProductCard } from '../../../../components/ProductCard/ProductCard';
 import { useMealLogsStore } from '../../../../stores/useMealLogsStore';
-import type {
-  ProductDetails,
-  ProductDetailsResponseBody,
-} from '../../../../types/MealLogs';
 import { capitalizeFirstLetter } from '../../../../utils/stringUtils';
 import { Macros } from '../Macros/Macros';
 
@@ -22,7 +16,6 @@ type ProductProps = {
   protein: number;
   carbohydrates: number;
   fat: number;
-  product: ProductDetailsResponseBody;
 };
 
 export const MealProduct = ({
@@ -34,75 +27,38 @@ export const MealProduct = ({
   protein,
   carbohydrates,
   fat,
-  product,
 }: ProductProps) => {
-  const [showProductCard, setShowProductCard] = useState(false);
   const removeProductFromMeal = useMealLogsStore(
     state => state.removeProductFromMeal
   );
 
-  const handleDelete = async (e?: React.MouseEvent) => {
-    if (e) {
-      e.stopPropagation();
-    }
+  const handleDelete = async () => {
     try {
       await removeProductFromMeal(mealId, productId);
-    } catch (error) {
+    } catch {
       // Error is handled by snackbar in store
     }
   };
 
-  const handleClick = () => {
-    setShowProductCard(!showProductCard);
-  };
-
-  const convertToProductDetails = (
-    product: ProductDetailsResponseBody
-  ): ProductDetails => {
-    return {
-      id: product.id,
-      mealId: product.mealId,
-      code: product.productCode,
-      name: product.name,
-      nutrientsPer100g: product.nutrientsPer100g,
-      brands: product.brands,
-      quantity: product.quantity,
-      unit: product.unit,
-    };
-  };
-
   return (
-    <>
-      <div className="meal-product" onClick={handleClick}>
-        <div className="meal-product__wrapper">
-          <div className="meal-product__header">
-            <div className="meal-product__name">
-              {capitalizeFirstLetter(name)}
-            </div>
+    <div className="meal-product">
+      <div className="meal-product__wrapper">
+        <div className="meal-product__header">
+          <div className="meal-product__name">
+            {capitalizeFirstLetter(name)}
           </div>
-          <div className="meal-product__quantity">{quantity} g</div>
-          <Macros
-            calories={calories}
-            protein={protein}
-            carbohydrates={carbohydrates}
-            fat={fat}
-          />
         </div>
-        <div
-          className="meal-product__delete"
-          onClick={(e: React.MouseEvent) => {
-            e.stopPropagation();
-          }}
-        >
-          <Button Icon={CloseIcon} onClick={handleDelete} />
-        </div>
-      </div>
-      {showProductCard && (
-        <ProductCard
-          productDetails={convertToProductDetails(product)}
-          mealId={mealId}
+        <div className="meal-product__quantity">{quantity} g</div>
+        <Macros
+          calories={calories}
+          protein={protein}
+          carbohydrates={carbohydrates}
+          fat={fat}
         />
-      )}
-    </>
+      </div>
+      <div className="meal-product__delete">
+        <Button Icon={CloseIcon} onClick={handleDelete} />
+      </div>
+    </div>
   );
 };

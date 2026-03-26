@@ -1,10 +1,11 @@
+import type { Nullable } from '../../../../types/BodyLog';
 import type { MacroNutrients } from '../../../../types/MealLogs';
 import { MacroBar } from './MacroBar/MacroBar';
 
 import './index.css';
 
 type CalorieProgressBarProps = {
-  consumed: MacroNutrients;
+  consumed: Nullable<MacroNutrients>;
   calorieGoal?: number;
   proteinGoal?: number;
   carbsGoal?: number;

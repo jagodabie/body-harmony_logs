@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
 
 import { OverlayLoader } from '../../components/OverlayLoader/OverlayLoader';
 import { useDateUtils } from '../../hooks/useDateUtils';
@@ -14,32 +13,10 @@ import './index.css';
 
 export const MealLogs = () => {
   const { formatDate } = useDateUtils();
-  const [searchParams] = useSearchParams();
-  const dateParam = searchParams.get('date');
-
-  const getInitialDate = (): Date => {
-    if (dateParam) {
-      const parsedDate = new Date(dateParam);
-      if (!isNaN(parsedDate.getTime())) {
-        return parsedDate;
-      }
-    }
-    return new Date();
-  };
-
-  const [currentDate, setCurrentDate] = useState(getInitialDate());
+  const [currentDate, setCurrentDate] = useState(new Date());
   const { meals, dailyTotals, isLoading, fetchCurrentDayMeals } = useMealLogsStore();
 
   const currentDateString = formatDateString(currentDate);
-
-  useEffect(() => {
-    if (dateParam) {
-      const parsedDate = new Date(dateParam);
-      if (!isNaN(parsedDate.getTime())) {
-        setCurrentDate(parsedDate);
-      }
-    }
-  }, [dateParam]);
 
   useEffect(() => {
     fetchCurrentDayMeals(currentDateString, true);
@@ -85,7 +62,7 @@ export const MealLogs = () => {
           })}
       </div>
       <div className="day-of-eating__footer">
-        {dailyTotals && <CalorieProgressBar consumed={dailyTotals} />}
+         <CalorieProgressBar consumed={dailyTotals} />
       </div>
     </div>
   );

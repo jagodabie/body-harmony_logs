@@ -82,7 +82,6 @@ export const Meal = ({
               protein={product.nutrientsPer100g?.proteins ?? 0}
               carbohydrates={product.nutrientsPer100g?.carbs ?? 0}
               fat={product.nutrientsPer100g?.fat ?? 0}
-              product={product}
             />
           );
         })}
