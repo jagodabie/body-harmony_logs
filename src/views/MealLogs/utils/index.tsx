@@ -2,7 +2,7 @@ import {
   type Meal as MealType,
   type MealLog,
   MealLogs,
-} from '../../../../types/MealLogs';
+} from '../../../types/MealLogs';
 
 export const formatDateString = (date: Date): string =>
   date.toISOString().split('T')[0];
