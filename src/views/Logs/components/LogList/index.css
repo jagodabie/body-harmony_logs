@@ -1,0 +1,28 @@
+.log-list {
+  padding: 0 var(--space-3) var(--space-3);
+}
+
+.log-list__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.log-list__header h3 {
+  margin: 0;
+}
+
+.log-list__header button {
+  width: 40px;
+  padding: 10px 2px;
+  font-size: 12px;
+  border-radius: 50%;
+}
+
+.log-list__empty {
+  text-align: center;
+  color: var(--color-muted);
+  padding: var(--space-5) 0;
+  font-size: 14px;
+}

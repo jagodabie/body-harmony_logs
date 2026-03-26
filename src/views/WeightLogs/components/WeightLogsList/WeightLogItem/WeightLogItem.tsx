@@ -1,6 +1,6 @@
 import { DEFAULT_HEIGHT_CM } from '../../../../../constants';
 import { useWeightCalculation } from '../../../../../hooks/useWeightCalculation';
-import type { WeightLog } from '../../../../../types/WeightLog';
+import type { BodyLog } from '../../../../../types/BodyLog';
 import { formatDate, formatTime } from '../../../../../utils/dateUtils';
 import { ActionButton } from './components/ActionButton/ActionButton';
 import { DeleteIcon } from './components/DeleteIcon';
@@ -8,11 +8,11 @@ import { EditIcon } from './components/EditIcon';
 
 import './index.css';
 
-interface WeightLogItemProps {
-  weightLog: WeightLog;
-  onEdit: (weightLog: WeightLog) => void;
+type WeightLogItemProps = {
+  weightLog: BodyLog;
+  onEdit: (weightLog: BodyLog) => void;
   onDelete: (id: string) => void;
-}
+};
 
 export const WeightLogItem = ({ weightLog, onEdit, onDelete }: WeightLogItemProps) => {
   const { bmi, bmiCategory } = useWeightCalculation({

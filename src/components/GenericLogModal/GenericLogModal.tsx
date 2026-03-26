@@ -1,5 +1,5 @@
 import type { FieldConfig } from '../../types';
-import type { Nullable } from '../../types/WeightLog';
+import type { Nullable } from '../../types/BodyLog';
 import { FormBase } from '../FormBase/FormBase';
 
 import './index.css';

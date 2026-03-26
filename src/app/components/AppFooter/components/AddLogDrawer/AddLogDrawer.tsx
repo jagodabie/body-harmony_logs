@@ -6,7 +6,7 @@ import ThermostatIcon from '@mui/icons-material/Thermostat';
 import { Drawer } from '@mui/material';
 
 import { useLogsStore } from '../../../../../stores/useLogsStore';
-import type { WeightLogType } from '../../../../../types/WeightLog';
+import type { LogType } from '../../../../../types/BodyLog';
 import { AddLogCard } from './components/AddLogCard/AddLogCard';
 
 import './index.css';
@@ -26,7 +26,7 @@ export const AddLogDrawer = ({
 }: AddLogDrawerProps) => {
   const setActiveType = useLogsStore(s => s.setActiveType);
 
-  const navigateToLogs = (type: WeightLogType) => {
+  const navigateToLogs = (type: LogType) => {
     setActiveType(type);
     onNavigate('/logs');
   };

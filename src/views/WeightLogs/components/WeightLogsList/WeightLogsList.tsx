@@ -9,7 +9,7 @@ import {
 } from '../../../../components/GenericLogModal/utils';
 import { useWeightLogsStore } from '../../../../stores/useWeightLogsStore';
 import type { FieldConfig } from '../../../../types';
-import { type FormWeightLog } from '../../../../types/WeightLog';
+import { type FormLog } from '../../../../types/BodyLog';
 import { WeightLogItem } from './WeightLogItem/WeightLogItem';
 
 import './index.css';
@@ -44,7 +44,7 @@ export const WeightLogsList = () => {
           />
         ))}
         {openModal && (
-          <GenericLogModal<FormWeightLog>
+          <GenericLogModal<FormLog>
             isOpen={openModal}
             title={editedWeightLog ? 'Edit Weight Log' : 'Create Weight Log'}
             onSave={editedWeightLog ? updateWeightLog : createWeightLog}

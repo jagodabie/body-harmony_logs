@@ -1,29 +1,29 @@
 import { create } from 'zustand';
 
 import {
-  createWeightLog as createWeightLogApi,
-  deleteWeightLog as deleteWeightLogApi,
-  fetchWeightLogs as fetchWeightLogsApi,
-  updateWeightLog as updateWeightLogApi,
-} from '../api/weightLogs.api';
+  createLog as createWeightLogApi,
+  deleteLog as deleteWeightLogApi,
+  fetchLogs as fetchWeightLogsApi,
+  updateLog as updateWeightLogApi,
+} from '../api/bodyLogs.api';
 import type {
-  FormWeightLog,
+  BodyLog,
+  FormLog,
   Nullable,
-  UpdateWeightLogRequest,
-  WeightLog,
-} from '../types/WeightLog';
-import { WeightLogTypes, WeightLogUnits } from '../types/WeightLog';
+  UpdateLogRequest,
+} from '../types/BodyLog';
+import { LogTypes, LogUnits } from '../types/BodyLog';
 import { handleAsyncOperation } from './storeHelpers';
 
 type WeightLogsState = {
-  weightLogs: WeightLog[];
+  weightLogs: BodyLog[];
   loading: boolean;
-  editedWeightLog: Nullable<UpdateWeightLogRequest>;
+  editedWeightLog: Nullable<UpdateLogRequest>;
   fetchWeightLogs: () => Promise<void>;
-  updateWeightLog: (logData: FormWeightLog) => Promise<void>;
-  createWeightLog: (logData: FormWeightLog) => Promise<void>;
+  updateWeightLog: (logData: FormLog) => Promise<void>;
+  createWeightLog: (logData: FormLog) => Promise<void>;
   deleteWeightLog: (logId: string) => Promise<void>;
-  setEditedWeightLog: (log: Nullable<UpdateWeightLogRequest>) => void;
+  setEditedWeightLog: (log: Nullable<UpdateLogRequest>) => void;
   closeModal: () => void;
 };
 
@@ -44,15 +44,15 @@ export const useWeightLogsStore = create<WeightLogsState>(set => ({
     });
   },
 
-  updateWeightLog: async (logData: FormWeightLog) => {
+  updateWeightLog: async (logData: FormLog) => {
     const state = useWeightLogsStore.getState();
     if (!state.editedWeightLog) {
       throw new Error('No edited weight log found');
     }
 
-    const updatedLog: UpdateWeightLogRequest = {
+    const updatedLog: UpdateLogRequest = {
       id: state.editedWeightLog.id,
-      value: logData.weight || state.editedWeightLog.value,
+      value: logData.value || state.editedWeightLog.value,
       unit: state.editedWeightLog.unit,
       notes:
         logData.notes !== undefined
@@ -82,17 +82,17 @@ export const useWeightLogsStore = create<WeightLogsState>(set => ({
     });
   },
 
-  createWeightLog: async (logData: FormWeightLog) => {
+  createWeightLog: async (logData: FormLog) => {
     await handleAsyncOperation({
       setLoading: (loading) => set({ loading }),
       operation: async () => {
-        const { weight, notes, date } = logData;
+        const { value, notes, date } = logData;
         const newLog = await createWeightLogApi({
-          value: weight,
+          value,
           notes,
           date,
-          type: WeightLogTypes[0],
-          unit: WeightLogUnits[0],
+          type: LogTypes[0],
+          unit: LogUnits[0],
         });
         set(state => ({
           weightLogs: [newLog, ...state.weightLogs],
@@ -118,7 +118,7 @@ export const useWeightLogsStore = create<WeightLogsState>(set => ({
     });
   },
 
-  setEditedWeightLog: (log: Nullable<UpdateWeightLogRequest>) => {
+  setEditedWeightLog: (log: Nullable<UpdateLogRequest>) => {
     set({ editedWeightLog: log });
   },
 

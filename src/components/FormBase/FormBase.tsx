@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 
 import type { FieldConfig } from '../../types';
-import type { Nullable } from '../../types/WeightLog';
+import type { Nullable } from '../../types/BodyLog';
 import { InputBase } from '../InputBase/InputBase';
 import { FormFooter } from './FormFooter/FormFooter';
 import { FormHeader } from './FormHeader/FormHeader';
