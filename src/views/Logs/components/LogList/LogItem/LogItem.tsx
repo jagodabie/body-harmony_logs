@@ -1,8 +1,8 @@
 import type { BodyLog } from '../../../../../types/BodyLog';
 import { formatDate, formatTime } from '../../../../../utils/dateUtils';
-import { ActionButton } from '../../../../WeightLogs/components/WeightLogsList/WeightLogItem/components/ActionButton/ActionButton';
-import { DeleteIcon } from '../../../../WeightLogs/components/WeightLogsList/WeightLogItem/components/DeleteIcon';
-import { EditIcon } from '../../../../WeightLogs/components/WeightLogsList/WeightLogItem/components/EditIcon';
+import { ActionButton } from './components/ActionButton/ActionButton';
+import { DeleteIcon } from './components/DeleteIcon';
+import { EditIcon } from './components/EditIcon';
 
 import './index.css';
 

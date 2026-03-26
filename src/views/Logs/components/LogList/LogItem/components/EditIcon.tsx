@@ -5,10 +5,10 @@ interface EditIconProps {
 
 export const EditIcon = ({ size = 18, color = 'currentColor' }: EditIconProps) => {
   return (
-    <svg 
-      width={size} 
-      height={size} 
-      viewBox="0 0 24 24" 
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
       fill={color}
       aria-hidden="true"
     >
@@ -16,4 +16,3 @@ export const EditIcon = ({ size = 18, color = 'currentColor' }: EditIconProps) =
     </svg>
   );
 };
-

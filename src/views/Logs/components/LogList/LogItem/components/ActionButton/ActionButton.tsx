@@ -7,16 +7,16 @@ interface ActionButtonProps {
   variant?: 'edit' | 'delete';
 }
 
-export const ActionButton = ({ 
-  onClick, 
-  ariaLabel, 
-  children, 
-  variant = 'edit' 
+export const ActionButton = ({
+  onClick,
+  ariaLabel,
+  children,
+  variant = 'edit'
 }: ActionButtonProps) => {
   return (
-    <button 
+    <button
       className={`action-button action-button--${variant}`}
-      onClick={onClick} 
+      onClick={onClick}
       aria-label={ariaLabel}
       type="button"
     >
@@ -24,4 +24,3 @@ export const ActionButton = ({
     </button>
   );
 };
-
