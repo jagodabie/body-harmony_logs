@@ -1,3 +1,4 @@
+/// <reference types="vitest/config" />
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
@@ -31,5 +32,13 @@ export default defineConfig({
     port: 3002,
     host: true,
     allowedHosts: true,
-  }
+  },
+  test: {
+    environment: 'jsdom',
+    setupFiles: ['./src/test/setup.ts'],
+    globals: true,
+    include: ['src/**/*.{test,spec}.{ts,tsx}'],
+    exclude: ['src/**/*.e2e.{ts,tsx}', 'node_modules', 'e2e'],
+    css: false,
+  },
 });
