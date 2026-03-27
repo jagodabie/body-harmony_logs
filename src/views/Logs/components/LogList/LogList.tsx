@@ -72,7 +72,7 @@ export const LogList = ({
         ))}
 
         {logs.length === 0 && (
-          <p className="log-list__empty">Brak wpisów</p>
+          <p className="log-list__empty">No entries</p>
         )}
       </div>
 

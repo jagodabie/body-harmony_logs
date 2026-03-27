@@ -14,10 +14,10 @@ type TabItem = {
 };
 
 const TABS: TabItem[] = [
-  { type: 'weight', label: 'Waga', icon: <MonitorWeightIcon fontSize="small" /> },
+  { type: 'weight', label: 'Weight', icon: <MonitorWeightIcon fontSize="small" /> },
   { type: 'temperature', label: 'Temp', icon: <ThermostatIcon fontSize="small" /> },
-  { type: 'mood', label: 'Nastrój', icon: <SentimentSatisfiedAltIcon fontSize="small" /> },
-  { type: 'activity', label: 'Aktywność', icon: <DirectionsRunIcon fontSize="small" /> },
+  { type: 'mood', label: 'Mood', icon: <SentimentSatisfiedAltIcon fontSize="small" /> },
+  { type: 'activity', label: 'Activity', icon: <DirectionsRunIcon fontSize="small" /> },
 ];
 
 type LogTabsProps = {

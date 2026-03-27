@@ -88,15 +88,28 @@ test.describe('Logs', () => {
     });
   });
 
-  test.describe('empty state', () => {
-    test('shows "Brak wpisów" when the log list is empty', async ({ page }) => {
+  test.describe('chart placeholder', () => {
+    test('displays "Last 7 days" section with coming soon text', async ({ page }) => {
       await page.route(/\/api\/body-metrics/, route =>
         route.fulfill({ json: emptyLogsResponse })
       );
 
       await page.goto('/logs');
 
-      await expect(page.locator('.log-list__empty')).toHaveText('Brak wpisów');
+      await expect(page.locator('.chart-placeholder__title')).toHaveText('Last 7 days');
+      await expect(page.locator('.chart-placeholder__text')).toHaveText('Chart coming soon');
+    });
+  });
+
+  test.describe('empty state', () => {
+    test('shows "No entries" when the log list is empty', async ({ page }) => {
+      await page.route(/\/api\/body-metrics/, route =>
+        route.fulfill({ json: emptyLogsResponse })
+      );
+
+      await page.goto('/logs');
+
+      await expect(page.locator('.log-list__empty')).toHaveText('No entries');
     });
   });
 
@@ -147,7 +160,7 @@ test.describe('Logs', () => {
       await page.locator('.header-button--left').click();
 
       await expect(page.locator('.weight-log-modal')).not.toBeAttached();
-      await expect(page.locator('.log-list__empty')).toHaveText('Brak wpisów');
+      await expect(page.locator('.log-list__empty')).toHaveText('No entries');
     });
   });
 
