@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
-import { useAddProductToMeal } from '../../hooks/useAddProductToMeal/useAddProductToMeal';
+import { useAddProductToMeal } from '../../hooks/useAddProductToMeal';
 import type { ProductDetails } from '../../types/MealLogs';
 import { calculateCalories } from '../../utils/macrosCalculator';
 import { Button } from '../Button/Button';
