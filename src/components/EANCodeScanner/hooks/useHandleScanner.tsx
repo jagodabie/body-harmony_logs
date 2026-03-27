@@ -195,7 +195,7 @@ export const useHandleScanner = (
           const activeDeviceId = track?.getSettings?.()?.deviceId;
           if (activeDeviceId) setDeviceId(activeDeviceId);
         }
-      } catch (e) {
+      } catch (_e) {
         setTorchAvailable(false);
       }
 
@@ -204,7 +204,7 @@ export const useHandleScanner = (
         const listAfter = await navigator.mediaDevices.enumerateDevices();
         const camsAfter = listAfter.filter(d => d.kind === 'videoinput');
         setDevices(camsAfter);
-      } catch (e) {
+      } catch (_e) {
         // Device list refresh failed - non-critical
       }
 
@@ -232,7 +232,7 @@ export const useHandleScanner = (
         advanced: [{ torch: !torchOn }],
       });
       setTorchOn(prev => !prev);
-    } catch (e) {
+    } catch (_e) {
       // Torch toggle failed - non-critical
     }
   }, [torchAvailable, torchOn]);

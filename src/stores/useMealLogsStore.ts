@@ -7,7 +7,7 @@ import {
   fetchMealsByDate,
   removeProductFromMeal as removeProductFromMealApi,
 } from '../api/meals.api';
-import type { Meal, MacroNutrients, MealLog, ProductDetailsBody } from '../types/MealLogs';
+import type { MacroNutrients, Meal, MealLog, ProductDetailsBody } from '../types/MealLogs';
 import { prepareMeals } from '../views/MealLogs/utils';
 import { handleAsyncOperation } from './storeHelpers';
 
