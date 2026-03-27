@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 
-import { CalorieProgressBar } from './CalorieProgressBar';
+import { CalorieProgressBar } from '@/views/MealLogs/components/CalorieProgressBar/CalorieProgressBar';
 
 const baseMacros = {
   calories: 1500,
