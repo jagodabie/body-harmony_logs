@@ -188,7 +188,7 @@ export const useHandleScanner = (
       try {
         const stream = videoRef.current?.srcObject as MediaStream | null;
         const track = stream?.getVideoTracks?.()?.[0];
-        const caps = track?.getCapabilities?.();
+        const caps = track?.getCapabilities?.() as (MediaTrackCapabilities & { torch?: boolean }) | undefined;
         setTorchAvailable(Boolean(caps?.torch));
 
         if (!deviceId) {
@@ -229,7 +229,7 @@ export const useHandleScanner = (
       if (!track) return;
 
       await track.applyConstraints({
-        advanced: [{ torch: !torchOn }],
+        advanced: [{ torch: !torchOn } as MediaTrackConstraintSet & { torch?: boolean }],
       });
       setTorchOn(prev => !prev);
     } catch (_e) {

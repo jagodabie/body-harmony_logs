@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { useMealLogsStore } from '../stores/useMealLogsStore';
+import { useMealLogsStore } from '../stores/useMealLogsStore.ts';
 import type { MealLog, ProductDetails, ProductDetailsBody } from '../types/MealLogs';
 
 type UseAddProductToMealParams = {
