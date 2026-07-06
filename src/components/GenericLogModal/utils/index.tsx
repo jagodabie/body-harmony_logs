@@ -15,6 +15,59 @@ const TYPE_UNIT_MAP: Record<LogType, LogUnit> = {
 };
 
 
+const VALUE_VALIDATORS: Record<LogType, (value: number) => string> = {
+  weight: (value) => {
+    if (!value) return 'Value is required';
+    if (value < 1 || value > 500) return 'Weight must be between 1 and 500 kg';
+    return '';
+  },
+  temperature: (value) => {
+    if (!value) return 'Value is required';
+    if (value < 30 || value > 45) return 'Temperature must be between 30 and 45 °C';
+    return '';
+  },
+  mood: (value) => {
+    if (value === undefined || value === null || value.toString() === '') return 'Value is required';
+    if (value < 0 || value > 10) return 'Mood must be between 0 and 10';
+    return '';
+  },
+  activity: (value) => {
+    if (!value) return 'Value is required';
+    if (value < 0 || value > 5000) return 'Calories must be between 0 and 5000 kcal';
+    return '';
+  },
+  measurement: (value) => {
+    if (!value) return 'Value is required';
+    if (value < 1 || value > 300) return 'Measurement must be between 1 and 300 cm';
+    return '';
+  },
+  energy: (value) => {
+    if (!value) return 'Value is required';
+    if (value < 0 || value > 10000) return 'Energy must be between 0 and 10000 calories';
+    return '';
+  },
+  sleep: (value) => {
+    if (!value) return 'Value is required';
+    if (value < 0 || value > 24) return 'Sleep must be between 0 and 24 hours';
+    return '';
+  },
+  exercise: (value) => {
+    if (!value) return 'Value is required';
+    if (value < 0 || value > 1440) return 'Exercise must be between 0 and 1440 min';
+    return '';
+  },
+  nutrients: (value) => {
+    if (!value) return 'Value is required';
+    if (value < 0 || value > 10000) return 'Nutrients must be between 0 and 10000 calories';
+    return '';
+  },
+  water: (value) => {
+    if (!value) return 'Value is required';
+    if (value < 0 || value > 20) return 'Water must be between 0 and 20 liters';
+    return '';
+  },
+};
+
 export const formFields = (type: LogType, label?: string) => {
   return [
     {
@@ -34,18 +87,7 @@ export const formFields = (type: LogType, label?: string) => {
       label: label ?? formatLabel(type),
       type: 'number',
       required: true,
-      validator: (value: number) => {
-        if (!value) {
-          return 'Value is required';
-        }
-        if (value < 0) {
-          return 'Value must be greater than 0';
-        }
-        if (value > 1000) {
-          return 'Value must be less than 1000';
-        }
-        return '';
-      },
+      validator: VALUE_VALIDATORS[type],
     },
     {
       name: 'notes',
