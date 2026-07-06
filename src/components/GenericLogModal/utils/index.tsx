@@ -1,9 +1,21 @@
 import type { FieldConfig } from '../../../types';
-import type { FormLog, LogType, UpdateLogRequest } from '../../../types/BodyLog';
-import { LogUnits } from '../../../types/BodyLog';
+import type { FormLog, LogType, LogUnit, UpdateLogRequest } from '../../../types/BodyLog';
+
+const TYPE_UNIT_MAP: Record<LogType, LogUnit> = {
+  weight: 'kg',
+  temperature: '°C',
+  mood: 'pts',
+  activity: 'calories',
+  measurement: 'cm',
+  energy: 'calories',
+  sleep: 'hours',
+  exercise: 'min',
+  nutrients: 'calories',
+  water: 'liters',
+};
 
 
-export const formFields = (type: LogType) => {
+export const formFields = (type: LogType, label?: string) => {
   return [
     {
       name: 'date',
@@ -19,7 +31,7 @@ export const formFields = (type: LogType) => {
     },
     {
       name: 'value' as FieldConfig['name'],
-      label: formatLabel(type),
+      label: label ?? formatLabel(type),
       type: 'number',
       required: true,
       validator: (value: number) => {
@@ -51,7 +63,7 @@ export const formFields = (type: LogType) => {
 
 const formatLabel = (type: LogType) => {
   const formattedType = type ? type.charAt(0).toUpperCase() + type.slice(1) : '';
-  return `Body ${formattedType} (${LogUnits[0]})`;
+  return `Body ${formattedType} (${TYPE_UNIT_MAP[type]})`;
 };
 
 export const defaultValuesConverter = (log: UpdateLogRequest): FormLog => {

@@ -15,6 +15,7 @@ import type {
   Nullable,
   UpdateLogRequest,
 } from '../../../../types/BodyLog';
+import { TABS } from '../LogTabs/LogTabs';
 import { LogItem } from './LogItem/LogItem';
 
 import './index.css';
@@ -50,6 +51,7 @@ export const LogList = ({
   const [openModal, setOpenModal] = useState(false);
 
   const title = TITLE_MAP[activeType] ?? 'Logs';
+  const fieldLabel = TABS.find(t => t.type === activeType)?.fieldLabel;
 
   return (
     <div className={`log-list ${className}`}>
@@ -82,9 +84,11 @@ export const LogList = ({
           title={editedLog ? `Edit ${activeType} log` : `Create ${activeType} log`}
           onSave={editedLog ? onUpdateLog : onCreateLog}
           defaultValues={
-            editedLog ? defaultValuesConverter(editedLog) : null
+            editedLog
+              ? defaultValuesConverter(editedLog)
+              : { date: new Date().toISOString().split('T')[0], value: '', notes: '' }
           }
-          fields={formFields(activeType) as FieldConfig[]}
+          fields={formFields(activeType, fieldLabel) as FieldConfig[]}
           onClose={() => {
             onSetEditedLog(null);
             setOpenModal(false);

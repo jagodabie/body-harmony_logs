@@ -11,13 +11,14 @@ type TabItem = {
   type: LogType;
   label: string;
   icon: React.ReactNode;
+  fieldLabel?: string;
 };
 
-const TABS: TabItem[] = [
+export const TABS: TabItem[] = [
   { type: 'weight', label: 'Weight', icon: <MonitorWeightIcon fontSize="small" /> },
   { type: 'temperature', label: 'Temp', icon: <ThermostatIcon fontSize="small" /> },
-  { type: 'mood', label: 'Mood', icon: <SentimentSatisfiedAltIcon fontSize="small" /> },
-  { type: 'activity', label: 'Activity', icon: <DirectionsRunIcon fontSize="small" /> },
+  { type: 'mood', label: 'Mood', icon: <SentimentSatisfiedAltIcon fontSize="small" />, fieldLabel: 'Mood score 0–10 (pts)' },
+  { type: 'activity', label: 'Activity', icon: <DirectionsRunIcon fontSize="small" />, fieldLabel: 'Burnt calories today (kcal)' },
 ];
 
 type LogTabsProps = {

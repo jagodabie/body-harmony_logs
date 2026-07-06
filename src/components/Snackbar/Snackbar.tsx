@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 
 import type { SnackbarType } from '../../stores/useUIStore';
@@ -17,30 +17,18 @@ export const Snackbar = ({
   duration = 4000,
 }: SnackbarProps) => {
   const { message, type } = snackbar;
-  const [open, setOpen] = useState(true);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setOpen(false);
-    }, duration);
+    const timer = setTimeout(onClose, duration);
     return () => clearTimeout(timer);
-  }, [duration]);
+  }, [duration, onClose]);
 
   return (
-    <>
-      {open && (
-        <div
-          className={`snackbar ${type}`}
-          onClick={() => setOpen(false)}
-          onMouseEnter={() => setOpen(false)}
-          onMouseLeave={() => setOpen(true)}
-        >
-          <span>{message}</span>
-          <button className="snackbar-close" onClick={onClose}>
-            <CloseIcon fontSize="small" />
-          </button>
-        </div>
-      )}
-    </>
+    <div className={`snackbar ${type}`}>
+      <span>{message}</span>
+      <button className="snackbar-close" onClick={onClose}>
+        <CloseIcon fontSize="small" />
+      </button>
+    </div>
   );
 };

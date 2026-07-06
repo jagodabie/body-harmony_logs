@@ -52,24 +52,27 @@ describe('Snackbar', () => {
       expect(screen.getByText('Operation successful')).toBeInTheDocument();
     });
 
-    it('disappears after duration elapses', () => {
-      render(<Snackbar snackbar={defaultSnackbar} onClose={vi.fn()} duration={3000} />);
+    it('calls onClose after duration elapses', () => {
+      const onClose = vi.fn();
+      render(<Snackbar snackbar={defaultSnackbar} onClose={onClose} duration={3000} />);
       act(() => {
         vi.advanceTimersByTime(3000);
       });
-      expect(screen.queryByText('Operation successful')).not.toBeInTheDocument();
+      expect(onClose).toHaveBeenCalledTimes(1);
     });
 
     it('defaults to 4000ms duration', () => {
-      render(<Snackbar snackbar={defaultSnackbar} onClose={vi.fn()} />);
+      const onClose = vi.fn();
+      render(<Snackbar snackbar={defaultSnackbar} onClose={onClose} />);
       act(() => {
         vi.advanceTimersByTime(3999);
       });
       expect(screen.getByText('Operation successful')).toBeInTheDocument();
+      expect(onClose).not.toHaveBeenCalled();
       act(() => {
         vi.advanceTimersByTime(1);
       });
-      expect(screen.queryByText('Operation successful')).not.toBeInTheDocument();
+      expect(onClose).toHaveBeenCalledTimes(1);
     });
   });
 
@@ -83,13 +86,13 @@ describe('Snackbar', () => {
   });
 
   describe('mouse interactions', () => {
-    it('hides snackbar on mouse enter', () => {
+    it('remains visible on mouse enter', () => {
       render(<Snackbar snackbar={defaultSnackbar} onClose={vi.fn()} />);
       const snackbar = screen.getByText('Operation successful').closest('.snackbar')!;
       act(() => {
         fireEvent.mouseEnter(snackbar);
       });
-      expect(screen.queryByText('Operation successful')).not.toBeInTheDocument();
+      expect(screen.getByText('Operation successful')).toBeInTheDocument();
     });
   });
 });

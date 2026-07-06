@@ -36,7 +36,8 @@ export const handleAsyncOperation = async <T,>(options: {
   setLoading(true);
   try {
     const result = await operation();
-    
+
+
     if (onSuccess) {
       await onSuccess(result);
     }
